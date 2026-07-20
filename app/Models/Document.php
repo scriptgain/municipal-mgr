@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * SUPERSEDED by the unified File Manager. Nothing in the application
+ * reads this model any more; FileItem does its job.
+ *
+ * It is kept, along with the `documents` table it maps to, purely as the
+ * rollback path for the 2026_07_19_1300xx migration series. Once an
+ * operator is satisfied the new library is correct, this model and its
+ * table can be dropped in a separate, deliberate migration.
+ *
+ * @deprecated Use App\Models\FileItem instead.
+ */
 class Document extends Model
 {
     use Auditable, HasSlug;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Department;
-use App\Models\Document;
+use App\Models\FileItem;
 use App\Models\JobPosting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -29,7 +29,7 @@ class JobPostingController extends AdminController
             'requirements' => ['nullable', 'string'],
             'apply_url' => ['nullable', 'url', 'max:255'],
             'apply_email' => ['nullable', 'email', 'max:150'],
-            'application_document_id' => ['nullable', 'integer', 'exists:documents,id'],
+            'application_document_id' => ['nullable', 'integer', 'exists:files,id'],
             'posted_on' => ['nullable', 'date'],
             'closes_at' => ['nullable', 'date'],
             'status' => ['required', 'in:draft,published,closed'],
@@ -41,7 +41,7 @@ class JobPostingController extends AdminController
         return [
             'departments' => Department::ordered()->get(['id', 'name']),
             'types' => ['Full Time', 'Part Time', 'Seasonal', 'Temporary', 'Volunteer', 'Contract'],
-            'documents' => Document::orderBy('title')->limit(300)->get(['id', 'title']),
+            'documents' => FileItem::whereIn('kind', [FileItem::KIND_DOCUMENT, FileItem::KIND_OTHER])->orderBy('title')->limit(300)->get(['id', 'title']),
         ];
     }
 

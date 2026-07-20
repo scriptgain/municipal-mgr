@@ -59,7 +59,7 @@ class ServiceRequestController extends Controller
 
     public function show(ServiceRequest $serviceRequest)
     {
-        $serviceRequest->load(['department', 'assignee', 'updatesLog.user']);
+        $serviceRequest->load(['department', 'assignee', 'updatesLog.user', 'constituent']);
 
         return view('admin.service-requests.show', [
             'record' => $serviceRequest,

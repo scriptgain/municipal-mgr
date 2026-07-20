@@ -161,7 +161,7 @@
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <x-stat label="Published Pages" :value="$content['pages']" icon="book" :href="route('pages.index')" />
                 <x-stat label="Draft Pages" :value="$content['drafts']" icon="edit" :href="route('pages.index')" />
-                <x-stat label="Published Documents" :value="$content['documents']" icon="archive" :href="route('documents.index')" />
+                <x-stat label="Published Documents" :value="$content['documents']" icon="archive" :href="route('files.index')" />
                 <x-stat label="Published News Posts" :value="$content['news']" icon="bell" :href="route('news.index')" />
             </div>
 

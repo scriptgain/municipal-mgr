@@ -45,17 +45,17 @@ class Meeting extends Model
 
     public function agenda(): BelongsTo
     {
-        return $this->belongsTo(Document::class, 'agenda_document_id');
+        return $this->belongsTo(FileItem::class, 'agenda_document_id');
     }
 
     public function minutes(): BelongsTo
     {
-        return $this->belongsTo(Document::class, 'minutes_document_id');
+        return $this->belongsTo(FileItem::class, 'minutes_document_id');
     }
 
     public function packet(): BelongsTo
     {
-        return $this->belongsTo(Document::class, 'packet_document_id');
+        return $this->belongsTo(FileItem::class, 'packet_document_id');
     }
 
     public function displayTitle(): string

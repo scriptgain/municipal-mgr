@@ -42,7 +42,7 @@
                 </div>
 
                 @if ($notice->document)
-                    <a href="{{ route('site.documents.download', $notice->document->slug) }}"
+                    <a href="{{ route('site.files.download', $notice->document->slug) }}"
                        class="flex items-center gap-3 rounded-2xl bg-brand-700 p-5 text-white transition hover:bg-brand-800">
                         <x-icon name="download" class="w-6 h-6 shrink-0" />
                         <span>

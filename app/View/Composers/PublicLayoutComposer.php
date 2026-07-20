@@ -29,15 +29,39 @@ class PublicLayoutComposer
             'site' => $site,
             'siteName' => $site['site_name'],
             'siteFormalName' => SiteSettings::formalName(),
-            'primaryNav' => $this->menu('primary'),
+            'primaryNav' => $this->markActive($this->menu('primary')),
             'utilityNav' => $this->menu('utility'),
             'footerNav' => $this->menu('footer'),
             'quickLinks' => $this->menu('quicklinks'),
+            // The hero shows only the first few most-requested tasks; the full
+            // set still renders in the Quick Links grid further down the page.
+            'heroActions' => array_slice($this->menu('quicklinks'), 0, 4),
             'liveAlert' => $this->alert(),
             'footerDepartments' => $this->departments(),
             'maxWidth' => config('municipal.max_width', 'max-w-7xl'),
             'currentYear' => now()->year,
         ]);
+    }
+
+    /**
+     * Flag the item matching the current request.
+     *
+     * Deliberately applied AFTER menu(), never inside it: menu() is cached for
+     * CACHE_SECONDS, so folding active state into the cached array would pin
+     * whichever page happened to warm the cache and highlight it for everyone.
+     */
+    private function markActive(array $items): array
+    {
+        $current = rtrim(request()->url(), '/');
+
+        return array_map(function (array $item) use ($current) {
+            $matches = fn (?string $href) => $href && rtrim($href, '/') === $current;
+
+            $item['is_active'] = $matches($item['href'] ?? null)
+                || collect($item['children'])->contains(fn (array $c) => $matches($c['href'] ?? null));
+
+            return $item;
+        }, $items);
     }
 
     private function menu(string $menu): array

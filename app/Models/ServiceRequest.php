@@ -16,7 +16,7 @@ class ServiceRequest extends Model
     protected $fillable = [
         'reference', 'tracking_token', 'category', 'description', 'location_text',
         'latitude', 'longitude', 'photo_path', 'reporter_name', 'reporter_email',
-        'reporter_phone', 'is_anonymous', 'status', 'priority', 'department_id',
+        'reporter_phone', 'constituent_id', 'is_anonymous', 'status', 'priority', 'department_id',
         'assigned_to', 'acknowledged_at', 'resolved_at', 'ip',
     ];
 
@@ -79,6 +79,12 @@ class ServiceRequest extends Model
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
+    }
+
+    /** The resident record this request belongs to. Null when anonymous. */
+    public function constituent(): BelongsTo
+    {
+        return $this->belongsTo(Constituent::class);
     }
 
     public function assignee(): BelongsTo

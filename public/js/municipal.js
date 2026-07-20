@@ -140,11 +140,117 @@
         });
     }
 
+    /* ------------------------------------------------------------------
+     * File Manager: drag-and-drop bulk upload.
+     *
+     * Progressive. Without JS the plain multiple file input still works and
+     * still posts; this only adds dropping onto the zone plus a list of what
+     * is about to be uploaded, so staff can see they grabbed the right files
+     * before committing.
+     * ---------------------------------------------------------------- */
+    function initDropzone() {
+        document.querySelectorAll('[data-dropzone]').forEach(function (zone) {
+            var input = zone.querySelector('[data-dropzone-input]');
+            var list = zone.querySelector('[data-dropzone-list]');
+            if (!input) return;
+
+            var HOT = ['border-brand-500', 'bg-brand-50/60'];
+
+            function describe() {
+                if (!list) return;
+                list.textContent = '';
+                Array.prototype.forEach.call(input.files, function (file) {
+                    var li = document.createElement('li');
+                    li.className = 'flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-1.5 ring-1 ring-slate-200';
+                    var name = document.createElement('span');
+                    name.className = 'truncate';
+                    name.textContent = file.name;
+                    var size = document.createElement('span');
+                    size.className = 'shrink-0 text-xs text-slate-400 tabular';
+                    size.textContent = humanSize(file.size);
+                    li.appendChild(name);
+                    li.appendChild(size);
+                    list.appendChild(li);
+                });
+            }
+
+            function hot(on) {
+                HOT.forEach(function (c) { zone.classList.toggle(c, on); });
+            }
+
+            ['dragenter', 'dragover'].forEach(function (evt) {
+                zone.addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    hot(true);
+                });
+            });
+            ['dragleave', 'drop'].forEach(function (evt) {
+                zone.addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    hot(false);
+                });
+            });
+
+            zone.addEventListener('drop', function (e) {
+                if (!e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return;
+                // DataTransfer is the only portable way to push dropped files
+                // into a file input so the normal form POST carries them.
+                input.files = e.dataTransfer.files;
+                describe();
+            });
+
+            input.addEventListener('change', describe);
+        });
+    }
+
+    function humanSize(bytes) {
+        var units = ['B', 'KB', 'MB', 'GB'];
+        var i = 0;
+        while (bytes >= 1024 && i < units.length - 1) {
+            bytes /= 1024;
+            i++;
+        }
+        return (i ? bytes.toFixed(1) : bytes) + ' ' + units[i];
+    }
+
+    /* ------------------------------------------------------------------
+     * File Manager: keyboard-operable folder tree.
+     *
+     * The tree is made of real links, so Tab and Enter already work. This
+     * adds the arrow-key roving focus expected of role="tree": Up/Down move
+     * between folders, Home/End jump to the ends.
+     * ---------------------------------------------------------------- */
+    function initFolderTree() {
+        document.querySelectorAll('.mm-folder-tree').forEach(function (tree) {
+            tree.addEventListener('keydown', function (e) {
+                var keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
+                if (keys.indexOf(e.key) === -1) return;
+
+                var items = Array.prototype.slice.call(tree.querySelectorAll('[role="treeitem"]'));
+                var at = items.indexOf(document.activeElement);
+                if (at === -1) return;
+
+                var next = at;
+                if (e.key === 'ArrowDown') next = Math.min(at + 1, items.length - 1);
+                if (e.key === 'ArrowUp') next = Math.max(at - 1, 0);
+                if (e.key === 'Home') next = 0;
+                if (e.key === 'End') next = items.length - 1;
+
+                if (next !== at) {
+                    e.preventDefault();
+                    items[next].focus();
+                }
+            });
+        });
+    }
+
     function ready() {
         tagTruncated();
         initAlert();
         initCopy();
         initAutoFilters();
+        initDropzone();
+        initFolderTree();
     }
 
     if (document.readyState !== 'loading') ready();

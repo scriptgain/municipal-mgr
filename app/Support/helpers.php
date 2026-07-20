@@ -63,3 +63,32 @@ if (! function_exists('bulk_state')) {
             . '}';
     }
 }
+
+if (! function_exists('file_bulk_state')) {
+    /**
+     * Alpine x-data for the File Manager table.
+     *
+     * Same massSelect contract as bulk_state (selected / allIds / submitBulk)
+     * plus submitMove, because files support a second bulk action: moving the
+     * selection into another folder. Both actions post the checked ids into a
+     * hidden form and both sit behind a modal, never a native dialog.
+     */
+    function file_bulk_state(iterable $ids): string
+    {
+        $list = collect($ids)->map(fn ($id) => (int) $id)->implode(',');
+
+        return '{'
+            . "selected: [], allIds: [{$list}], moveTarget: '',"
+            . 'fill(form) {'
+            . '  form.querySelectorAll(\'input.js-bulk-id\').forEach(node => node.remove());'
+            . '  this.selected.forEach(id => {'
+            . '    const input = document.createElement(\'input\');'
+            . '    input.type = \'hidden\'; input.name = \'ids[]\'; input.value = id; input.className = \'js-bulk-id\';'
+            . '    form.appendChild(input);'
+            . '  });'
+            . '},'
+            . 'submitBulk() { const f = this.$refs.bulkForm; this.fill(f); f.submit(); },'
+            . 'submitMove() { const f = this.$refs.moveForm; this.fill(f); f.submit(); }'
+            . '}';
+    }
+}

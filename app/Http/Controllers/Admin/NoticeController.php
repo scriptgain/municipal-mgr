@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Department;
-use App\Models\Document;
+use App\Models\FileItem;
 use App\Models\Notice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class NoticeController extends AdminController
         return [
             'title' => ['required', 'string', 'max:200'],
             'department_id' => ['nullable', 'integer', 'exists:departments,id'],
-            'document_id' => ['nullable', 'integer', 'exists:documents,id'],
+            'document_id' => ['nullable', 'integer', 'exists:files,id'],
             'notice_type' => ['required', 'string', 'max:60'],
             'body' => ['nullable', 'string'],
             'posted_at' => ['nullable', 'date'],
@@ -36,7 +36,7 @@ class NoticeController extends AdminController
     {
         return [
             'departments' => Department::ordered()->get(['id', 'name']),
-            'documents' => Document::orderBy('title')->limit(300)->get(['id', 'title']),
+            'documents' => FileItem::whereIn('kind', [FileItem::KIND_DOCUMENT, FileItem::KIND_OTHER])->orderBy('title')->limit(300)->get(['id', 'title']),
             'noticeTypes' => ['Public Hearing', 'Ordinance', 'Resolution', 'Election', 'Bid Notice', 'General'],
         ];
     }

@@ -29,7 +29,7 @@
                     <ul class="space-y-4">
                         @foreach ($upcoming as $meeting)
                             <li class="flex flex-wrap gap-5 rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm">
-                                <div class="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                                <div class="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-200">
                                     <span class="text-xs font-semibold uppercase">{{ $meeting->meets_at->format('M') }}</span>
                                     <span class="text-2xl font-bold leading-none tabular">{{ $meeting->meets_at->format('j') }}</span>
                                 </div>
@@ -47,13 +47,13 @@
                                 </div>
                                 <div class="flex flex-wrap items-start gap-2">
                                     @if ($meeting->agenda)
-                                        <a href="{{ route('site.documents.download', $meeting->agenda->slug) }}"
-                                           class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-100 transition hover:bg-brand-100">
+                                        <a href="{{ route('site.files.download', $meeting->agenda->slug) }}"
+                                           class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-100">
                                             <x-icon name="download" class="w-4 h-4" /> Agenda
                                         </a>
                                     @endif
                                     @if ($meeting->packet)
-                                        <a href="{{ route('site.documents.download', $meeting->packet->slug) }}"
+                                        <a href="{{ route('site.files.download', $meeting->packet->slug) }}"
                                            class="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-slate-700 ring-1 ring-slate-300 transition hover:bg-slate-50">
                                             <x-icon name="download" class="w-4 h-4" /> Packet
                                         </a>
@@ -90,12 +90,12 @@
                                         <td class="px-5 py-4">
                                             <div class="flex flex-wrap gap-3 text-sm">
                                                 @if ($meeting->agenda)
-                                                    <a href="{{ route('site.documents.download', $meeting->agenda->slug) }}" class="inline-flex items-center gap-1 text-brand-700 hover:underline">
+                                                    <a href="{{ route('site.files.download', $meeting->agenda->slug) }}" class="inline-flex items-center gap-1 text-brand-700 hover:underline">
                                                         <x-icon name="download" class="w-3.5 h-3.5" /> Agenda
                                                     </a>
                                                 @endif
                                                 @if ($meeting->minutes)
-                                                    <a href="{{ route('site.documents.download', $meeting->minutes->slug) }}" class="inline-flex items-center gap-1 text-brand-700 hover:underline">
+                                                    <a href="{{ route('site.files.download', $meeting->minutes->slug) }}" class="inline-flex items-center gap-1 text-brand-700 hover:underline">
                                                         <x-icon name="download" class="w-3.5 h-3.5" /> Minutes
                                                     </a>
                                                 @endif

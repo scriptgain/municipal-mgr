@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
-use App\Models\Document;
+use App\Models\FileItem;
 use App\Models\Meeting;
 use App\Models\NewsPost;
 use App\Models\Notice;
@@ -32,7 +32,7 @@ class SearchController extends Controller
                 ->where(fn ($q) => $q->where('title', 'like', $like)->orWhere('summary', 'like', $like))
                 ->limit(10)->get();
 
-            $results['documents'] = Document::published()->search($term)
+            $results['documents'] = FileItem::publiclyVisible()->search($term)
                 ->orderByDesc('document_date')->limit(10)->get();
 
             $results['news'] = NewsPost::published()

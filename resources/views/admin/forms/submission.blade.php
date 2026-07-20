@@ -18,6 +18,19 @@
                     <dd class="text-sm text-slate-900 sm:col-span-2 whitespace-pre-line">{{ $record->data[$field['key']] ?? '—' }}</dd>
                 </div>
             @endforeach
+            @if ($record->constituent)
+                <div class="grid gap-2 py-4 sm:grid-cols-3">
+                    <dt class="text-sm font-medium text-slate-500">Resident Record</dt>
+                    <dd class="sm:col-span-2">
+                        <a href="{{ route('constituents.show', $record->constituent) }}"
+                           class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 hover:text-brand-800">
+                            <x-icon name="users" class="w-4 h-4" />
+                            {{ $record->constituent->name }}
+                        </a>
+                        <span class="mt-0.5 block text-xs text-slate-500">Opens Everything This Resident Has Filed</span>
+                    </dd>
+                </div>
+            @endif
             <div class="grid gap-2 py-4 sm:grid-cols-3">
                 <dt class="text-sm font-medium text-slate-500">Submitted From</dt>
                 <dd class="text-sm text-slate-500 sm:col-span-2 tabular">{{ $record->ip ?: 'Unknown' }}</dd>

@@ -30,7 +30,7 @@
                                             {{ $bid->closes_at?->format(config('municipal.date_format') . ', ' . config('municipal.time_format')) ?? 'Open' }}
                                         </p>
                                         @if ($bid->document)
-                                            <a href="{{ route('site.documents.download', $bid->document->slug) }}"
+                                            <a href="{{ route('site.files.download', $bid->document->slug) }}"
                                                class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline">
                                                 <x-icon name="download" class="w-4 h-4" /> Bid Package
                                             </a>

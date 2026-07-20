@@ -58,10 +58,10 @@
                             @foreach ($results['documents'] as $document)
                                 <li class="flex items-center justify-between gap-4 rounded-xl bg-white p-5 ring-1 ring-slate-200">
                                     <div class="min-w-0">
-                                        <a href="{{ route('site.documents.show', $document->slug) }}" class="font-semibold text-slate-900 hover:text-brand-700 hover:underline">{{ $document->title }}</a>
+                                        <a href="{{ route('site.files.show', $document->slug) }}" class="font-semibold text-slate-900 hover:text-brand-700 hover:underline">{{ $document->title }}</a>
                                         <p class="mt-0.5 text-sm text-slate-500">{{ $document->reference }} {{ $document->document_date?->format(config('municipal.date_format')) }}</p>
                                     </div>
-                                    <a href="{{ route('site.documents.download', $document->slug) }}" class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline">
+                                    <a href="{{ route('site.files.download', $document->slug) }}" class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline">
                                         <x-icon name="download" class="w-4 h-4" /> Download
                                     </a>
                                 </li>

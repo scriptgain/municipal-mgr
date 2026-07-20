@@ -1,32 +1,63 @@
 <x-layouts.public>
     {{-- Hero --}}
-    <section class="relative bg-brand-800 text-white">
+    <section class="site-hero relative isolate overflow-hidden bg-brand-900 text-white">
         @if ($site['site_hero_image_path'])
             <img src="{{ municipal_upload_url($site['site_hero_image_path']) }}" alt=""
-                 class="absolute inset-0 h-full w-full object-cover opacity-30">
-            <div class="absolute inset-0 bg-gradient-to-r from-brand-900/95 via-brand-900/70 to-brand-900/40"></div>
+                 class="absolute inset-0 -z-10 h-full w-full object-cover">
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-brand-950/95 via-brand-900/85 to-brand-800/70"></div>
+        @else
+            <div class="site-hero-wash absolute inset-0 -z-10"></div>
+            <div class="site-hero-pattern absolute inset-0 -z-10" aria-hidden="true"></div>
         @endif
+
+        {{-- Seal watermark, decorative only --}}
+        @if ($site['site_seal_path'])
+            <img src="{{ municipal_upload_url($site['site_seal_path']) }}" alt="" aria-hidden="true"
+                 class="pointer-events-none absolute -right-16 top-1/2 -z-10 hidden -translate-y-1/2 opacity-[0.07] lg:block h-[28rem] w-[28rem] object-contain">
+        @endif
+
         <div class="relative {{ $maxWidth }} mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-seal-300">
+            <p class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-seal-200 ring-1 ring-inset ring-white/20 backdrop-blur">
+                <x-icon name="shield" class="w-3.5 h-3.5 shrink-0" />
                 Official Website Of The {{ $siteFormalName }}
             </p>
-            <h1 class="mt-4 max-w-3xl font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight tracking-tight">
+
+            <h1 class="mt-6 max-w-3xl font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
                 {{ $site['site_hero_heading'] ?: 'Welcome To The ' . $siteName }}
             </h1>
             <span class="seal-rule mt-6"></span>
-            <p class="mt-6 max-w-2xl text-lg sm:text-xl text-brand-100">
+            <p class="mt-6 max-w-2xl text-lg sm:text-xl leading-relaxed text-brand-100">
                 {{ $site['site_hero_subheading'] ?: $site['site_motto'] }}
             </p>
-            <div class="mt-8 flex flex-wrap gap-3">
-                <a href="{{ route('site.report') }}"
-                   class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-base font-semibold text-brand-800 shadow-sm transition hover:bg-brand-50">
-                    <x-icon name="bolt" class="w-5 h-5" /> Report An Issue
-                </a>
-                <a href="{{ route('site.meetings') }}"
-                   class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-6 py-3.5 text-base font-semibold text-white ring-1 ring-inset ring-white/30 backdrop-blur transition hover:bg-white/20">
-                    <x-icon name="clock" class="w-5 h-5" /> Meeting Agendas
-                </a>
-            </div>
+
+            {{-- Residents arrive with a task, so search leads --}}
+            <form action="{{ route('site.search') }}" method="GET" role="search"
+                  class="mt-10 flex max-w-2xl flex-col gap-3 sm:flex-row">
+                <label for="hero-search" class="sr-only">Search This Site</label>
+                <div class="relative flex-1">
+                    <x-icon name="search" class="pointer-events-none absolute left-4 top-1/2 w-5 h-5 -translate-y-1/2 text-slate-400" />
+                    <input id="hero-search" type="search" name="q" autocomplete="off"
+                           placeholder="Search Services, Documents, Meetings"
+                           class="w-full rounded-xl border-0 bg-white py-4 pl-12 pr-4 text-base text-slate-900 shadow-lg ring-1 ring-inset ring-white/20 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-seal-400">
+                </div>
+                <button type="submit"
+                        class="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-seal-500 px-7 py-4 text-base font-semibold text-brand-950 shadow-lg transition hover:bg-seal-400 focus:outline-none focus:ring-2 focus:ring-seal-300 focus:ring-offset-2 focus:ring-offset-brand-900">
+                    Search
+                </button>
+            </form>
+
+            {{-- Most-requested tasks, straight from the Quick Links menu --}}
+            @if (count($heroActions))
+                <div class="mt-8 flex flex-wrap gap-3">
+                    @foreach ($heroActions as $action)
+                        <a href="{{ $action['href'] }}"
+                           class="group inline-flex items-center gap-2.5 rounded-xl bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 backdrop-blur transition hover:bg-white/20 hover:ring-white/40">
+                            <x-icon :name="$action['icon'] ?: 'bolt'" class="w-4 h-4 shrink-0 text-seal-300 transition-colors group-hover:text-seal-200" />
+                            {{ $action['label'] }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
 
@@ -63,7 +94,7 @@
                         <img src="{{ municipal_upload_url($featured->image_path) }}" alt="{{ $featured->title }}"
                              class="aspect-[16/10] w-full rounded-2xl object-cover ring-1 ring-slate-200">
                     @else
-                        <div class="flex aspect-[16/10] w-full items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-brand-100">
+                        <div class="flex aspect-[16/10] w-full items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-brand-200">
                             <x-icon name="megaphone" class="w-16 h-16 text-brand-300" />
                         </div>
                     @endif
@@ -107,7 +138,7 @@
                     <ul class="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 divide-y divide-slate-100">
                         @foreach ($meetings as $meeting)
                             <li class="flex flex-wrap items-center gap-4 p-5">
-                                <div class="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                                <div class="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-200">
                                     <span class="text-xs font-semibold uppercase">{{ $meeting->meets_at->format('M') }}</span>
                                     <span class="text-xl font-bold leading-none tabular">{{ $meeting->meets_at->format('j') }}</span>
                                 </div>
@@ -121,8 +152,8 @@
                                     </p>
                                 </div>
                                 @if ($meeting->agenda)
-                                    <a href="{{ route('site.documents.download', $meeting->agenda->slug) }}"
-                                       class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-100 transition hover:bg-brand-100">
+                                    <a href="{{ route('site.files.download', $meeting->agenda->slug) }}"
+                                       class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-100">
                                         <x-icon name="download" class="w-4 h-4" /> Agenda
                                     </a>
                                 @endif

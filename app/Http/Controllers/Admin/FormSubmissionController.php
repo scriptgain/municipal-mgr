@@ -25,7 +25,7 @@ class FormSubmissionController extends Controller
 
     public function show(FormSubmission $formSubmission)
     {
-        $formSubmission->load('form');
+        $formSubmission->load(['form', 'constituent']);
         if ($formSubmission->isUnread()) {
             $formSubmission->update(['read_at' => now()]);
         }

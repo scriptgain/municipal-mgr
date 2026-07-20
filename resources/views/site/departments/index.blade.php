@@ -8,7 +8,7 @@
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($departments as $department)
                     <article class="flex h-full flex-col rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm transition hover:shadow-md">
-                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-100">
+                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                             <x-icon :name="$department->icon ?: 'building'" class="w-6 h-6" />
                         </span>
                         <h2 class="mt-4 text-lg font-semibold text-slate-900">

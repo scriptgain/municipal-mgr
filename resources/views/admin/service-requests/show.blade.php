@@ -32,6 +32,13 @@
                         <dd class="mt-0.5 text-slate-900">
                             @if ($record->is_anonymous)
                                 Anonymous
+                            @elseif ($record->constituent)
+                                <a href="{{ route('constituents.show', $record->constituent) }}"
+                                   class="inline-flex items-center gap-1.5 font-medium text-brand-700 hover:text-brand-800">
+                                    <x-icon name="users" class="w-4 h-4" />
+                                    {{ $record->constituent->name }}
+                                </a>
+                                <span class="mt-0.5 block text-xs text-slate-500">Opens The Full Resident Record</span>
                             @else
                                 {{ $record->reporter_name ?: 'Not Provided' }}
                             @endif

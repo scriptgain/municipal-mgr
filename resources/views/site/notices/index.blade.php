@@ -27,8 +27,8 @@
                                     </p>
                                 </div>
                                 @if ($notice->document)
-                                    <a href="{{ route('site.documents.download', $notice->document->slug) }}"
-                                       class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-100 transition hover:bg-brand-100">
+                                    <a href="{{ route('site.files.download', $notice->document->slug) }}"
+                                       class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-100">
                                         <x-icon name="download" class="w-4 h-4" /> Download
                                     </a>
                                 @endif

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormSubmission extends Model
 {
-    protected $fillable = ['form_definition_id', 'data', 'ip', 'read_at'];
+    protected $fillable = ['form_definition_id', 'data', 'constituent_id', 'ip', 'read_at'];
 
     protected function casts(): array
     {
@@ -17,6 +17,12 @@ class FormSubmission extends Model
     public function form(): BelongsTo
     {
         return $this->belongsTo(FormDefinition::class, 'form_definition_id');
+    }
+
+    /** The resident record this submission belongs to, when one was resolvable. */
+    public function constituent(): BelongsTo
+    {
+        return $this->belongsTo(Constituent::class);
     }
 
     public function isUnread(): bool

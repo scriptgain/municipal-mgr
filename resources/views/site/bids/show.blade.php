@@ -41,7 +41,7 @@
                     </dl>
 
                     @if ($bid->document)
-                        <a href="{{ route('site.documents.download', $bid->document->slug) }}"
+                        <a href="{{ route('site.files.download', $bid->document->slug) }}"
                            class="mt-6 flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-800">
                             <x-icon name="download" class="w-4 h-4" /> Download The Bid Package
                         </a>

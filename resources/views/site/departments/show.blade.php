@@ -65,9 +65,9 @@
                                     <li class="flex items-center justify-between gap-4 p-5">
                                         <div class="flex min-w-0 items-center gap-3">
                                             <span class="inline-flex h-9 shrink-0 items-center rounded-md bg-slate-100 px-2 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">{{ $document->extension() }}</span>
-                                            <a href="{{ route('site.documents.show', $document->slug) }}" class="truncate font-medium text-slate-900 hover:text-brand-700 hover:underline">{{ $document->title }}</a>
+                                            <a href="{{ route('site.files.show', $document->slug) }}" class="truncate font-medium text-slate-900 hover:text-brand-700 hover:underline">{{ $document->title }}</a>
                                         </div>
-                                        <a href="{{ route('site.documents.download', $document->slug) }}"
+                                        <a href="{{ route('site.files.download', $document->slug) }}"
                                            class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline">
                                             <x-icon name="download" class="w-4 h-4" /> Download
                                         </a>
@@ -75,7 +75,7 @@
                                 @endforeach
                             </ul>
                             <div class="mt-6">
-                                <a href="{{ route('site.documents', ['department' => $department->slug]) }}" class="inline-flex items-center gap-1.5 font-semibold text-brand-700 hover:underline">
+                                <a href="{{ route('site.files', ['department' => $department->slug]) }}" class="inline-flex items-center gap-1.5 font-semibold text-brand-700 hover:underline">
                                     All Documents From This Department <x-icon name="chevron-right" class="w-4 h-4" />
                                 </a>
                             </div>

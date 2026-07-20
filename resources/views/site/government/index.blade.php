@@ -42,7 +42,7 @@
             <ul class="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 divide-y divide-slate-100">
                 @foreach ($meetings as $meeting)
                     <li class="flex flex-wrap items-center gap-4 p-5">
-                        <div class="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                        <div class="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-200">
                             <span class="text-xs font-semibold uppercase">{{ $meeting->meets_at->format('M') }}</span>
                             <span class="text-xl font-bold leading-none tabular">{{ $meeting->meets_at->format('j') }}</span>
                         </div>

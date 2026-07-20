@@ -52,9 +52,19 @@ Route::name('site.')->group(function () {
     Route::get('/meetings', [Site\MeetingController::class, 'index'])->name('meetings');
     Route::get('/meetings/{meeting}', [Site\MeetingController::class, 'show'])->name('meetings.show');
 
-    Route::get('/documents', [Site\DocumentController::class, 'index'])->name('documents');
-    Route::get('/documents/{document}', [Site\DocumentController::class, 'show'])->name('documents.show');
-    Route::get('/documents/{document}/download', [Site\DocumentController::class, 'download'])->name('documents.download');
+    /*
+    | Unified file browser. /documents/* was the old Document Library and is
+    | deep-linked from agendas, newsletters, and printed mailers, so those URLs
+    | are kept forever as 301s onto their /files/* equivalent rather than
+    | deleted.
+    */
+    Route::get('/files', [Site\FileController::class, 'index'])->name('files');
+    Route::get('/files/{file}', [Site\FileController::class, 'show'])->name('files.show');
+    Route::get('/files/{file}/download', [Site\FileController::class, 'download'])->name('files.download');
+
+    Route::get('/documents', [Site\FileController::class, 'legacyIndex'])->name('documents');
+    Route::get('/documents/{slug}', [Site\FileController::class, 'legacyShow'])->name('documents.show');
+    Route::get('/documents/{slug}/download', [Site\FileController::class, 'legacyDownload'])->name('documents.download');
 
     // Report An Issue: open intake, no account required. The tracking link is
     // the credential — residents must be able to follow up without signing up.
@@ -131,8 +141,6 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
         'staff' => Admin\StaffController::class,
         'officials' => Admin\OfficialController::class,
         'meetings' => Admin\MeetingController::class,
-        'documents' => Admin\DocumentController::class,
-        'document-categories' => Admin\DocumentCategoryController::class,
         'jobs' => Admin\JobPostingController::class,
         'bids' => Admin\BidController::class,
         'alerts' => Admin\AlertController::class,
@@ -163,12 +171,29 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
     Route::get('submissions/{formSubmission}', [Admin\FormSubmissionController::class, 'show'])->name('submissions.show');
     Route::delete('submissions/{formSubmission}', [Admin\FormSubmissionController::class, 'destroy'])->name('submissions.destroy');
 
-    // Media library.
-    Route::delete('media/bulk', [Admin\MediaController::class, 'bulkDestroy'])->name('media.bulk-destroy');
-    Route::get('media', [Admin\MediaController::class, 'index'])->name('media.index');
-    Route::post('media', [Admin\MediaController::class, 'store'])->name('media.store');
-    Route::put('media/{mediaItem}', [Admin\MediaController::class, 'update'])->name('media.update');
-    Route::delete('media/{mediaItem}', [Admin\MediaController::class, 'destroy'])->name('media.destroy');
+    /*
+    | Unified File Manager. Replaces the three screens that came before it:
+    | Document Library, Document Categories, and the flat Media Library.
+    */
+    Route::delete('files/bulk', [Admin\FileController::class, 'bulkDestroy'])->name('files.bulk-destroy');
+    Route::post('files/bulk-move', [Admin\FileController::class, 'bulkMove'])->name('files.bulk-move');
+    Route::get('files', [Admin\FileController::class, 'index'])->name('files.index');
+    Route::post('files', [Admin\FileController::class, 'store'])->name('files.store');
+    Route::get('files/{file}/edit', [Admin\FileController::class, 'edit'])->name('files.edit');
+    Route::put('files/{file}', [Admin\FileController::class, 'update'])->name('files.update');
+    Route::delete('files/{file}', [Admin\FileController::class, 'destroy'])->name('files.destroy');
+
+    Route::post('folders', [Admin\FolderController::class, 'store'])->name('folders.store');
+    Route::put('folders/{folder}', [Admin\FolderController::class, 'update'])->name('folders.update');
+    Route::delete('folders/{folder}', [Admin\FolderController::class, 'destroy'])->name('folders.destroy');
+
+    // Legacy admin URLs from the split systems, kept as redirects so staff
+    // bookmarks and any lingering links land on the new manager.
+    // Leading slash matters: without it the Location header is relative and a
+    // browser resolves it against /admin/, landing on /admin/admin/files.
+    Route::redirect('media', '/admin/files')->name('media.index');
+    Route::redirect('documents', '/admin/files')->name('documents.index');
+    Route::redirect('document-categories', '/admin/files')->name('document-categories.index');
 
     /*
     | Settings. Fleet-standard screens carried over from the scaffold, plus the
@@ -235,3 +260,12 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
     Route::delete('settings/audit/selected', [AuditLogController::class, 'destroySelected'])->name('settings.audit.destroy-selected');
     Route::delete('settings/audit/all', [AuditLogController::class, 'destroyAll'])->name('settings.audit.destroy-all');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Constituents (resident CRM)
+|--------------------------------------------------------------------------
+| Staff-only, same gate as the rest of the panel. Kept in its own file so the
+| feature owns its routing surface and cannot be half-registered.
+*/
+Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(base_path('routes/constituents.php'));

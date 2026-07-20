@@ -25,7 +25,7 @@
             <ul class="space-y-4">
                 @foreach ($events as $event)
                     <li class="flex flex-wrap gap-5 rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm">
-                        <div class="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
+                        <div class="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-200">
                             <span class="text-xs font-semibold uppercase">{{ $event->starts_at->format('M') }}</span>
                             <span class="text-2xl font-bold leading-none tabular">{{ $event->starts_at->format('j') }}</span>
                             <span class="text-[11px] text-brand-500">{{ $event->starts_at->format('D') }}</span>

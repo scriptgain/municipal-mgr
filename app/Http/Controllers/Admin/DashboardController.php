@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Alert;
 use App\Models\Bid;
-use App\Models\Document;
 use App\Models\Event;
+use App\Models\FileItem;
 use App\Models\FormSubmission;
 use App\Models\JobPosting;
 use App\Models\Meeting;
@@ -36,7 +36,7 @@ class DashboardController extends Controller
         $content = [
             'pages' => Page::where('status', 'published')->count(),
             'drafts' => Page::where('status', '!=', 'published')->count(),
-            'documents' => Document::where('is_published', true)->count(),
+            'documents' => FileItem::publiclyVisible()->count(),
             'news' => NewsPost::where('status', 'published')->count(),
         ];
 

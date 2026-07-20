@@ -60,7 +60,7 @@
                             </a>
                         @endif
                         @if ($job->applicationForm)
-                            <a href="{{ route('site.documents.download', $job->applicationForm->slug) }}"
+                            <a href="{{ route('site.files.download', $job->applicationForm->slug) }}"
                                class="flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-slate-300 transition hover:bg-slate-50">
                                 <x-icon name="download" class="w-4 h-4" /> Download The Application
                             </a>

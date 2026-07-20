@@ -50,3 +50,54 @@
 .st-item.is-active { background: #0f4c81; color: #fff; font-weight: 600; }
 .st-item svg { width: 1.05rem; height: 1.05rem; flex: 0 0 auto; }
 .st-badge { margin-left: auto; font-size: 0.625rem; font-weight: 700; background: #c8a45c; color: #061f35; border-radius: 9999px; padding: 0.05rem 0.45rem; line-height: 1.5; }
+
+/*
+ * Home hero background. Real CSS rather than utilities so it renders
+ * identically whether or not the Tailwind browser build has finished, and
+ * so a municipality with no photography still gets an intentional hero.
+ * Both layers sit behind the content via -z-10 on the elements themselves.
+ */
+.site-hero-wash {
+    background:
+        radial-gradient(120% 90% at 12% 0%, #0d4372 0%, rgba(13, 67, 114, 0) 55%),
+        radial-gradient(90% 80% at 95% 20%, #0a355a 0%, rgba(10, 53, 90, 0) 60%),
+        linear-gradient(150deg, #061f35 0%, #082b49 45%, #0a355a 100%);
+}
+
+/*
+ * Topographic contour suggestion: concentric hairlines in the seal gold at
+ * low opacity. Inline SVG data URI keeps it self-contained, no asset request.
+ */
+.site-hero-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23c8a45c' stroke-width='1'%3E%3Ccircle cx='80' cy='80' r='16'/%3E%3Ccircle cx='80' cy='80' r='34'/%3E%3Ccircle cx='80' cy='80' r='52'/%3E%3Ccircle cx='80' cy='80' r='70'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 320px 320px;
+    opacity: 0.10;
+    mask-image: linear-gradient(to bottom right, #000 0%, transparent 78%);
+    -webkit-mask-image: linear-gradient(to bottom right, #000 0%, transparent 78%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .site-hero form input:focus {
+        transition: box-shadow 150ms ease;
+    }
+}
+
+/*
+ * Interior page banner. Same family as .site-hero-wash but shallower and
+ * lighter, so inner pages read as the same site without competing with the
+ * home hero.
+ */
+.site-pagehead-wash {
+    background:
+        radial-gradient(100% 140% at 0% 0%, #0d4372 0%, rgba(13, 67, 114, 0) 60%),
+        linear-gradient(120deg, #082b49 0%, #0a355a 60%, #0d4372 100%);
+}
+
+/*
+ * Footer. Deepest field on the site so it reads as the base of the page.
+ */
+.site-footer-wash {
+    background:
+        radial-gradient(90% 120% at 100% 0%, #0a355a 0%, rgba(10, 53, 90, 0) 55%),
+        linear-gradient(180deg, #061f35 0%, #041424 100%);
+}

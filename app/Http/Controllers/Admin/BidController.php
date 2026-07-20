@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Bid;
 use App\Models\Department;
-use App\Models\Document;
+use App\Models\FileItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -26,7 +26,7 @@ class BidController extends AdminController
             'reference' => ['nullable', 'string', 'max:120'],
             'bid_type' => ['required', 'string', 'max:40'],
             'description' => ['nullable', 'string'],
-            'document_id' => ['nullable', 'integer', 'exists:documents,id'],
+            'document_id' => ['nullable', 'integer', 'exists:files,id'],
             'contact_name' => ['nullable', 'string', 'max:150'],
             'contact_email' => ['nullable', 'email', 'max:150'],
             'opens_at' => ['nullable', 'date'],
@@ -42,7 +42,7 @@ class BidController extends AdminController
         return [
             'departments' => Department::ordered()->get(['id', 'name']),
             'types' => ['Bid', 'RFP', 'RFQ', 'Sole Source', 'Cooperative Purchase'],
-            'documents' => Document::orderBy('title')->limit(300)->get(['id', 'title']),
+            'documents' => FileItem::whereIn('kind', [FileItem::KIND_DOCUMENT, FileItem::KIND_OTHER])->orderBy('title')->limit(300)->get(['id', 'title']),
         ];
     }
 

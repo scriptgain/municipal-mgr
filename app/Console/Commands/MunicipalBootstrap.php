@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Alert;
-use App\Models\DocumentCategory;
+use App\Models\Folder;
 use App\Models\FormDefinition;
 use App\Models\MenuItem;
 use App\Models\Setting;
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 /**
  * Post-install bootstrap (the installer's BOOTSTRAP_CMD).
  *
- * Seeds the structures a municipality always needs — document categories, the
+ * Seeds the structures a municipality always needs — file manager folders, the
  * primary menu, homepage quick links, a contact form — so a fresh install has
  * a working, navigable site before staff type anything. Idempotent: every
  * write is firstOrCreate, so re-running after an upgrade is safe.
@@ -36,18 +36,18 @@ class MunicipalBootstrap extends Command
             ['Public Records', 'Records request forms and published records.', 'folder'],
         ];
         foreach ($categories as $i => [$name, $desc, $icon]) {
-            DocumentCategory::firstOrCreate(
+            Folder::firstOrCreate(
                 ['slug' => Str::slug($name)],
-                ['name' => $name, 'description' => $desc, 'icon' => $icon, 'sort_order' => $i]
+                ['name' => $name, 'description' => $desc, 'icon' => $icon, 'sort_order' => $i, 'is_public' => true]
             );
         }
-        $this->info('Document categories ready (' . count($categories) . ').');
+        $this->info('File manager folders ready (' . count($categories) . ').');
 
         $primary = [
             ['Government', route('site.government'), 'building'],
             ['Departments', route('site.departments'), 'users'],
             ['Meetings', route('site.meetings'), 'clock'],
-            ['Documents', route('site.documents'), 'folder'],
+            ['Documents', route('site.files'), 'folder'],
             ['News', route('site.news'), 'book'],
             ['Events', route('site.calendar'), 'clock'],
             ['Contact', route('site.contact'), 'globe'],
@@ -63,7 +63,7 @@ class MunicipalBootstrap extends Command
             ['Pay A Bill', '#', 'database', 'Utilities, permits, and fines.'],
             ['Report An Issue', route('site.report'), 'bolt', 'Potholes, streetlights, and more.'],
             ['Meeting Agendas', route('site.meetings'), 'clock', 'Agendas, packets, and minutes.'],
-            ['Apply For A Permit', route('site.documents'), 'edit', 'Building, business, and events.'],
+            ['Apply For A Permit', route('site.files'), 'edit', 'Building, business, and events.'],
             ['Job Openings', route('site.jobs'), 'users', 'Work for the municipality.'],
             ['Public Notices', route('site.notices'), 'bell', 'Hearings and legal notices.'],
         ];
@@ -76,7 +76,7 @@ class MunicipalBootstrap extends Command
 
         $footer = [
             ['Accessibility', route('site.accessibility')],
-            ['Public Records Request', route('site.documents')],
+            ['Public Records Request', route('site.files')],
             ['Staff Directory', route('site.directory')],
             ['Bids And RFPs', route('site.bids')],
             ['Track A Request', route('site.track')],

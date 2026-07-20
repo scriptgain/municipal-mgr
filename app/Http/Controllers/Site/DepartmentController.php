@@ -23,7 +23,7 @@ class DepartmentController extends Controller
         return view('site.departments.show', [
             'department' => $department,
             'pages' => $department->pages()->published()->orderBy('sort_order')->get(),
-            'documents' => $department->documents()->published()->latest('document_date')->limit(10)->get(),
+            'documents' => $department->documents()->publiclyVisible()->latest('document_date')->limit(10)->get(),
             'news' => $department->news()->published()->latestFirst()->limit(4)->get(),
             'events' => $department->events()->published()->upcoming()->limit(4)->get(),
             'jobs' => $department->jobPostings()->open()->limit(5)->get(),

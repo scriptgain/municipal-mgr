@@ -20,7 +20,7 @@
                         @foreach ([['Agenda', $meeting->agenda], ['Meeting Packet', $meeting->packet], ['Approved Minutes', $meeting->minutes]] as [$docLabel, $document])
                             <li class="flex items-center justify-between gap-4 rounded-xl bg-white p-4 ring-1 ring-slate-200">
                                 <div class="flex min-w-0 items-center gap-3">
-                                    <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-100">
+                                    <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                                         <x-icon name="file-text" class="w-4 h-4" />
                                     </span>
                                     <div class="min-w-0">
@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 @if ($document)
-                                    <a href="{{ route('site.documents.download', $document->slug) }}"
+                                    <a href="{{ route('site.files.download', $document->slug) }}"
                                        class="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-800">
                                         <x-icon name="download" class="w-4 h-4" /> Download
                                     </a>

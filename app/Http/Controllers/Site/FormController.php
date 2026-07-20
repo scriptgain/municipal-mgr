@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Models\FormDefinition;
 use App\Models\FormSubmission;
+use App\Services\ConstituentIntake;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -31,11 +32,16 @@ class FormController extends Controller
         $payload = $validated['fields'] ?? [];
 
         if ($formDefinition->store_submissions) {
-            FormSubmission::create([
+            $submission = FormSubmission::create([
                 'form_definition_id' => $formDefinition->id,
                 'data' => $payload,
                 'ip' => $request->ip(),
             ]);
+
+            // Attach the submission to the resident's record when the form
+            // captured something durable to identify them by. Never allowed to
+            // break the submission itself.
+            rescue(fn () => ConstituentIntake::fromFormSubmission($submission), null, false);
         }
 
         if ($formDefinition->notify_email) {

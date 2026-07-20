@@ -26,7 +26,7 @@
                     <ol class="space-y-6">
                         @forelse ($record->publicUpdates as $update)
                             <li class="flex gap-4">
-                                <span class="mt-1 inline-flex h-3 w-3 shrink-0 rounded-full bg-brand-500 ring-4 ring-brand-100"></span>
+                                <span class="mt-1 inline-flex h-3 w-3 shrink-0 rounded-full bg-brand-500 ring-4 ring-brand-200"></span>
                                 <div class="min-w-0">
                                     <p class="text-sm text-slate-800">{{ $update->note }}</p>
                                     <p class="mt-0.5 text-xs text-slate-400">

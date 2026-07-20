@@ -46,7 +46,7 @@ class Bid extends Model
 
     public function document(): BelongsTo
     {
-        return $this->belongsTo(Document::class);
+        return $this->belongsTo(FileItem::class, 'document_id');
     }
 
     public function isClosed(): bool

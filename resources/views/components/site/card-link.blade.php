@@ -2,7 +2,7 @@
 <a href="{{ $href }}" @if ($newTab) target="_blank" rel="noopener" @endif
    {{ $attributes->merge(['class' => 'group flex h-full flex-col rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md hover:ring-brand-300']) }}>
     @if ($icon)
-        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-100">
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-200">
             <x-icon :name="$icon" class="w-6 h-6" />
         </span>
     @endif

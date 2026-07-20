@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\ServiceRequest;
+use App\Services\ConstituentIntake;
 use App\Services\IntegrationNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -67,6 +68,11 @@ class ServiceRequestController extends Controller
             'note' => 'Request received.',
             'is_public' => true,
         ]);
+
+        // Link the report to the resident's record. Wrapped in rescue(): a
+        // resident reporting a broken streetlight must never see an error
+        // because the constituent lookup misbehaved.
+        rescue(fn () => ConstituentIntake::fromServiceRequest($serviceRequest), null, false);
 
         rescue(fn () => IntegrationNotifier::notify(
             'New Service Request ' . $serviceRequest->reference,

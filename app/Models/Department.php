@@ -50,7 +50,7 @@ class Department extends Model
 
     public function documents(): HasMany
     {
-        return $this->hasMany(Document::class);
+        return $this->hasMany(FileItem::class);
     }
 
     public function news(): HasMany

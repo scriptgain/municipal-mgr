@@ -44,7 +44,7 @@ class JobPosting extends Model
 
     public function applicationForm(): BelongsTo
     {
-        return $this->belongsTo(Document::class, 'application_document_id');
+        return $this->belongsTo(FileItem::class, 'application_document_id');
     }
 
     public function closesDisplay(): string

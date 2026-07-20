@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Alert;
 use App\Models\Bid;
 use App\Models\Department;
-use App\Models\Document;
-use App\Models\DocumentCategory;
 use App\Models\Event;
+use App\Models\FileItem;
+use App\Models\Folder;
 use App\Models\JobPosting;
 use App\Models\Meeting;
 use App\Models\NewsPost;
@@ -172,10 +172,10 @@ class DemoSeeder extends Seeder
             ]);
         }
 
-        // Document categories are seeded by municipal:bootstrap; attach documents.
-        $agendas = DocumentCategory::where('slug', 'agendas-and-minutes')->first();
-        $ordinances = DocumentCategory::where('slug', 'ordinances')->first();
-        $budgets = DocumentCategory::where('slug', 'budgets-and-finance')->first();
+        // Folders are seeded by municipal:bootstrap; attach files to them.
+        $agendas = Folder::where('slug', 'agendas-and-minutes')->first();
+        $ordinances = Folder::where('slug', 'ordinances')->first();
+        $budgets = Folder::where('slug', 'budgets-and-finance')->first();
 
         $documents = [
             ['Town Council Regular Meeting Agenda — ' . now()->addDays(9)->format('F j, Y'), $agendas, 'AGENDA-' . now()->addDays(9)->format('Ymd'), now()->addDays(9)],
@@ -190,15 +190,17 @@ class DemoSeeder extends Seeder
 
         $docModels = [];
         foreach ($documents as [$title, $category, $reference, $date]) {
-            $docModels[] = Document::firstOrCreate(['slug' => \Illuminate\Support\Str::slug($title)], [
-                'document_category_id' => $category?->id,
+            $docModels[] = FileItem::firstOrCreate(['slug' => \Illuminate\Support\Str::slug($title)], [
+                'folder_id' => $category?->id,
                 'title' => $title,
                 'reference' => $reference,
                 'description' => 'Demonstration record. In a live install this entry links to the signed PDF as filed with the Town Clerk.',
-                'file_path' => 'documents/demo-placeholder.pdf',
+                'path' => 'documents/demo-placeholder.pdf',
                 'file_name' => \Illuminate\Support\Str::slug($title) . '.pdf',
                 'mime_type' => 'application/pdf',
-                'file_size' => random_int(180000, 2400000),
+                'size' => random_int(180000, 2400000),
+                'kind' => FileItem::KIND_DOCUMENT,
+                'visibility' => FileItem::VISIBILITY_PUBLIC,
                 'document_date' => $date,
                 'download_count' => random_int(3, 260),
             ]);

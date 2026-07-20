@@ -89,26 +89,35 @@
         <div class="{{ $maxWidth }} mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex h-20 items-center justify-between gap-4">
                 {{-- Wordmark: no white chip or box behind it --}}
-                <a href="{{ route('site.home') }}" class="flex items-center gap-3 min-w-0">
+                <a href="{{ route('site.home') }}" class="flex shrink items-center gap-3 min-w-0">
                     @if ($site['site_seal_path'])
-                        <img src="{{ municipal_upload_url($site['site_seal_path']) }}" alt="Official seal of {{ $siteName }}" class="h-12 w-12 object-contain shrink-0">
+                        <img src="{{ municipal_upload_url($site['site_seal_path']) }}" alt="Official seal of {{ $siteName }}" class="h-10 w-10 object-contain shrink-0">
                     @else
-                        <x-icon name="building" class="h-10 w-10 text-brand-600 shrink-0" />
+                        <x-icon name="building" class="h-8 w-8 text-brand-600 shrink-0" />
                     @endif
                     <span class="min-w-0">
-                        <span class="block font-display text-xl sm:text-2xl font-semibold tracking-tight text-brand-800 truncate">{{ $siteName }}</span>
+                        <span class="block font-display text-base sm:text-lg font-semibold leading-tight tracking-tight text-brand-800 truncate">{{ $siteName }}</span>
                         @if ($site['site_state'])
-                            <span class="block text-[11px] font-semibold uppercase tracking-[0.18em] text-seal-700">{{ $site['site_state'] }}</span>
+                            <span class="block text-[10px] font-semibold uppercase tracking-[0.16em] text-seal-700">{{ $site['site_state'] }}</span>
                         @endif
                     </span>
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-1" aria-label="Primary">
+                    <a href="{{ route('site.home') }}"
+                       @if (request()->routeIs('site.home')) aria-current="page" @endif
+                       class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ request()->routeIs('site.home') ? 'bg-brand-50 text-brand-800' : 'text-slate-700 hover:bg-brand-50 hover:text-brand-800' }}">
+                        <x-icon name="home" class="w-4 h-4 {{ request()->routeIs('site.home') ? 'text-brand-700' : 'text-slate-400 group-hover:text-brand-600' }} transition-colors" />
+                        Home
+                    </a>
                     @foreach ($primaryNav as $item)
                         @if (count($item['children']))
                             <div x-data="{ open: false }" class="relative" @click.outside="open = false" @keydown.escape="open = false">
                                 <button type="button" @click="open = !open" :aria-expanded="open.toString()"
-                                        class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-800 transition">
+                                        class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800' : 'text-slate-700 hover:bg-brand-50 hover:text-brand-800' }}">
+                                    @if ($item['icon'])
+                                        <x-icon :name="$item['icon']" class="w-4 h-4 {{ $item['is_active'] ? 'text-brand-700' : 'text-slate-400 group-hover:text-brand-600' }} transition-colors" />
+                                    @endif
                                     {{ $item['label'] }}
                                     <x-icon name="chevron-down" class="w-4 h-4 text-slate-400 transition-transform" ::class="open && 'rotate-180'" />
                                 </button>
@@ -118,7 +127,7 @@
                                         <a href="{{ $child['href'] }}" @if ($child['new_tab']) target="_blank" rel="noopener" @endif
                                            class="flex items-start gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-50 transition">
                                             @if ($child['icon'])
-                                                <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-100">
+                                                <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                                                     <x-icon :name="$child['icon']" class="w-4 h-4" />
                                                 </span>
                                             @endif
@@ -132,12 +141,18 @@
                             </div>
                         @else
                             <a href="{{ $item['href'] }}" @if ($item['new_tab']) target="_blank" rel="noopener" @endif
-                               class="rounded-lg px-3 py-2 text-[15px] font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-800 transition">{{ $item['label'] }}</a>
+                               @if ($item['is_active']) aria-current="page" @endif
+                               class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800' : 'text-slate-700 hover:bg-brand-50 hover:text-brand-800' }}">
+                                @if ($item['icon'])
+                                    <x-icon :name="$item['icon']" class="w-4 h-4 {{ $item['is_active'] ? 'text-brand-700' : 'text-slate-400 group-hover:text-brand-600' }} transition-colors" />
+                                @endif
+                                {{ $item['label'] }}
+                            </a>
                         @endif
                     @endforeach
                     <a href="{{ route('site.report') }}"
-                       class="ml-2 inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 transition">
-                        <x-icon name="bolt" class="w-4 h-4" /> Report An Issue
+                       class="ml-2 inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 transition">
+                        <x-icon name="bolt" class="w-4 h-4 shrink-0" /> Report An Issue
                     </a>
                 </nav>
 
@@ -151,10 +166,32 @@
 
         <div x-show="mobileOpen" x-cloak x-transition class="lg:hidden border-t border-slate-100 bg-white">
             <nav class="{{ $maxWidth }} mx-auto px-4 sm:px-6 py-4 space-y-1" aria-label="Primary Mobile">
+                <a href="{{ route('site.home') }}"
+                   @if (request()->routeIs('site.home')) aria-current="page" @endif
+                   class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition {{ request()->routeIs('site.home') ? 'bg-brand-50 text-brand-800' : 'text-slate-800 hover:bg-brand-50' }}">
+                    <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
+                        <x-icon name="home" class="w-4 h-4" />
+                    </span>
+                    Home
+                </a>
                 @foreach ($primaryNav as $item)
-                    <a href="{{ $item['href'] }}" class="block rounded-lg px-3 py-3 text-base font-medium text-slate-800 hover:bg-brand-50 transition">{{ $item['label'] }}</a>
+                    <a href="{{ $item['href'] }}"
+                       @if ($item['is_active']) aria-current="page" @endif
+                       class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800' : 'text-slate-800 hover:bg-brand-50' }}">
+                        @if ($item['icon'])
+                            <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
+                                <x-icon :name="$item['icon']" class="w-4 h-4" />
+                            </span>
+                        @endif
+                        {{ $item['label'] }}
+                    </a>
                     @foreach ($item['children'] as $child)
-                        <a href="{{ $child['href'] }}" class="block rounded-lg py-2.5 pl-8 pr-3 text-sm text-slate-600 hover:bg-brand-50 transition">{{ $child['label'] }}</a>
+                        <a href="{{ $child['href'] }}" class="flex items-center gap-2.5 rounded-lg py-2.5 pl-11 pr-3 text-sm text-slate-600 hover:bg-brand-50 transition">
+                            @if ($child['icon'])
+                                <x-icon :name="$child['icon']" class="w-4 h-4 shrink-0 text-slate-400" />
+                            @endif
+                            {{ $child['label'] }}
+                        </a>
                     @endforeach
                 @endforeach
                 <a href="{{ route('site.report') }}" class="mt-2 flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-4 py-3 text-sm font-semibold text-white">
@@ -168,76 +205,131 @@
         {{ $slot }}
     </main>
 
-    <footer class="mt-16 bg-chrome text-slate-300">
-        <div class="{{ $maxWidth }} mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer class="site-footer relative isolate mt-16 overflow-hidden bg-brand-950 text-slate-300">
+        <div class="site-footer-wash absolute inset-0 -z-10"></div>
+        <div class="site-hero-pattern absolute inset-0 -z-10" aria-hidden="true"></div>
+        {{-- Gold hairline hands the page body off to the footer --}}
+        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-seal-500/50 to-transparent"></div>
+
+        {{-- Contact strip: the three things residents look for first --}}
+        <div class="relative border-b border-white/10">
+            <div class="{{ $maxWidth }} mx-auto grid gap-px px-4 sm:px-6 lg:px-8 sm:grid-cols-2 lg:grid-cols-3">
+                @if ($site['contact_phone'])
+                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $site['contact_phone']) }}"
+                       class="group flex items-center gap-4 py-6 transition hover:bg-white/5 lg:px-6">
+                        <span class="min-w-0">
+                            <span class="block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Call The Town</span>
+                            <span class="block truncate font-medium text-white">{{ $site['contact_phone'] }}</span>
+                        </span>
+                    </a>
+                @endif
+                @if ($site['contact_email'])
+                    <a href="mailto:{{ $site['contact_email'] }}"
+                       class="group flex items-center gap-4 py-6 transition hover:bg-white/5 lg:px-6">
+                        <span class="min-w-0">
+                            <span class="block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Email Us</span>
+                            <span class="block truncate font-medium text-white">{{ $site['contact_email'] }}</span>
+                        </span>
+                    </a>
+                @endif
+                <a href="{{ route('site.report') }}"
+                   class="group flex items-center gap-4 py-6 transition hover:bg-white/5 lg:px-6">
+                    <span class="min-w-0">
+                        <span class="block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Something Broken?</span>
+                        <span class="block truncate font-medium text-white">Report An Issue</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="relative {{ $maxWidth }} mx-auto px-4 sm:px-6 lg:px-8 py-14">
             <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-                <div>
+                <div class="lg:pr-6">
                     <div class="flex items-center gap-3">
                         @if ($site['site_seal_path'])
                             <img src="{{ municipal_upload_url($site['site_seal_path']) }}" alt="" class="h-12 w-12 object-contain">
                         @else
                             <x-icon name="building" class="h-9 w-9 text-seal-500" />
                         @endif
-                        <span class="font-display text-lg font-semibold text-white">{{ $siteName }}</span>
+                        <span class="min-w-0">
+                            <span class="block font-display text-lg font-semibold leading-tight text-white">{{ $siteName }}</span>
+                            @if ($site['site_state'])
+                                <span class="block text-[10px] font-semibold uppercase tracking-[0.16em] text-seal-500">{{ $site['site_state'] }}</span>
+                            @endif
+                        </span>
                     </div>
-                    <address class="mt-4 not-italic text-sm leading-relaxed text-slate-400">
+                    <span class="seal-rule mt-5"></span>
+                    <address class="mt-5 not-italic text-sm leading-relaxed text-slate-400">
                         @if ($site['contact_address'])<span class="block">{{ $site['contact_address'] }}</span>@endif
                         @if ($site['contact_city_state_zip'])<span class="block">{{ $site['contact_city_state_zip'] }}</span>@endif
-                        @if ($site['contact_phone'])
-                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $site['contact_phone']) }}" class="mt-2 block hover:text-white transition">{{ $site['contact_phone'] }}</a>
-                        @endif
-                        @if ($site['contact_email'])
-                            <a href="mailto:{{ $site['contact_email'] }}" class="block hover:text-white transition">{{ $site['contact_email'] }}</a>
-                        @endif
                     </address>
+                    @if ($site['contact_hours'])
+                        <p class="mt-4 flex items-start gap-2 text-sm text-slate-400">
+                            <span>{{ $site['contact_hours'] }}</span>
+                        </p>
+                    @endif
                 </div>
 
                 <div>
-                    <h2 class="text-sm font-semibold uppercase tracking-wider text-white">Departments</h2>
-                    <ul class="mt-4 space-y-2 text-sm">
+                    <h2 class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white">Departments</h2>
+                    <span class="seal-rule mt-3 w-8"></span>
+                    <ul class="mt-4 space-y-2.5 text-sm">
                         @foreach ($footerDepartments as $department)
-                            <li><a href="{{ $department['href'] }}" class="text-slate-400 hover:text-white transition">{{ $department['name'] }}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 class="text-sm font-semibold uppercase tracking-wider text-white">Resources</h2>
-                    <ul class="mt-4 space-y-2 text-sm">
-                        @foreach ($footerNav as $item)
                             <li>
-                                <a href="{{ $item['href'] }}" @if ($item['new_tab']) target="_blank" rel="noopener" @endif
-                                   class="text-slate-400 hover:text-white transition">{{ $item['label'] }}</a>
+                                <a href="{{ $department['href'] }}" class="text-slate-400 transition hover:text-white">
+                                    {{ $department['name'] }}
+                                </a>
                             </li>
                         @endforeach
                     </ul>
                 </div>
 
                 <div>
-                    <h2 class="text-sm font-semibold uppercase tracking-wider text-white">Stay Connected</h2>
+                    <h2 class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white">Resources</h2>
+                    <span class="seal-rule mt-3 w-8"></span>
+                    <ul class="mt-4 space-y-2.5 text-sm">
+                        @foreach ($footerNav as $item)
+                            <li>
+                                <a href="{{ $item['href'] }}" @if ($item['new_tab']) target="_blank" rel="noopener" @endif
+                                   class="text-slate-400 transition hover:text-white">
+                                    {{ $item['label'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white">Stay Connected</h2>
+                    <span class="seal-rule mt-3 w-8"></span>
                     <div class="mt-4 flex flex-wrap gap-2">
                         @foreach (['social_facebook' => 'Facebook', 'social_x' => 'X', 'social_youtube' => 'YouTube', 'social_instagram' => 'Instagram', 'social_nextdoor' => 'Nextdoor'] as $key => $network)
                             @if ($site[$key])
                                 <a href="{{ $site[$key] }}" target="_blank" rel="noopener"
-                                   class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white ring-1 ring-inset ring-white/10 hover:bg-white/20 transition">{{ $network }}</a>
+                                   class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white ring-1 ring-inset ring-white/15 transition hover:bg-white/20 hover:ring-white/30">{{ $network }}</a>
                             @endif
                         @endforeach
                     </div>
                     @if ($site['contact_after_hours'])
-                        <p class="mt-5 text-xs leading-relaxed text-slate-400">
-                            <span class="block font-semibold text-slate-200">After Hours</span>
-                            {{ $site['contact_after_hours'] }}
-                        </p>
+                        <div class="mt-5 rounded-xl bg-white/5 p-4 ring-1 ring-inset ring-white/10">
+                            <p class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-seal-300">
+                                After Hours
+                            </p>
+                            <p class="mt-2 text-xs leading-relaxed text-slate-400">{{ $site['contact_after_hours'] }}</p>
+                        </div>
                     @endif
                 </div>
             </div>
 
-            <div class="mt-10 border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+            <div class="mt-12 border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
                 <p>&copy; {{ $currentYear }} {{ $siteFormalName }}. {{ $site['footer_note'] }}</p>
-                <p class="flex items-center gap-4">
-                    <a href="{{ route('site.accessibility') }}" class="hover:text-white transition">Accessibility</a>
-                    <a href="{{ route('site.contact') }}" class="hover:text-white transition">Contact</a>
-                    <a href="{{ route('login') }}" class="hover:text-white transition">Staff Login</a>
+                <p class="flex flex-wrap items-center gap-x-5 gap-y-2">
+                    <a href="{{ route('site.accessibility') }}" class="transition hover:text-white">Accessibility</a>
+                    <a href="{{ route('site.contact') }}" class="transition hover:text-white">Contact</a>
+                    <a href="{{ route('site.search') }}" class="transition hover:text-white">Search</a>
+                    <a href="{{ route('login') }}" class="inline-flex items-center gap-1.5 rounded-lg bg-white/5 px-2.5 py-1 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-white">
+                        Staff Login
+                    </a>
                 </p>
             </div>
         </div>
