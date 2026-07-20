@@ -1,5 +1,5 @@
 /*
-  MunicipalMGR design system — "Civic Navy".
+  MunicipalMGR design system – "Civic Navy".
   Deep navy authority + a seal-gold ceremonial accent, on warm-neutral slate.
   Tokens live here once; the browser Tailwind build reads this file directly
   (see the x-tailwind-cdn component) so there is no Vite build step anywhere.
@@ -26,7 +26,7 @@
     --color-brand-900: #061f35;
     --color-brand-950: #041424;
 
-    /* Seal gold — ceremonial trim, rules, and eyebrows. Never body text. */
+    /* Seal gold – ceremonial trim, rules, and eyebrows. Never body text. */
     --color-seal-100: #f6eeda;
     --color-seal-300: #e2c98f;
     --color-seal-500: #c8a45c;

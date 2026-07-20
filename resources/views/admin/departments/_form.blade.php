@@ -25,7 +25,7 @@
             <x-select id="head_staff_id" name="head_staff_id">
                 <option value="">Not Set</option>
                 @foreach ($staff as $member)
-                    <option value="{{ $member->id }}" @selected(old('head_staff_id', $record->head_staff_id) == $member->id)>{{ $member->name }} — {{ $member->job_title }}</option>
+                    <option value="{{ $member->id }}" @selected(old('head_staff_id', $record->head_staff_id) == $member->id)>{{ $member->name }} – {{ $member->job_title }}</option>
                 @endforeach
             </x-select>
         </x-field>

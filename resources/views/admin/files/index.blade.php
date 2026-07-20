@@ -48,7 +48,7 @@
                                 <li>
                                     <a href="{{ route('files.index', ['folder' => $child->slug]) }}"
                                        class="flex items-center gap-3 rounded-xl bg-white p-3.5 ring-1 ring-slate-200 shadow-sm transition hover:ring-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
-                                        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                                        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-200">
                                             <x-icon :name="$child->icon ?: 'folder'" class="w-4 h-4" />
                                         </span>
                                         <span class="min-w-0 flex-1">
@@ -266,7 +266,7 @@
                                  the plain file input underneath keeps it working without JS. --}}
                             <div data-dropzone
                                  class="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/60 p-8 text-center transition">
-                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-brand-100">
+                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-brand-200">
                                     <x-icon name="upload" class="w-6 h-6" />
                                 </span>
                                 <p class="mt-3 text-sm font-medium text-slate-900">Drag And Drop Files Here</p>

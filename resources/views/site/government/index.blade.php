@@ -61,7 +61,7 @@
             <ul class="flex flex-wrap gap-3">
                 @foreach ($former as $official)
                     <li class="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">
-                        {{ $official->name }} — {{ $official->office }}
+                        {{ $official->name }} – {{ $official->office }}
                         @if ($official->term_end)<span class="text-slate-400">(to {{ $official->term_end->format('Y') }})</span>@endif
                     </li>
                 @endforeach

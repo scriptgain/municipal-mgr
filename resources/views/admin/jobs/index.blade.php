@@ -22,7 +22,7 @@
                 <tr>
                     <td><x-select-row :id="$job->id" :label="$job->title" /></td>
                     <td class="font-medium text-slate-900">{{ $job->title }}</td>
-                    <td>{{ $job->department?->name ?? '—' }}</td>
+                    <td>{{ $job->department?->name ?? '–' }}</td>
                     <td><x-badge color="info">{{ $job->employment_type }}</x-badge></td>
                     <td class="text-slate-500">{{ $job->closesDisplay() }}</td>
                     <td>

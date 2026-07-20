@@ -30,7 +30,7 @@
                         </div>
                     </td>
                     <td><x-badge color="info">{{ $post->category }}</x-badge></td>
-                    <td>{{ $post->department?->name ?? '—' }}</td>
+                    <td>{{ $post->department?->name ?? '–' }}</td>
                     <td>
                         @if ($post->status === 'published')
                             <x-badge color="success" dot>Published</x-badge>
@@ -38,7 +38,7 @@
                             <x-badge color="neutral" dot>Draft</x-badge>
                         @endif
                     </td>
-                    <td class="text-slate-500">{{ $post->published_at?->format(config('municipal.date_format')) ?? '—' }}</td>
+                    <td class="text-slate-500">{{ $post->published_at?->format(config('municipal.date_format')) ?? '–' }}</td>
                     <td class="text-right">
                         <x-admin.row-actions :name="'del-news-' . $post->id"
                             :edit="route('news.edit', $post)"

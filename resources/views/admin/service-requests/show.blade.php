@@ -47,7 +47,7 @@
                     <div>
                         <dt class="font-medium text-slate-500">Contact</dt>
                         <dd class="mt-0.5 text-slate-900">
-                            {{ $record->reporter_email ?: '—' }}
+                            {{ $record->reporter_email ?: '–' }}
                             @if ($record->reporter_phone) &middot; {{ $record->reporter_phone }} @endif
                         </dd>
                     </div>

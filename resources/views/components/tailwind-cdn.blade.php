@@ -1,4 +1,4 @@
-{{-- Tailwind v4 + Alpine from CDN — no Vite, no build step anywhere in this
+{{-- Tailwind v4 + Alpine from CDN – no Vite, no build step anywhere in this
      product. Design tokens come straight from resources/css/app.css, inlined
      at runtime minus the build-only @import/@source lines the in-browser
      compiler does not use. Reading the file (rather than pasting CSS here)

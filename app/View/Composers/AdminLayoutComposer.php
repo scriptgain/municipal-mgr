@@ -10,7 +10,7 @@ use Illuminate\View\View;
 /**
  * Supplies everything the admin layout renders.
  *
- * The layout template is markup only — no @php blocks, no queries, no
+ * The layout template is markup only, no @php blocks, no queries, no
  * conditionals beyond simple presence checks. Navigation structure, the active
  * trail, breadcrumbs, and badge counts are all computed here.
  */
@@ -82,11 +82,11 @@ class AdminLayoutComposer
                 'type' => 'group',
                 'label' => 'Records',
                 'icon' => 'archive',
-                'active' => request()->routeIs('bids.*', 'jobs.*'),
-                'items' => [
+                'active' => request()->routeIs('bids.*', 'jobs.*', 'arrest-records.*', 'settings.records.*'),
+                'items' => array_merge([
                     ['Bids And RFPs', route('bids.index'), 'database', request()->routeIs('bids.*')],
                     ['Job Postings', route('jobs.index'), 'users', request()->routeIs('jobs.*')],
-                ],
+                ], $this->arrestRecordItems()),
             ],
             [
                 'type' => 'link',
@@ -99,13 +99,60 @@ class AdminLayoutComposer
                 'type' => 'group',
                 'label' => 'Services',
                 'icon' => 'bolt',
-                'active' => request()->routeIs('service-requests.*', 'forms.*', 'submissions.*', 'menus.*'),
-                'items' => [
+                'active' => request()->routeIs('service-requests.*', 'forms.*', 'submissions.*', 'menus.*', 'bills.*', 'bill-types.*', 'payments.*'),
+                'items' => array_merge([
                     ['Service Requests', route('service-requests.index'), 'bolt', request()->routeIs('service-requests.*')],
                     ['Forms Builder', route('forms.index'), 'edit', request()->routeIs('forms.*', 'submissions.*')],
                     ['Navigation Menus', route('menus.index'), 'globe', request()->routeIs('menus.*')],
-                ],
+                ], $this->paymentItems()),
             ],
+        ];
+    }
+
+    /**
+     * Jail And Arrest Records nav, which is conditional in a way nothing else
+     * in this panel is.
+     *
+     * While the module is disabled the ONLY thing that appears is the settings
+     * screen that enables it: no blotter, no roster, no hint in the sidebar
+     * that an install is one click away from publishing arrest data.
+     */
+    private function arrestRecordItems(): array
+    {
+        $settingsItem = ['Arrest Records Settings', route('settings.records.edit'), 'settings', request()->routeIs('settings.records.*')];
+
+        if (! rescue(fn () => \App\Services\RecordsSettings::enabled(), false, false)) {
+            return [$settingsItem];
+        }
+
+        return [
+            ['Arrest Records', route('arrest-records.index'), 'shield', request()->routeIs('arrest-records.index', 'arrest-records.create', 'arrest-records.edit')],
+            ['Inmate Roster', route('arrest-records.roster'), 'lock', request()->routeIs('arrest-records.roster')],
+            ['Expungement Log', route('arrest-records.expungements'), 'book', request()->routeIs('arrest-records.expungements')],
+            $settingsItem,
+        ];
+    }
+
+    /**
+     * Pay Your Bill nav, which is conditional in the same way Arrest Records is.
+     *
+     * While the module is disabled NOTHING appears here at all, not even a
+     * pointer to its settings screen: that screen lives under Settings, which
+     * is where an operator goes looking to switch a module on. Adding a
+     * top-level item was deliberately avoided, since the primary nav was just
+     * regrouped down to three dropdowns to cut the item count.
+     */
+    private function paymentItems(): array
+    {
+        if (! rescue(fn () => \App\Services\Payments\PaymentSettings::isEnabled(), false, false)) {
+            return [];
+        }
+
+        return [
+            ['Bills', route('bills.index'), 'database', request()->routeIs('bills.*')],
+            ['Payments Received', route('payments.index'), 'scale', request()->routeIs('payments.index', 'payments.show')],
+            ['Reconciliation', route('payments.reconciliation'), 'archive', request()->routeIs('payments.reconciliation')],
+            ['Bill Types', route('bill-types.index'), 'clipboard', request()->routeIs('bill-types.*')],
         ];
     }
 
@@ -141,8 +188,12 @@ class AdminLayoutComposer
             'files' => ['File Manager', 'files.index'],
             'folders' => ['File Manager', 'files.index'],
             'bids' => ['Bids And RFPs', 'bids.index'],
+            'arrest-records' => ['Arrest Records', 'arrest-records.index'],
             'jobs' => ['Job Postings', 'jobs.index'],
             'constituents' => ['Residents', 'constituents.index'],
+            'bills' => ['Bills', 'bills.index'],
+            'bill-types' => ['Bill Types', 'bill-types.index'],
+            'payments' => ['Payments Received', 'payments.index'],
             'service-requests' => ['Service Requests', 'service-requests.index'],
             'forms' => ['Forms Builder', 'forms.index'],
             'submissions' => ['Form Submissions', 'forms.index'],

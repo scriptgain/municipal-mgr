@@ -26,7 +26,7 @@
                         </div>
                         <div>
                             <dt class="font-medium text-slate-500">Posted</dt>
-                            <dd class="text-slate-900">{{ $notice->posted_at?->format(config('municipal.date_format')) ?? '—' }}</dd>
+                            <dd class="text-slate-900">{{ $notice->posted_at?->format(config('municipal.date_format')) ?? '–' }}</dd>
                         </div>
                         <div>
                             <dt class="font-medium text-slate-500">Expires</dt>

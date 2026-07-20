@@ -2,7 +2,7 @@
     <x-page-header title="Software Updates" icon="refresh" subtitle="Keep this install on the latest signed release." />
 
     @if (session('status'))
-        <div class="mb-5 rounded-lg bg-brand-50 px-4 py-3 text-sm text-brand-800 ring-1 ring-brand-100">{{ session('status') }}</div>
+        <div class="mb-5 rounded-lg bg-brand-50 px-4 py-3 text-sm text-brand-800 ring-1 ring-brand-200">{{ session('status') }}</div>
     @endif
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -15,7 +15,7 @@
                     </div>
                     <div>
                         <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Latest</p>
-                        <p class="mt-1 text-2xl font-semibold text-slate-900 tabular">{{ $status['latest'] ?: '—' }}</p>
+                        <p class="mt-1 text-2xl font-semibold text-slate-900 tabular">{{ $status['latest'] ?: '–' }}</p>
                     </div>
                     <div>
                         @if ($status['available'])

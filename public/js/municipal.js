@@ -3,14 +3,14 @@
  *
  * All of it lives here rather than inline in Blade (Smarty-style separation:
  * markup in templates, logic in classes, JS in public/js). Everything is
- * progressive — the page works without it, it just works better with it.
+ * progressive – the page works without it, it just works better with it.
  */
 (function () {
     'use strict';
 
     /* ------------------------------------------------------------------
      * Tooltips. A single fixed-position node appended to <body>, never a
-     * CSS ::after — an ancestor's overflow can clip a pseudo-element tip,
+     * CSS ::after – an ancestor's overflow can clip a pseudo-element tip,
      * and on a table that is exactly where tips are needed most.
      * ---------------------------------------------------------------- */
     var tip = null;

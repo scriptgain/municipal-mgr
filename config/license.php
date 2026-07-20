@@ -10,7 +10,7 @@
 |
 | Enforcement is intentionally lenient: a failed network check falls back to
 | the last good result within the grace window, and the license NEVER hard
-| locks the panel or the PUBLIC SITE. This runs a city's website — taking a
+| locks the panel or the PUBLIC SITE. This runs a city's website: taking a
 | government site offline over a billing hiccup is not an acceptable failure
 | mode. Invalid/expired shows a staff-only banner in the admin instead, and the
 | public site is never affected.

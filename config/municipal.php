@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 | Product-level knobs for the municipal platform. Anything an operator should
 | be able to change at runtime lives in the DB Setting store instead (see
-| AppServiceProvider::boot) — these are the build-time defaults it overrides.
+| AppServiceProvider::boot): these are the build-time defaults it overrides.
 */
 
 return [

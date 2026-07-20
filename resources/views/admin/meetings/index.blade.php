@@ -36,7 +36,7 @@
                         @elseif ($meeting->meets_at->isPast())
                             <x-badge color="warn" dot>Pending</x-badge>
                         @else
-                            <span class="text-slate-400">—</span>
+                            <span class="text-slate-400">–</span>
                         @endif
                     </td>
                     <td>

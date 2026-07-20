@@ -14,6 +14,7 @@
             ['Notifications', 'bell', 'settings.notifications.edit', 'settings.notifications.*'],
             ['Integrations', 'bolt', 'settings.integrations.edit', 'settings.integrations.*'],
             ['Email', 'envelope', 'settings.email.edit', 'settings.email.*'],
+            ['Payments', 'database', 'settings.payments.edit', 'settings.payments.*'],
         ]],
         ['Security', [
             ['Password', 'lock', 'settings.password.edit', 'settings.password.*'],

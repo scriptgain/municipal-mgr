@@ -35,7 +35,7 @@
                                     </div>
                                 </td>
                                 @foreach ($columns as $column)
-                                    <td>{{ \Illuminate\Support\Str::limit((string) ($submission->data[$column['key']] ?? '—'), 40) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit((string) ($submission->data[$column['key']] ?? '–'), 40) }}</td>
                                 @endforeach
                                 <td class="text-right">
                                     <x-admin.row-actions :name="'del-sub-' . $submission->id"

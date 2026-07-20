@@ -17,20 +17,24 @@
                         @if ($department->summary)
                             <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{{ $department->summary }}</p>
                         @endif
-                        <dl class="mt-4 space-y-1 text-sm">
-                            @if ($department->phone)
-                                <div class="flex items-center gap-2 text-slate-600">
-                                    <x-icon name="phone" class="w-4 h-4 shrink-0 text-slate-400" />
-                                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $department->phone) }}" class="hover:text-brand-700 hover:underline">{{ $department->phone }}</a>
-                                </div>
-                            @endif
-                            @if ($department->email)
-                                <div class="flex items-center gap-2 text-slate-600">
-                                    <x-icon name="envelope" class="w-4 h-4 shrink-0 text-slate-400" />
-                                    <a href="mailto:{{ $department->email }}" class="truncate hover:text-brand-700 hover:underline">{{ $department->email }}</a>
-                                </div>
-                            @endif
-                        </dl>
+                        {{-- Only render the contact list when there is something in it,
+                             otherwise the mt-4 leaves an orphaned gap in the card. --}}
+                        @if ($department->phone || $department->email)
+                            <dl class="mt-4 space-y-1 text-sm">
+                                @if ($department->phone)
+                                    <div class="flex items-center gap-2 text-slate-600">
+                                        <x-icon name="phone" class="w-4 h-4 shrink-0 text-slate-400" />
+                                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $department->phone) }}" class="whitespace-nowrap hover:text-brand-700 hover:underline">{{ $department->phone }}</a>
+                                    </div>
+                                @endif
+                                @if ($department->email)
+                                    <div class="flex min-w-0 items-center gap-2 text-slate-600">
+                                        <x-icon name="envelope" class="w-4 h-4 shrink-0 text-slate-400" />
+                                        <a href="mailto:{{ $department->email }}" class="min-w-0 truncate hover:text-brand-700 hover:underline">{{ $department->email }}</a>
+                                    </div>
+                                @endif
+                            </dl>
+                        @endif
                         <p class="mt-4 text-xs text-slate-400">{{ $department->staff_count }} Staff Listed</p>
                     </article>
                 @endforeach

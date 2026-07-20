@@ -129,7 +129,7 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
 
     /*
     | Content. Every resource below ships an index with massSelect bulk delete
-    | (JSON ids[] -> bulk-destroy, behind a modal confirm — never a native
+    | (JSON ids[] -> bulk-destroy, behind a modal confirm: never a native
     | confirm() dialog).
     */
     $content = [
@@ -269,3 +269,24 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
 | feature owns its routing surface and cannot be half-registered.
 */
 Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(base_path('routes/constituents.php'));
+
+/*
+|--------------------------------------------------------------------------
+| Jail And Arrest Records (optional module, ships DISABLED)
+|--------------------------------------------------------------------------
+| Loaded at top level because the module owns BOTH a public surface and a
+| staff surface and declares its own prefixes and gates. Everything inside is
+| behind EnsureRecordsModule except the settings screen that enables it.
+*/
+require base_path('routes/records.php');
+
+/*
+|--------------------------------------------------------------------------
+| Pay Your Bill (optional module, ships DISABLED)
+|--------------------------------------------------------------------------
+| Loaded at top level because the module owns a public surface (the resident
+| payment flow), an unauthenticated webhook endpoint, and a staff surface, and
+| declares its own prefixes and gates. Everything inside is behind
+| EnsurePaymentsEnabled except the settings screen that enables it.
+*/
+require base_path('routes/payments.php');

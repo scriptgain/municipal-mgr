@@ -31,8 +31,8 @@
                             </span>
                         </div>
                     </td>
-                    <td>{{ $department->head?->name ?? '—' }}</td>
-                    <td class="tabular">{{ $department->phone ?: '—' }}</td>
+                    <td>{{ $department->head?->name ?? '–' }}</td>
+                    <td class="tabular">{{ $department->phone ?: '–' }}</td>
                     <td>
                         @if ($department->is_published)
                             <x-badge color="success" dot>Published</x-badge>

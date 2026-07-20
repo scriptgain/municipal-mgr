@@ -23,8 +23,15 @@
 
 .mm-table { width: 100%; table-layout: fixed; }
 .mm-table td, .mm-table th { white-space: nowrap; }
+/*
+ * Every cell clips. Without this, a cell holding a badge or a button kept
+ * white-space:nowrap but had no overflow guard, so long tag lists and long
+ * names spilled straight out of the fixed-layout table. Only plain text
+ * cells get the ellipsis; cells holding controls just clip.
+ */
+.mm-table td, .mm-table th { overflow: hidden; }
 .mm-table td:not(:has(button, form, input, select, .mm-badge)),
-.mm-table th:not(:has(button, form, input, select, .mm-badge)) { overflow: hidden; text-overflow: ellipsis; }
+.mm-table th:not(:has(button, form, input, select, .mm-badge)) { text-overflow: ellipsis; }
 .mm-table th.w-10, .mm-table td.w-10 { width: 4rem; }
 .mm-table th.text-right:last-child, .mm-table td.text-right:last-child { width: 12rem; }
 

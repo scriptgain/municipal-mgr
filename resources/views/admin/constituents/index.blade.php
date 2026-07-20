@@ -114,7 +114,7 @@
                                     @endif
                                 </td>
                                 <td class="text-slate-600">
-                                    <span class="block truncate">{{ $person->address_line1 ?: '—' }}</span>
+                                    <span class="block truncate">{{ $person->address_line1 ?: '–' }}</span>
                                     @if ($person->city)
                                         <span class="block truncate text-slate-500">{{ $person->city }}</span>
                                     @endif

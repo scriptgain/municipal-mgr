@@ -3,7 +3,6 @@
      so inner pages read as the same site, at a shorter height. --}}
 <section class="site-pagehead relative isolate overflow-hidden bg-brand-900 text-white">
     <div class="site-pagehead-wash absolute inset-0 -z-10"></div>
-    <div class="site-hero-pattern absolute inset-0 -z-10" aria-hidden="true"></div>
 
     <div class="relative {{ $maxWidth }} mx-auto px-4 sm:px-6 lg:px-8 py-9 sm:py-12">
         @if (count($crumbs))

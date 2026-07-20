@@ -28,8 +28,8 @@
                                 </div>
                                 @if ($notice->document)
                                     <a href="{{ route('site.files.download', $notice->document->slug) }}"
-                                       class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-100">
-                                        <x-icon name="download" class="w-4 h-4" /> Download
+                                       class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-100">
+                                        <x-icon name="download" class="w-4 h-4 shrink-0" /> Download
                                     </a>
                                 @endif
                             </li>
@@ -51,8 +51,8 @@
                     <ul class="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 divide-y divide-slate-100">
                         @foreach ($expired as $notice)
                             <li class="flex items-center justify-between gap-4 p-5">
-                                <a href="{{ route('site.notices.show', $notice->slug) }}" class="font-medium text-slate-700 hover:text-brand-700 hover:underline">{{ $notice->title }}</a>
-                                <span class="shrink-0 text-sm text-slate-400">Expired {{ $notice->expires_at?->format(config('municipal.date_format')) }}</span>
+                                <a href="{{ route('site.notices.show', $notice->slug) }}" class="min-w-0 truncate font-medium text-slate-700 hover:text-brand-700 hover:underline">{{ $notice->title }}</a>
+                                <span class="shrink-0 whitespace-nowrap text-sm text-slate-400">Expired {{ $notice->expires_at?->format(config('municipal.date_format')) }}</span>
                             </li>
                         @endforeach
                     </ul>

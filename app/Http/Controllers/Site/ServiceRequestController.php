@@ -76,7 +76,7 @@ class ServiceRequestController extends Controller
 
         rescue(fn () => IntegrationNotifier::notify(
             'New Service Request ' . $serviceRequest->reference,
-            $serviceRequest->category . ' — ' . Str::limit($serviceRequest->description, 200)
+            $serviceRequest->category . ': ' . Str::limit($serviceRequest->description, 200)
         ), null, false);
 
         return redirect()->route('site.report.submitted', $serviceRequest->tracking_token);

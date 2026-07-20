@@ -20,7 +20,7 @@
 
         <x-card title="Full Database Backup" subtitle="A complete restore point, including all content and uploads metadata.">
             <p class="text-sm text-slate-600">
-                Downloads a compressed SQL dump of the entire database. Keep these off the server —
+                Downloads a compressed SQL dump of the entire database. Keep these off the server –
                 a backup stored only on the machine it protects is not a backup.
             </p>
             <div class="mt-5">

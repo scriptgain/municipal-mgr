@@ -77,7 +77,7 @@
                             <x-input id="contact_hours" name="contact_hours" :value="old('contact_hours', $site['contact_hours'])" />
                         </x-field>
                         <x-field label="After Hours Emergencies" for="contact_after_hours" class="sm:col-span-2"
-                                 hint="What a resident should do at 2am — the number that actually gets answered." :error="$errors->first('contact_after_hours')">
+                                 hint="What a resident should do at 2am – the number that actually gets answered." :error="$errors->first('contact_after_hours')">
                             <x-input id="contact_after_hours" name="contact_after_hours" :value="old('contact_after_hours', $site['contact_after_hours'])" />
                         </x-field>
                         <x-field label="Map Embed Code" for="contact_map_embed" class="sm:col-span-2"

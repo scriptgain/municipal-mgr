@@ -31,7 +31,7 @@
                         </div>
                     </td>
                     <td><x-badge color="info">{{ \Illuminate\Support\Str::headline($item->menu) }}</x-badge></td>
-                    <td class="text-slate-500 truncate">{{ $item->page?->title ?? $item->url ?? '—' }}</td>
+                    <td class="text-slate-500 truncate">{{ $item->page?->title ?? $item->url ?? '–' }}</td>
                     <td class="tabular text-slate-500">{{ $item->sort_order }}</td>
                     <td class="text-right">
                         <x-admin.row-actions :name="'del-menu-' . $item->id"

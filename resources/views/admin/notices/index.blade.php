@@ -23,7 +23,7 @@
                     <td><x-select-row :id="$notice->id" :label="$notice->title" /></td>
                     <td class="font-medium text-slate-900">{{ $notice->title }}</td>
                     <td><x-badge color="info">{{ $notice->notice_type }}</x-badge></td>
-                    <td class="text-slate-500">{{ $notice->posted_at?->format(config('municipal.date_format')) ?? '—' }}</td>
+                    <td class="text-slate-500">{{ $notice->posted_at?->format(config('municipal.date_format')) ?? '–' }}</td>
                     <td class="text-slate-500">{{ $notice->expires_at?->format(config('municipal.date_format')) ?? 'No Expiry' }}</td>
                     <td>
                         @if ($notice->status !== 'published')

@@ -15,7 +15,7 @@
             @foreach ($fields as $field)
                 <div class="grid gap-2 py-4 sm:grid-cols-3">
                     <dt class="text-sm font-medium text-slate-500">{{ $field['label'] }}</dt>
-                    <dd class="text-sm text-slate-900 sm:col-span-2 whitespace-pre-line">{{ $record->data[$field['key']] ?? '—' }}</dd>
+                    <dd class="text-sm text-slate-900 sm:col-span-2 whitespace-pre-line">{{ $record->data[$field['key']] ?? '–' }}</dd>
                 </div>
             @endforeach
             @if ($record->constituent)

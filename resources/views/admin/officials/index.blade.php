@@ -29,8 +29,8 @@
                         </div>
                     </td>
                     <td>{{ $official->office }}</td>
-                    <td>{{ $official->district ?: '—' }}</td>
-                    <td class="text-slate-500">{{ $official->termDisplay() ?: '—' }}</td>
+                    <td>{{ $official->district ?: '–' }}</td>
+                    <td class="text-slate-500">{{ $official->termDisplay() ?: '–' }}</td>
                     <td>
                         @if ($official->is_current)
                             <x-badge color="success" dot>In Office</x-badge>
@@ -43,7 +43,7 @@
                             :edit="route('officials.edit', $official)"
                             :delete="route('officials.destroy', $official)"
                             title="Remove This Official?"
-                            message="Consider marking them as a former official instead — the historical roster is a public record." />
+                            message="Consider marking them as a former official instead – the historical roster is a public record." />
                     </td>
                 </tr>
             @endforeach

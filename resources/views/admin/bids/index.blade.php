@@ -25,7 +25,7 @@
                         @if ($bid->reference)<span class="block text-xs text-slate-400">{{ $bid->reference }}</span>@endif
                     </td>
                     <td><x-badge color="info">{{ $bid->bid_type }}</x-badge></td>
-                    <td class="text-slate-500">{{ $bid->closes_at?->format(config('municipal.date_format') . ', ' . config('municipal.time_format')) ?? '—' }}</td>
+                    <td class="text-slate-500">{{ $bid->closes_at?->format(config('municipal.date_format') . ', ' . config('municipal.time_format')) ?? '–' }}</td>
                     <td>
                         @if ($bid->status === 'open' && ! $bid->isClosed())
                             <x-badge color="success" dot>Open</x-badge>

@@ -64,7 +64,7 @@
                                 <td><x-select-row :id="$request->id" :label="$request->reference" /></td>
                                 <td class="font-medium text-slate-900 tabular">{{ $request->reference }}</td>
                                 <td>{{ $request->category }}</td>
-                                <td class="text-slate-600">{{ $request->location_text ?: '—' }}</td>
+                                <td class="text-slate-600">{{ $request->location_text ?: '–' }}</td>
                                 <td>{{ $request->department?->name ?? 'Unassigned' }}</td>
                                 <td><x-badge :color="$request->statusColor()" dot>{{ $request->statusLabel() }}</x-badge></td>
                                 <td class="text-slate-500">{{ $request->created_at->diffForHumans(null, true) }}</td>

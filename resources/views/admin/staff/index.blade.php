@@ -34,8 +34,8 @@
                             </span>
                         </div>
                     </td>
-                    <td>{{ $member->department?->name ?? '—' }}</td>
-                    <td class="text-slate-600">{{ $member->phoneDisplay() ?: ($member->email ?: '—') }}</td>
+                    <td>{{ $member->department?->name ?? '–' }}</td>
+                    <td class="text-slate-600">{{ $member->phoneDisplay() ?: ($member->email ?: '–') }}</td>
                     <td>
                         @if ($member->is_published)
                             <x-badge color="success" dot>Listed</x-badge>

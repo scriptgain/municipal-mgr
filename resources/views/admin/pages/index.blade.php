@@ -37,7 +37,7 @@
                                     </div>
                                     <span class="block text-xs text-slate-400">/pages/{{ $page->slug }}</span>
                                 </td>
-                                <td>{{ $page->department?->name ?? '—' }}</td>
+                                <td>{{ $page->department?->name ?? '–' }}</td>
                                 <td>
                                     @if ($page->status === 'published')
                                         <x-badge color="success" dot>Published</x-badge>

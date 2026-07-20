@@ -24,9 +24,9 @@
                                         </h2>
                                         @if ($bid->department)<p class="mt-1 text-sm text-slate-500">{{ $bid->department->name }}</p>@endif
                                     </div>
-                                    <div class="text-right">
+                                    <div class="shrink-0 text-right">
                                         <p class="text-xs font-medium uppercase tracking-wide text-slate-400">Closes</p>
-                                        <p class="text-sm font-semibold text-slate-900">
+                                        <p class="whitespace-nowrap text-sm font-semibold text-slate-900">
                                             {{ $bid->closes_at?->format(config('municipal.date_format') . ', ' . config('municipal.time_format')) ?? 'Open' }}
                                         </p>
                                         @if ($bid->document)
@@ -49,7 +49,7 @@
             <x-tab-panel name="closed">
                 @if ($closed->count())
                     <div class="overflow-x-auto mm-scroll rounded-2xl ring-1 ring-slate-200 bg-white">
-                        <table class="w-full text-left text-sm">
+                        <table class="w-full min-w-[38rem] text-left text-sm">
                             <caption class="sr-only">Closed and awarded procurement opportunities</caption>
                             <thead class="bg-slate-50">
                                 <tr>
@@ -64,8 +64,8 @@
                                         <td class="px-5 py-4">
                                             <a href="{{ route('site.bids.show', $bid->slug) }}" class="font-medium text-slate-900 hover:text-brand-700 hover:underline">{{ $bid->title }}</a>
                                         </td>
-                                        <td class="px-5 py-4 text-slate-600">{{ $bid->closes_at?->format(config('municipal.date_format')) ?? '—' }}</td>
-                                        <td class="px-5 py-4 text-slate-600">{{ $bid->awarded_to ?: '—' }}</td>
+                                        <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ $bid->closes_at?->format(config('municipal.date_format')) ?? '–' }}</td>
+                                        <td class="px-5 py-4 text-slate-600">{{ $bid->awarded_to ?: '–' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

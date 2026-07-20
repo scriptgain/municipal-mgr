@@ -49,7 +49,7 @@
                                             <li>
                                                 <a href="{{ route('site.events.show', $event->slug) }}"
                                                    class="block truncate rounded bg-brand-100 px-1.5 py-1 text-[11px] font-medium text-brand-900 hover:bg-brand-200 transition"
-                                                   data-tip="{{ $event->title }} — {{ $event->whenDisplay() }}">
+                                                   data-tip="{{ $event->title }} – {{ $event->whenDisplay() }}">
                                                     {{ $event->title }}
                                                 </a>
                                             </li>

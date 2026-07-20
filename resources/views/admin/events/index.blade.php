@@ -24,7 +24,7 @@
                     <td class="font-medium text-slate-900">{{ $event->title }}</td>
                     <td class="text-slate-600">{{ $event->whenDisplay() }}</td>
                     <td><x-badge color="info">{{ $event->category }}</x-badge></td>
-                    <td>{{ $event->location ?: '—' }}</td>
+                    <td>{{ $event->location ?: '–' }}</td>
                     <td>
                         @if ($event->is_published)
                             <x-badge color="success" dot>Published</x-badge>

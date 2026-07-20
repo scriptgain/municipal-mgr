@@ -30,7 +30,7 @@
                             </div>
                         </td>
                         <td><x-badge :color="$u->isAdmin() ? 'success' : 'info'">{{ $u->roleLabel() }}</x-badge></td>
-                        <td>{{ $u->department?->name ?? '—' }}</td>
+                        <td>{{ $u->department?->name ?? '–' }}</td>
                         <td>
                             @if ($u->is_active)
                                 <x-status-dot color="success" label="Active" />

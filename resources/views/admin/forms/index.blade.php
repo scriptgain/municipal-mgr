@@ -4,7 +4,7 @@
     :createHref="route('forms.create')" createLabel="Build A Form"
     :bulkAction="route('forms.bulk-destroy')" label="Form"
     emptyTitle="No Forms Built Yet"
-    emptyMessage="Dog licence renewals, records requests, park reservations — anything with fields.">
+    emptyMessage="Dog licence renewals, records requests, park reservations – anything with fields.">
     <x-table flush>
         <thead>
             <tr>
@@ -25,7 +25,7 @@
                         <span class="block font-medium text-slate-900 truncate">{{ $form->name }}</span>
                         <span class="block text-xs text-slate-400">/forms/{{ $form->slug }}</span>
                     </td>
-                    <td>{{ $form->department?->name ?? '—' }}</td>
+                    <td>{{ $form->department?->name ?? '–' }}</td>
                     <td class="tabular text-slate-500">{{ count($form->fieldList()) }}</td>
                     <td class="tabular text-slate-500">{{ $form->submissions()->count() }}</td>
                     <td>

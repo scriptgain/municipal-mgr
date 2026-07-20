@@ -4,14 +4,14 @@
     $badge = ['success' => 'success', 'running' => 'info', 'queued' => 'neutral', 'warn' => 'warn', 'failed' => 'danger'];
     $label = ['success' => 'Success', 'running' => 'Running', 'queued' => 'Queued', 'warn' => 'Warnings', 'failed' => 'Failed'];
     $fmt = function ($bytes) {
-        if ($bytes === null) return '—';
+        if ($bytes === null) return '–';
         $u = ['B', 'KB', 'MB', 'GB', 'TB'];
         $i = 0;
         while ($bytes >= 1024 && $i < count($u) - 1) { $bytes /= 1024; $i++; }
         return round($bytes, $i ? 1 : 0) . ' ' . $u[$i];
     };
 
-    // KPI row — number + label + a meaningful one-line subtext, grouped with the icon.
+    // KPI row – number + label + a meaningful one-line subtext, grouped with the icon.
     $kpis = [
         ['label' => 'Directors', 'value' => $stats['directors'], 'icon' => 'cloud',
             'sub' => 'Backup controllers', 'tone' => 'muted'],
@@ -64,7 +64,7 @@
             <div class="group relative flex flex-col overflow-hidden rounded-xl bg-white ring-1 ring-slate-200 shadow-sm transition hover:shadow-md hover:ring-brand-200">
                 <span class="h-1 w-full bg-gradient-to-r from-brand-400 to-brand-600"></span>
                 <div class="flex flex-1 items-center gap-4 p-5">
-                    <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                    <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-200">
                         <x-icon :name="$k['icon']" class="h-5 w-5" />
                     </span>
                     <div class="ml-auto text-right">
@@ -118,7 +118,7 @@
                         @endif
                         @php
                             $fail = $d['total'] - $d['success'];
-                            $tip = $d['label'] . ' — ' . $d['total'] . ' run' . ($d['total'] == 1 ? '' : 's');
+                            $tip = $d['label'] . ' – ' . $d['total'] . ' run' . ($d['total'] == 1 ? '' : 's');
                             if ($d['total']) {
                                 $tip .= ' (' . $d['success'] . ' ok' . ($fail ? ', ' . $fail . ' failed/warn' : '') . ')';
                             }
@@ -140,7 +140,7 @@
             <x-slot:footer>
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-2.5">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg {{ $failed24h ? 'bg-rose-50 text-rose-600 ring-1 ring-rose-100' : 'bg-white text-slate-400 ring-1 ring-slate-200' }}"><x-icon name="warning" class="h-4 w-4" /></span>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg {{ $failed24h ? 'bg-rose-50 text-rose-600 ring-1 ring-rose-200' : 'bg-white text-slate-400 ring-1 ring-slate-200' }}"><x-icon name="warning" class="h-4 w-4" /></span>
                         <div>
                             <p class="text-lg font-semibold leading-tight tabular {{ $failed24h ? 'text-rose-600' : 'text-slate-900' }}">{{ $failed24h }}</p>
                             <p class="text-xs text-slate-500">Failures (24h)</p>
@@ -148,7 +148,7 @@
                     </div>
                     <span class="h-9 w-px bg-slate-200"></span>
                     <div class="flex items-center gap-2.5">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg {{ $staleHosts ? 'bg-amber-50 text-amber-600 ring-1 ring-amber-100' : 'bg-white text-slate-400 ring-1 ring-slate-200' }}"><x-icon name="server" class="h-4 w-4" /></span>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg {{ $staleHosts ? 'bg-amber-50 text-amber-600 ring-1 ring-amber-200' : 'bg-white text-slate-400 ring-1 ring-slate-200' }}"><x-icon name="server" class="h-4 w-4" /></span>
                         <div>
                             <p class="text-lg font-semibold leading-tight tabular {{ $staleHosts ? 'text-amber-600' : 'text-slate-900' }}">{{ $staleHosts }}</p>
                             <p class="text-xs text-slate-500">Stale agents · 10+ min</p>
@@ -219,8 +219,8 @@
                                 <tr class="cursor-pointer" onclick="window.location='{{ route('runs.show', $r) }}'">
                                     <td onclick="event.stopPropagation()">@include('jobs._select-toggle', ['id' => $r->id])</td>
                                     <td>
-                                        <div class="font-medium text-slate-900 truncate">{{ $r->job?->host?->name ?? '—' }}</div>
-                                        <div class="text-xs text-slate-500 truncate">{{ $r->job?->name ?? '—' }}</div>
+                                        <div class="font-medium text-slate-900 truncate">{{ $r->job?->host?->name ?? '–' }}</div>
+                                        <div class="text-xs text-slate-500 truncate">{{ $r->job?->name ?? '–' }}</div>
                                     </td>
                                     <td><x-badge :color="$r->status === 'failed' ? 'danger' : 'warn'" dot>{{ ucfirst($r->status) }}</x-badge></td>
                                     <td class="text-right text-slate-500" data-tip="{{ $r->created_at?->format('M j, Y g:i A') }}">{{ $r->created_at?->diffForHumans() }}</td>
@@ -268,8 +268,8 @@
                                 <tr class="cursor-pointer" onclick="window.location='{{ route('runs.show', $r) }}'">
                                     <td onclick="event.stopPropagation()">@include('jobs._select-toggle', ['id' => $r->id])</td>
                                     <td>
-                                        <div class="font-medium text-slate-900 truncate">{{ $r->job?->host?->name ?? '—' }}</div>
-                                        <div class="text-xs text-slate-500 truncate">{{ $r->job?->name ?? '—' }}</div>
+                                        <div class="font-medium text-slate-900 truncate">{{ $r->job?->host?->name ?? '–' }}</div>
+                                        <div class="text-xs text-slate-500 truncate">{{ $r->job?->name ?? '–' }}</div>
                                     </td>
                                     <td><x-badge :color="$badge[$r->status] ?? 'neutral'" dot>{{ $label[$r->status] ?? ucfirst($r->status) }}</x-badge></td>
                                     <td class="tabular text-slate-600">{{ $fmt($r->bytes_in) }}</td>

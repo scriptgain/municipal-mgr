@@ -45,7 +45,7 @@
                                         <p class="mt-2 inline-flex rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700 ring-1 ring-rose-200">This Meeting Has Been Cancelled</p>
                                     @endif
                                 </div>
-                                <div class="flex flex-wrap items-start gap-2">
+                                <div class="flex shrink-0 flex-wrap items-start gap-2">
                                     @if ($meeting->agenda)
                                         <a href="{{ route('site.files.download', $meeting->agenda->slug) }}"
                                            class="inline-flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-100">
@@ -71,7 +71,7 @@
             <x-tab-panel name="past">
                 @if ($past->count())
                     <div class="overflow-x-auto mm-scroll rounded-2xl ring-1 ring-slate-200 bg-white">
-                        <table class="w-full text-left text-sm">
+                        <table class="w-full min-w-[40rem] text-left text-sm">
                             <caption class="sr-only">Past meetings with agendas and minutes</caption>
                             <thead class="bg-slate-50">
                                 <tr>
@@ -86,7 +86,7 @@
                                         <td class="px-5 py-4">
                                             <a href="{{ route('site.meetings.show', $meeting->slug) }}" class="font-medium text-slate-900 hover:text-brand-700 hover:underline">{{ $meeting->displayTitle() }}</a>
                                         </td>
-                                        <td class="px-5 py-4 text-slate-600">{{ $meeting->meets_at->format(config('municipal.date_format')) }}</td>
+                                        <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ $meeting->meets_at->format(config('municipal.date_format')) }}</td>
                                         <td class="px-5 py-4">
                                             <div class="flex flex-wrap gap-3 text-sm">
                                                 @if ($meeting->agenda)

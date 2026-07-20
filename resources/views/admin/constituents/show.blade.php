@@ -31,7 +31,7 @@
 
                 <dl class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-sm">
                     <div class="flex items-start gap-2.5">
-                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-200">
                             <x-icon name="envelope" class="w-4 h-4" />
                         </span>
                         <div class="min-w-0">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-2.5">
-                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-200">
                             <x-icon name="phone" class="w-4 h-4" />
                         </span>
                         <div class="min-w-0">
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-2.5">
-                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-200">
                             <x-icon name="map-pin" class="w-4 h-4" />
                         </span>
                         <div class="min-w-0">
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-2.5">
-                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                        <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-200">
                             <x-icon name="clock" class="w-4 h-4" />
                         </span>
                         <div class="min-w-0">
@@ -99,7 +99,7 @@
                     <ol class="relative space-y-6 border-l border-slate-200 pl-6">
                         @foreach ($timeline as $entry)
                             <li class="relative">
-                                <span class="absolute -left-[2.1rem] mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white text-brand-600 ring-1 ring-brand-100 shadow-sm">
+                                <span class="absolute -left-[2.1rem] mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white text-brand-600 ring-1 ring-brand-200 shadow-sm">
                                     <x-icon :name="$entry['icon']" class="w-4 h-4" />
                                 </span>
                                 <div class="flex flex-wrap items-center gap-2">
@@ -161,7 +161,7 @@
                                 <tr>
                                     <td class="font-medium text-slate-900 tabular">{{ $request->reference }}</td>
                                     <td>{{ $request->category }}</td>
-                                    <td class="text-slate-600">{{ $request->location_text ?: '—' }}</td>
+                                    <td class="text-slate-600">{{ $request->location_text ?: '–' }}</td>
                                     <td>{{ $request->department?->name ?? 'Unassigned' }}</td>
                                     <td><x-badge :color="$request->statusColor()" dot>{{ $request->statusLabel() }}</x-badge></td>
                                     <td class="text-slate-500">{{ $request->created_at->format(config('municipal.date_format')) }}</td>

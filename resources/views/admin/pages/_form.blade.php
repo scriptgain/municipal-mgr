@@ -82,7 +82,7 @@
             <template x-for="(block, index) in blocks" :key="index">
                 <div class="rounded-xl ring-1 ring-slate-200 bg-slate-50/60 p-4">
                     <div class="flex items-center justify-between gap-3 pb-3">
-                        <span class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-700 ring-1 ring-brand-100">
+                        <span class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-700 ring-1 ring-brand-200">
                             <span x-text="({{ Js::from($sectionTypes) }})[block.type] || block.type"></span>
                         </span>
                         <div class="flex items-center gap-1">

@@ -130,7 +130,7 @@
                         @if ($department->head)
                             <div>
                                 <dt class="font-medium text-slate-500">Department Head</dt>
-                                <dd class="text-slate-900">{{ $department->head->name }} — {{ $department->head->job_title }}</dd>
+                                <dd class="text-slate-900">{{ $department->head->name }} – {{ $department->head->job_title }}</dd>
                             </div>
                         @endif
                         @if ($department->phone)

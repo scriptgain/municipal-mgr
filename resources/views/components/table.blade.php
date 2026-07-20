@@ -1,7 +1,7 @@
 @props(['flush' => false])
 {{-- Sleek flush-in-card table. Consumers write plain <thead>/<tbody>/<th>/<td>;
      cell styling is applied here. Fixed layout keeps long text from ever
-     scrolling the table sideways — it truncates and gets a hover tooltip
+     scrolling the table sideways – it truncates and gets a hover tooltip
      (see public/js/municipal.js). --}}
 <div class="{{ $flush ? '' : 'rounded-xl ring-1 ring-slate-200 bg-white shadow-sm overflow-hidden' }}">
     <table {{ $attributes->merge(['class' =>

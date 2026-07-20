@@ -17,7 +17,7 @@
         </x-field>
 
         <x-field label="Department" for="department_id"
-                 hint="Required for a Department Editor — it defines what they may edit." :error="$errors->first('department_id')">
+                 hint="Required for a Department Editor – it defines what they may edit." :error="$errors->first('department_id')">
             <x-select id="department_id" name="department_id">
                 <option value="">No Department</option>
                 @foreach ($departments as $department)
@@ -54,10 +54,10 @@
     <div class="section-divider mt-6 pt-5 text-sm text-slate-500">
         <p class="font-medium text-slate-700">What The Roles Mean</p>
         <ul class="mt-2 space-y-1">
-            <li><span class="font-medium text-slate-700">Administrator</span> — everything, including settings, users, and security.</li>
-            <li><span class="font-medium text-slate-700">Site Editor</span> — all content across every department, but no settings or users.</li>
-            <li><span class="font-medium text-slate-700">Department Editor</span> — content belonging to their own department only.</li>
-            <li><span class="font-medium text-slate-700">Read Only</span> — can sign in and look, but cannot change anything.</li>
+            <li><span class="font-medium text-slate-700">Administrator</span> – everything, including settings, users, and security.</li>
+            <li><span class="font-medium text-slate-700">Site Editor</span> – all content across every department, but no settings or users.</li>
+            <li><span class="font-medium text-slate-700">Department Editor</span> – content belonging to their own department only.</li>
+            <li><span class="font-medium text-slate-700">Read Only</span> – can sign in and look, but cannot change anything.</li>
         </ul>
     </div>
 </x-card>

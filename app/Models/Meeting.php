@@ -60,6 +60,6 @@ class Meeting extends Model
 
     public function displayTitle(): string
     {
-        return trim($this->body . ' — ' . ($this->title ?: 'Regular Meeting'), ' —');
+        return trim($this->body . ': ' . ($this->title ?: 'Regular Meeting'), ' : ');
     }
 }

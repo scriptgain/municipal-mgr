@@ -1,6 +1,6 @@
 @props(['title' => null, 'description' => null, 'heroless' => false, 'maxWidth' => config('municipal.max_width', 'max-w-7xl')])
 {{-- Public municipal site layout. Semantic landmarks, a skip link, visible
-     focus states, and a real <h1> per page — accessibility is a legal
+     focus states, and a real <h1> per page: accessibility is a legal
      expectation for a government site, not a polish item. Every variable here
      comes from PublicLayoutComposer; this file is markup only. --}}
 <!DOCTYPE html>
@@ -207,7 +207,6 @@
 
     <footer class="site-footer relative isolate mt-16 overflow-hidden bg-brand-950 text-slate-300">
         <div class="site-footer-wash absolute inset-0 -z-10"></div>
-        <div class="site-hero-pattern absolute inset-0 -z-10" aria-hidden="true"></div>
         {{-- Gold hairline hands the page body off to the footer --}}
         <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-seal-500/50 to-transparent"></div>
 

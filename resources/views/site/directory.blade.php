@@ -28,7 +28,7 @@
 
         @if ($staff->count())
             <div class="overflow-x-auto mm-scroll rounded-2xl ring-1 ring-slate-200 bg-white">
-                <table class="w-full text-left text-sm">
+                <table class="w-full min-w-[56rem] text-left text-sm">
                     <caption class="sr-only">Municipal staff directory</caption>
                     <thead class="bg-slate-50">
                         <tr>
@@ -54,21 +54,21 @@
                                     @if ($member->department)
                                         <a href="{{ route('site.departments.show', $member->department->slug) }}" class="text-brand-700 hover:underline">{{ $member->department->name }}</a>
                                     @else
-                                        <span class="text-slate-400">—</span>
+                                        <span class="text-slate-400">–</span>
                                     @endif
                                 </td>
                                 <td class="px-5 py-4 tabular text-slate-600">
                                     @if ($member->phone)
                                         <a href="tel:{{ preg_replace('/[^0-9+]/', '', $member->phone) }}" class="hover:text-brand-700 hover:underline">{{ $member->phoneDisplay() }}</a>
                                     @else
-                                        —
+                                        –
                                     @endif
                                 </td>
                                 <td class="px-5 py-4">
                                     @if ($member->email)
                                         <a href="mailto:{{ $member->email }}" class="text-brand-700 hover:underline">{{ $member->email }}</a>
                                     @else
-                                        <span class="text-slate-400">—</span>
+                                        <span class="text-slate-400">–</span>
                                     @endif
                                 </td>
                             </tr>

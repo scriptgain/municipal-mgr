@@ -15,6 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust the local reverse proxy so $request->ip() is the real client IP
         // (needed for firewall IP bans / auto-ban behind nginx).
         $middleware->trustProxies(at: ['127.0.0.1', '::1']);
+        // Stripe posts payment confirmations with no session and no CSRF token.
+        // The endpoint is protected by webhook SIGNATURE verification instead,
+        // which is stronger: it proves the request came from Stripe, not merely
+        // that it came from a browser that had loaded one of our pages.
+        $middleware->validateCsrfTokens(except: [
+            'stripe/webhook',
+        ]);
+
         $middleware->alias([
             'api.token' => \App\Http\Middleware\AuthenticateApiToken::class,
             'security.policy' => \App\Http\Middleware\EnforceSecurityPolicy::class,
