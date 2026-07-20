@@ -59,7 +59,7 @@
                             <x-input id="booking_number" name="booking_number" :value="old('booking_number', $record->booking_number)" />
                         </x-field>
 
-                        <div class="sm:col-span-2" x-show="blocked" x-cloak>
+                        <div class="min-w-0 sm:col-span-2" x-show="blocked" x-cloak>
                             <x-alert type="warn" title="This Subject Is A Juvenile">
                                 A subject under {{ $minimumAge }} cannot be published. The record can still be created and kept for
                                 staff use, but it will never appear on the public blotter or the inmate roster.
@@ -79,21 +79,21 @@
                         <div class="space-y-3">
                             <template x-for="(row, index) in rows" :key="index">
                                 <div class="grid gap-3 rounded-xl bg-slate-50 p-4 ring-1 ring-inset ring-slate-200 sm:grid-cols-12">
-                                    <div class="sm:col-span-5 space-y-1.5">
+                                    <div class="min-w-0 sm:col-span-5 space-y-1.5">
                                         <label class="block text-sm font-medium text-slate-700" :for="'charge-desc-' + index">Charge</label>
                                         <input type="text" :id="'charge-desc-' + index" :name="'charges[' + index + '][description]'"
                                                x-model="row.description" placeholder="Driving On A Suspended License"
                                                class="block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-500">
                                     </div>
 
-                                    <div class="sm:col-span-3 space-y-1.5">
+                                    <div class="min-w-0 sm:col-span-3 space-y-1.5">
                                         <label class="block text-sm font-medium text-slate-700" :for="'charge-statute-' + index">Statute</label>
                                         <input type="text" :id="'charge-statute-' + index" :name="'charges[' + index + '][statute]'"
                                                x-model="row.statute" placeholder="ARS 28-3473"
                                                class="block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-500">
                                     </div>
 
-                                    <div class="sm:col-span-2 space-y-1.5">
+                                    <div class="min-w-0 sm:col-span-2 space-y-1.5">
                                         <label class="block text-sm font-medium text-slate-700" :for="'charge-severity-' + index">Class</label>
                                         <select :id="'charge-severity-' + index" :name="'charges[' + index + '][severity]'" x-model="row.severity"
                                                 class="block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-brand-500">
@@ -103,14 +103,14 @@
                                         </select>
                                     </div>
 
-                                    <div class="sm:col-span-1 space-y-1.5">
+                                    <div class="min-w-0 sm:col-span-1 space-y-1.5">
                                         <label class="block text-sm font-medium text-slate-700" :for="'charge-counts-' + index">Counts</label>
                                         <input type="number" min="1" max="999" :id="'charge-counts-' + index" :name="'charges[' + index + '][counts]'"
                                                x-model="row.counts"
                                                class="block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-brand-500">
                                     </div>
 
-                                    <div class="sm:col-span-1 flex items-end gap-1">
+                                    <div class="min-w-0 sm:col-span-1 flex items-end gap-1">
                                         <button type="button" @click="moveUp(index)" aria-label="Move Charge Up" data-tip="Move Up"
                                                 class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-500 ring-1 ring-inset ring-slate-200 transition hover:bg-slate-100">
                                             <x-icon name="chevron-up" class="w-4 h-4" aria-hidden="true" />

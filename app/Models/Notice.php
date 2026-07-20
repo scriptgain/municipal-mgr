@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,16 +11,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Notice extends Model
 {
-    use Auditable, HasSlug;
+    use Auditable, HasSeo, HasSlug;
 
     protected $fillable = [
         'department_id', 'document_id', 'title', 'slug', 'notice_type', 'body',
         'posted_at', 'expires_at', 'status',
+        'meta_title', 'meta_description', 'og_image', 'canonical_url', 'noindex',
     ];
 
     protected function casts(): array
     {
-        return ['posted_at' => 'datetime', 'expires_at' => 'datetime'];
+        return ['posted_at' => 'datetime', 'expires_at' => 'datetime', 'noindex' => 'bool'];
     }
 
     /** Currently posted: published, past its posting date, not yet expired. */
@@ -43,5 +45,34 @@ class Notice extends Model
     public function isExpired(): bool
     {
         return $this->expires_at !== null && $this->expires_at->isPast();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SEO                                                                 */
+    /* ------------------------------------------------------------------ */
+
+    protected function seoRouteName(): ?string
+    {
+        return 'site.notices.show';
+    }
+
+    public function seoSchemaType(): ?string
+    {
+        return 'Article';
+    }
+
+    protected function seoDescriptionSources(): array
+    {
+        return ['body'];
+    }
+
+    /**
+     * An expired notice stays indexable on purpose. A statutory posting is a
+     * public record that people cite long after it comes down, and the page
+     * still resolves, so removing it from search would hide a live document.
+     */
+    public function seoIsPublic(): bool
+    {
+        return ! $this->seoNoindex() && $this->status === 'published';
     }
 }

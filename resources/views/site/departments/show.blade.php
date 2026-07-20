@@ -4,7 +4,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 <x-tabs :tabs="[
                     'about' => ['label' => 'About', 'icon' => 'building'],
                     'staff' => ['label' => 'Staff', 'icon' => 'users', 'count' => $department->staff->count()],

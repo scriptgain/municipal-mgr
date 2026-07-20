@@ -14,6 +14,8 @@ class PageController extends Controller
 
         $page->load(['department', 'children']);
 
+        seo()->for($page);
+
         return view('site.page', [
             'page' => $page,
             'blocks' => $page->blocks(),

@@ -53,9 +53,11 @@
         <x-field label="Address" for="address" class="sm:col-span-2" :error="$errors->first('address')">
             <x-input id="address" name="address" :value="old('address', $record->address)" />
         </x-field>
-        <div class="sm:col-span-2">
+        <div class="min-w-0 sm:col-span-2">
             <x-toggle name="is_published" :checked="old('is_published', $record->is_published ?? true)"
                       label="Show On The Public Site" />
         </div>
     </div>
 </x-card>
+
+<x-admin.seo-panel :record="$record" kind="Department" />

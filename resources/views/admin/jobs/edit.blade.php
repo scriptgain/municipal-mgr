@@ -6,6 +6,6 @@
     method="PUT"
     :index="route('jobs.index')"
     :record="$record"
-    :deleteAction="route('jobs.destroy', $record)">
+    :deleteAction="route('jobs.destroy', $record)" :multipart="true">
     @include('admin.jobs._form')
 </x-admin.form-shell>

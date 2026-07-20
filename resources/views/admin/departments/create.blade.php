@@ -4,6 +4,6 @@
     icon="building"
     :action="route('departments.store')"
     :index="route('departments.index')"
-    :record="$record">
+    :record="$record" :multipart="true">
     @include('admin.departments._form')
 </x-admin.form-shell>

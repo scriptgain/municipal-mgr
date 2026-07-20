@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class FileItem extends Model
 {
-    use Auditable, HasSlug;
+    use Auditable, HasSeo, HasSlug;
 
     protected $table = 'files';
 
@@ -38,6 +39,7 @@ class FileItem extends Model
         'reference', 'path', 'file_name', 'mime_type', 'size', 'width', 'height',
         'alt_text', 'document_date', 'download_count', 'is_published', 'visibility',
         'kind', 'uploaded_by',
+        'meta_title', 'meta_description', 'og_image', 'canonical_url', 'noindex',
     ];
 
     protected function casts(): array
@@ -49,6 +51,7 @@ class FileItem extends Model
             'width' => 'int',
             'height' => 'int',
             'download_count' => 'int',
+            'noindex' => 'bool',
         ];
     }
 
@@ -199,5 +202,39 @@ class FileItem extends Model
         }
 
         return self::KIND_OTHER;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SEO                                                                 */
+    /* ------------------------------------------------------------------ */
+
+    protected function seoRouteName(): ?string
+    {
+        return 'site.files.show';
+    }
+
+    public function seoSchemaType(): ?string
+    {
+        return 'WebPage';
+    }
+
+    protected function seoDescriptionSources(): array
+    {
+        return ['description', 'keywords'];
+    }
+
+    /** An image file is its own best social card. */
+    protected function seoImageSources(): array
+    {
+        return $this->isImage() ? ['og_image', 'path'] : ['og_image'];
+    }
+
+    /**
+     * Staff-only files must never reach a sitemap or carry an indexable meta
+     * block, so visibility is checked on top of the published flag.
+     */
+    public function seoIsPublic(): bool
+    {
+        return ! $this->seoNoindex() && $this->is_published && $this->isPublic();
     }
 }

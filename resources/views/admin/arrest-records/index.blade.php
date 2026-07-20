@@ -27,7 +27,7 @@
             {{-- Filters --}}
             <form method="GET" class="border-b border-slate-200 bg-white px-4 py-4">
                 <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-6 lg:items-end">
-                    <div class="space-y-1.5 lg:col-span-2">
+                    <div class="min-w-0 space-y-1.5 lg:col-span-2">
                         <label for="q" class="block text-sm font-medium text-slate-700">Search</label>
                         <x-input id="q" name="q" type="search" :value="$search" placeholder="Name, Case Number, Agency…" />
                     </div>

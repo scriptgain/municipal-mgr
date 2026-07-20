@@ -85,6 +85,40 @@ return [
         'embed' => 'Embed (Map Or Video)',
     ],
 
+    /*
+    | Search engine behaviour that is a product decision, not an operator one.
+    |
+    | These route patterns are ALWAYS noindex, whatever the per-record SEO
+    | fields say, and they never appear in sitemap.xml. Two kinds of page are
+    | listed: pages that expose one resident's own data behind a token, and
+    | pages that are thin or transactional and have nothing to rank for.
+    |
+    | The arrest-records and payments patterns are here even though both
+    | modules ship DISABLED. Listing them now means that if an operator ever
+    | enables one, its public pages are correctly excluded from search on the
+    | first request rather than after someone notices.
+    */
+    'seo' => [
+        'noindex_routes' => [
+            // A resident's own service request, reachable only by token.
+            'site.report.submitted',
+            'site.report.status',
+            'site.track',
+            'site.track.lookup',
+
+            // Thin by nature: a results page with no query ranks for nothing.
+            'site.search',
+
+            // Named individuals' arrest data. Never indexable, module enabled
+            // or not, and never listed in the sitemap.
+            'site.records.*',
+
+            // Transactional bill-payment flow, including receipts.
+            'site.pay.*',
+            'site.payments.*',
+        ],
+    ],
+
     // Read-only public demo. When true the panel auto-signs-in a demo user and
     // blocks every write so anyone can click around a fully seeded instance.
     'demo' => (bool) env('DEMO_MODE', false),

@@ -3,7 +3,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 @if ($file->description)
                     <div class="prose-civic">{!! nl2br(e($file->description)) !!}</div>
                 @endif

@@ -81,6 +81,7 @@ class FileController extends Controller
         abort_unless($this->mayView($file), 404);
 
         $file->load('folder', 'department');
+        seo()->for($file);
 
         return view('site.files.show', [
             'file' => $file,

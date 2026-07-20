@@ -56,3 +56,5 @@
         </div>
     </div>
 </x-card>
+
+<x-admin.seo-panel :record="$record" kind="News Post" />

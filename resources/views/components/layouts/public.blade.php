@@ -8,13 +8,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ? $title . ' | ' . $siteName : $siteFormalName }}</title>
-    <meta name="description" content="{{ $description ?? ($site['site_motto'] ?: 'Official website of ' . $siteFormalName) }}">
-    <meta property="og:title" content="{{ $title ?? $siteName }}">
-    <meta property="og:site_name" content="{{ $siteName }}">
-    <meta property="og:type" content="website">
-    <link rel="icon" type="image/svg+xml" href="{{ route('favicon.svg') }}">
-    <link rel="apple-touch-icon" href="{{ route('favicon.apple') }}">
+    {{-- Title, description, canonical, robots, Open Graph, Twitter card, and
+         JSON-LD all come from one component. Pages pass :title/:description as
+         before; they are now fallbacks behind each record's own SEO fields. --}}
+    <x-site.meta :fallback-title="$title" :fallback-description="$description" />
+    @if ($themeFaviconUrl)
+        <link rel="icon" href="{{ $themeFaviconUrl }}">
+    @else
+        <link rel="icon" type="image/svg+xml" href="{{ route('favicon.svg') }}">
+        <link rel="apple-touch-icon" href="{{ route('favicon.apple') }}">
+    @endif
     <x-tailwind-cdn />
     <x-accent-style />
 </head>
@@ -205,7 +208,10 @@
         {{ $slot }}
     </main>
 
-    <footer class="site-footer relative isolate mt-16 overflow-hidden bg-brand-950 text-slate-300">
+    {{-- No top margin: the footer supplies its own py-14 and a gold hairline,
+     and a margin here renders as the white page background whenever the
+     preceding section is dark (the home page ends on a navy block). --}}
+    <footer class="site-footer relative isolate overflow-hidden bg-brand-950 text-slate-300">
         <div class="site-footer-wash absolute inset-0 -z-10"></div>
         {{-- Gold hairline hands the page body off to the footer --}}
         <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-seal-500/50 to-transparent"></div>

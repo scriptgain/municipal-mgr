@@ -4,6 +4,6 @@
     icon="users"
     :action="route('jobs.store')"
     :index="route('jobs.index')"
-    :record="$record">
+    :record="$record" :multipart="true">
     @include('admin.jobs._form')
 </x-admin.form-shell>

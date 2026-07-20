@@ -33,6 +33,8 @@ class NewsController extends Controller
     {
         abort_unless($newsPost->isPublished() || auth()->user()?->canEditContent(), 404);
 
+        seo()->for($newsPost);
+
         return view('site.news.show', [
             'post' => $newsPost->load('department', 'author'),
             'related' => NewsPost::published()

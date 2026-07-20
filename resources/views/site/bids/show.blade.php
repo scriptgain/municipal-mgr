@@ -4,7 +4,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 @if ($bid->isClosed())
                     <div class="mb-6 rounded-xl bg-slate-100 px-5 py-4 text-sm text-slate-700 ring-1 ring-slate-200">
                         This opportunity is closed.

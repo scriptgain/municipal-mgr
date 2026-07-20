@@ -4,7 +4,7 @@
 
     <x-site.section :divider="false">
         <div class="mx-auto grid max-w-4xl gap-8 lg:grid-cols-3">
-            <div class="lg:col-span-2 space-y-6">
+            <div class="min-w-0 lg:col-span-2 space-y-6">
                 <div class="rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <h2 class="font-display text-xl font-semibold text-slate-900">Current Status</h2>

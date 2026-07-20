@@ -4,7 +4,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 <div class="prose-civic">{!! $official->bio !!}</div>
             </div>
             <aside>

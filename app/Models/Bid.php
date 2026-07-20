@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,12 +11,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bid extends Model
 {
-    use Auditable, HasSlug;
+    use Auditable, HasSeo, HasSlug;
 
     protected $fillable = [
         'department_id', 'title', 'slug', 'reference', 'bid_type', 'description',
         'document_id', 'contact_name', 'contact_email', 'opens_at', 'closes_at',
         'pre_bid_meeting_at', 'status', 'awarded_to', 'is_published',
+        'meta_title', 'meta_description', 'og_image', 'canonical_url', 'noindex',
     ];
 
     protected function casts(): array
@@ -25,6 +27,7 @@ class Bid extends Model
             'closes_at' => 'datetime',
             'pre_bid_meeting_at' => 'datetime',
             'is_published' => 'bool',
+            'noindex' => 'bool',
         ];
     }
 
@@ -52,5 +55,24 @@ class Bid extends Model
     public function isClosed(): bool
     {
         return $this->status !== 'open' || ($this->closes_at && $this->closes_at->isPast());
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SEO                                                                 */
+    /* ------------------------------------------------------------------ */
+
+    protected function seoRouteName(): ?string
+    {
+        return 'site.bids.show';
+    }
+
+    public function seoSchemaType(): ?string
+    {
+        return 'WebPage';
+    }
+
+    protected function seoDescriptionSources(): array
+    {
+        return ['description'];
     }
 }

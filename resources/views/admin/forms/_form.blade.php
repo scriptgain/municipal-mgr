@@ -26,7 +26,7 @@
             <x-input id="success_message" name="success_message" :value="old('success_message', $record->success_message)" />
         </x-field>
 
-        <div class="sm:col-span-2 space-y-4">
+        <div class="min-w-0 sm:col-span-2 space-y-4">
             <x-toggle name="store_submissions" :checked="old('store_submissions', $record->store_submissions ?? true)"
                       label="Store Submissions In The Panel"
                       description="Turn off for forms that only need to be emailed." />
@@ -90,18 +90,18 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="sm:col-span-2" x-show="needsOptions(field.type)" x-cloak>
+                        <div class="min-w-0 sm:col-span-2" x-show="needsOptions(field.type)" x-cloak>
                             <label class="block text-sm font-medium text-slate-700" :for="`field-options-${index}`">Choices</label>
                             <textarea :id="`field-options-${index}`" :name="`fields[${index}][options]`" x-model="field.options" rows="3"
                                       class="mt-1.5 block w-full rounded-lg border-0 py-2 px-3 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand-600"></textarea>
                             <p class="mt-1 text-xs text-slate-500">One Choice Per Line.</p>
                         </div>
-                        <div class="sm:col-span-2">
+                        <div class="min-w-0 sm:col-span-2">
                             <label class="block text-sm font-medium text-slate-700" :for="`field-help-${index}`">Help Text</label>
                             <input type="text" :id="`field-help-${index}`" :name="`fields[${index}][help]`" x-model="field.help"
                                    class="mt-1.5 block w-full rounded-lg border-0 py-2 px-3 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand-600">
                         </div>
-                        <div class="sm:col-span-2">
+                        <div class="min-w-0 sm:col-span-2">
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <input type="hidden" :name="`fields[${index}][required]`" :value="field.required ? 1 : 0">
                                 <button type="button" role="switch" :aria-checked="field.required.toString()"

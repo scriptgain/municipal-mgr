@@ -5,7 +5,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2 space-y-8">
+            <div class="min-w-0 lg:col-span-2 space-y-8">
                 <div>
                     <h2 class="font-display text-2xl font-semibold text-slate-900">Position Summary</h2>
                     <span class="seal-rule mt-3 mb-5"></span>

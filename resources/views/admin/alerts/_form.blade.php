@@ -33,7 +33,7 @@
             <x-input id="ends_at" name="ends_at" type="datetime-local" :value="old('ends_at', $record->ends_at?->format('Y-m-d\TH:i'))" />
         </x-field>
 
-        <div class="sm:col-span-2 space-y-4">
+        <div class="min-w-0 sm:col-span-2 space-y-4">
             <x-toggle name="is_active" :checked="old('is_active', $record->is_active ?? true)"
                       label="Alert Is Active"
                       description="Turn this off to stage an alert without showing it." />

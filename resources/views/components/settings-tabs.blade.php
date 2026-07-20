@@ -7,6 +7,8 @@
     $groups = [
         ['Site', [
             ['Site Identity', 'building', 'settings.site.edit', 'settings.site.*'],
+            ['SEO', 'search', 'settings.seo.edit', 'settings.seo.edit'],
+            ['SEO Health', 'shield', 'settings.seo.health', 'settings.seo.health'],
         ]],
         ['Preferences', [
             ['General', 'settings', 'settings.general.edit', 'settings.general.*'],
@@ -28,6 +30,12 @@
         ]],
     ];
     if ($isAdmin) {
+        // Appearance is admin-only: a theme repaints the site for every
+        // visitor, and editing a template is equivalent to running code.
+        $groups[] = ['Appearance', [
+            ['Theme Manager', 'star', 'settings.themes.index', 'settings.themes.*'],
+            ['Template Manager', 'edit', 'settings.templates.index', 'settings.templates.*'],
+        ]];
         $groups[] = ['Administration', [
             ['Host And SSL', 'globe', 'settings.host.edit', 'settings.host.*'],
             ['Firewall', 'shield', 'settings.firewall.index', 'settings.firewall.*'],

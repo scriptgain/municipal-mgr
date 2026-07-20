@@ -6,6 +6,6 @@
     method="PUT"
     :index="route('notices.index')"
     :record="$record"
-    :deleteAction="route('notices.destroy', $record)">
+    :deleteAction="route('notices.destroy', $record)" :multipart="true">
     @include('admin.notices._form')
 </x-admin.form-shell>

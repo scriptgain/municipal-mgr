@@ -9,7 +9,7 @@
     </x-page-header>
 
     <div class="grid gap-6 lg:grid-cols-3">
-        <div class="lg:col-span-2 space-y-6">
+        <div class="min-w-0 lg:col-span-2 space-y-6">
             <x-card title="What Was Reported">
                 <p class="whitespace-pre-line text-slate-700">{{ $record->description }}</p>
 

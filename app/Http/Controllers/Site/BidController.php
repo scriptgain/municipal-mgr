@@ -20,6 +20,8 @@ class BidController extends Controller
     {
         abort_unless($bid->is_published, 404);
 
+        seo()->for($bid);
+
         return view('site.bids.show', ['bid' => $bid->load('department', 'document')]);
     }
 }

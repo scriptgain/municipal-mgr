@@ -79,6 +79,8 @@ class EventController extends Controller
     {
         abort_unless($event->is_published || auth()->user()?->canEditContent(), 404);
 
+        seo()->for($event);
+
         return view('site.events.show', ['event' => $event->load('department')]);
     }
 }

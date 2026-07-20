@@ -32,6 +32,10 @@ class AdminLayoutComposer
             'openRequestCount' => $this->openRequests(),
             'unreadSubmissionCount' => $this->unreadSubmissions(),
             'shellMaxWidth' => config('municipal.max_width', 'max-w-7xl'),
+            // Theme assets. Resolved here rather than in the layout so the
+            // template stays markup only and both layouts ask the same service.
+            'themeLogoUrl' => rescue(fn () => app(\App\Services\Themes\ThemeService::class)->logoUrl(), null, false),
+            'themeFaviconUrl' => rescue(fn () => app(\App\Services\Themes\ThemeService::class)->faviconUrl(), null, false),
         ]);
     }
 

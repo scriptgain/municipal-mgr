@@ -26,6 +26,8 @@ class MeetingController extends Controller
     {
         abort_unless($meeting->is_published || auth()->user()?->canEditContent(), 404);
 
+        seo()->for($meeting);
+
         return view('site.meetings.show', [
             'meeting' => $meeting->load(['agenda', 'minutes', 'packet']),
             'related' => Meeting::published()->where('body', $meeting->body)

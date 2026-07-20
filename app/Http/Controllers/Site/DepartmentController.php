@@ -20,6 +20,8 @@ class DepartmentController extends Controller
 
         $department->load(['staff' => fn ($q) => $q->where('is_published', true), 'head']);
 
+        seo()->for($department);
+
         return view('site.departments.show', [
             'department' => $department,
             'pages' => $department->pages()->published()->orderBy('sort_order')->get(),

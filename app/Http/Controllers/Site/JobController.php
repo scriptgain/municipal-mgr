@@ -21,6 +21,8 @@ class JobController extends Controller
     {
         abort_unless($jobPosting->status === 'published' || auth()->user()?->canEditContent(), 404);
 
+        seo()->for($jobPosting);
+
         return view('site.jobs.show', [
             'job' => $jobPosting->load('department', 'applicationForm'),
         ]);

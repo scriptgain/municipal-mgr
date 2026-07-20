@@ -26,6 +26,8 @@ class NoticeController extends Controller
     {
         abort_unless($notice->status === 'published' || auth()->user()?->canEditContent(), 404);
 
+        seo()->for($notice);
+
         return view('site.notices.show', ['notice' => $notice->load('department', 'document')]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\Publishable;
 use Illuminate\Database\Eloquent\Model;
@@ -11,12 +12,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Page extends Model
 {
-    use Auditable, HasSlug, Publishable;
+    use Auditable, HasSeo, HasSlug, Publishable;
 
     protected $fillable = [
         'parent_id', 'department_id', 'title', 'slug', 'summary', 'hero_image_path',
         'sections', 'template', 'status', 'published_at', 'updated_by',
         'meta_description', 'sort_order', 'show_in_nav',
+        'meta_title', 'og_image', 'canonical_url', 'noindex',
     ];
 
     protected function casts(): array
@@ -25,6 +27,7 @@ class Page extends Model
             'sections' => 'array',
             'published_at' => 'datetime',
             'show_in_nav' => 'bool',
+            'noindex' => 'bool',
             'sort_order' => 'int',
         ];
     }
@@ -70,5 +73,49 @@ class Page extends Model
         }
 
         return $trail;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SEO                                                                 */
+    /* ------------------------------------------------------------------ */
+
+    protected function seoRouteName(): ?string
+    {
+        return 'site.page';
+    }
+
+    public function seoSchemaType(): ?string
+    {
+        return 'WebPage';
+    }
+
+    protected function seoDescriptionSources(): array
+    {
+        return ['summary'];
+    }
+
+    protected function seoImageSources(): array
+    {
+        return ['og_image', 'hero_image_path'];
+    }
+
+    /**
+     * A builder page often has no summary — its words live inside the section
+     * blocks. Fall through to the first block carrying body copy so an
+     * unedited page still gets a real description, not the site default.
+     */
+    public function seoDerivedDescription(): ?string
+    {
+        if ($fromSummary = $this->seoDescriptionFromSources()) {
+            return $fromSummary;
+        }
+
+        foreach ($this->blocks() as $block) {
+            if (is_string($block['body'] ?? null) && trim($block['body']) !== '') {
+                return static::seoSnippet($block['body']);
+            }
+        }
+
+        return null;
     }
 }

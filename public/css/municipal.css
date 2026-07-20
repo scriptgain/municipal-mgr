@@ -24,6 +24,14 @@
 .mm-table { width: 100%; table-layout: fixed; }
 .mm-table td, .mm-table th { white-space: nowrap; }
 /*
+ * The first column carries the name or title on nearly every table here, so it
+ * wraps. Without this the row cannot shrink and the region scrolls sideways;
+ * tables must FIT rather than scroll. Numeric, date and action cells stay on
+ * one line because a wrapped price reads worse than a narrow one.
+ */
+.mm-table td:first-child, .mm-table th:first-child { white-space: normal; }
+.mm-table td.mm-nowrap, .mm-table th.mm-nowrap { white-space: nowrap; }
+/*
  * Every cell clips. Without this, a cell holding a badge or a button kept
  * white-space:nowrap but had no overflow guard, so long tag lists and long
  * names spilled straight out of the fixed-layout table. Only plain text
@@ -107,4 +115,384 @@
     background:
         radial-gradient(90% 120% at 100% 0%, #0a355a 0%, rgba(10, 53, 90, 0) 55%),
         linear-gradient(180deg, #061f35 0%, #041424 100%);
+}
+
+/*
+ * Safety net for horizontal page scroll. A grid or flex child defaults to
+ * min-width:auto, so a wide descendant (a min-w table, a long token) sizes the
+ * track to the content and the PAGE scrolls sideways instead of the region.
+ * Allowing scroll containers to shrink keeps the overflow where it belongs.
+ * The page body must never scroll horizontally.
+ */
+.vx-scroll,
+.mm-scroll,
+[class*="overflow-x-auto"] {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* ==========================================================================
+ * Template Manager
+ * --------------------------------------------------------------------------
+ * Plain CSS rather than Tailwind utilities: the browser Tailwind build only
+ * emits classes it finds in the DOM, and the editor's gutter needs metrics
+ * (line-height, tab size, font metrics) that must match the textarea EXACTLY
+ * or the numbers drift away from the lines they label. Expressing that once,
+ * here, is the only way to keep the two in lockstep.
+ * ========================================================================== */
+.mm-code,
+.mm-code-area,
+.mm-gutter {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    tab-size: 4;
+}
+
+.mm-editor {
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: #0f172a;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.mm-editor-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .5rem .75rem;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    min-width: 0;
+}
+
+.mm-editor-meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-width: 0;
+}
+
+.mm-editor-file {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .75rem;
+    color: #e2e8f0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mm-editor-stat {
+    font-size: .6875rem;
+    color: #94a3b8;
+    white-space: nowrap;
+}
+
+.mm-editor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .6875rem;
+    font-weight: 600;
+    padding: .2rem .55rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mm-editor-dot {
+    width: .45rem;
+    height: .45rem;
+    border-radius: 9999px;
+    flex: 0 0 auto;
+    background: #64748b;
+}
+
+.mm-editor-status[data-state="idle"]     { background: #334155; color: #cbd5e1; }
+.mm-editor-status[data-state="checking"] { background: #1e3a5f; color: #bfdbfe; }
+.mm-editor-status[data-state="checking"] .mm-editor-dot { background: #60a5fa; }
+.mm-editor-status[data-state="ok"]       { background: #064e3b; color: #a7f3d0; }
+.mm-editor-status[data-state="ok"] .mm-editor-dot { background: #34d399; }
+.mm-editor-status[data-state="error"]    { background: #4c0519; color: #fecdd3; }
+.mm-editor-status[data-state="error"] .mm-editor-dot { background: #fb7185; }
+
+.mm-editor-body {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.mm-gutter {
+    flex: 0 0 auto;
+    width: 3.25rem;
+    padding: .75rem .5rem .75rem 0;
+    text-align: right;
+    color: #475569;
+    background: #0b1220;
+    border-right: 1px solid #1e293b;
+    overflow: hidden;
+    white-space: pre;
+    user-select: none;
+}
+
+.mm-code-area {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 32rem;
+    padding: .75rem .9rem;
+    border: 0;
+    outline: none;
+    resize: vertical;
+    color: #e2e8f0;
+    background: #0f172a;
+    white-space: pre;
+    overflow: auto;
+    caret-color: #38bdf8;
+}
+
+.mm-code-area:focus {
+    box-shadow: inset 0 0 0 2px rgba(56, 189, 248, .35);
+}
+
+/* Inline code chip in the Blade reference. */
+.mm-chip {
+    flex: 0 0 auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .75rem;
+    padding: .1rem .4rem;
+    border-radius: .35rem;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+ * Version diff. A grid, not a table, so the two line-number columns stay
+ * aligned while the text column is the only thing that can scroll.
+ * ------------------------------------------------------------------------ */
+.mm-diff {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    background: #ffffff;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.mm-diff-row {
+    display: grid;
+    grid-template-columns: 3rem 3rem 1.25rem minmax(0, 1fr);
+    align-items: start;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.mm-diff-num {
+    padding: .1rem .5rem;
+    text-align: right;
+    color: #94a3b8;
+    user-select: none;
+    font-size: 11px;
+}
+
+.mm-diff-sign {
+    text-align: center;
+    color: #64748b;
+    user-select: none;
+}
+
+.mm-diff-text {
+    padding: .1rem .5rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-width: 0;
+    color: #334155;
+}
+
+.mm-diff-add    { background: #ecfdf5; }
+.mm-diff-add .mm-diff-text  { color: #065f46; }
+.mm-diff-add .mm-diff-sign  { color: #10b981; }
+.mm-diff-remove { background: #fff1f2; }
+.mm-diff-remove .mm-diff-text { color: #9f1239; }
+.mm-diff-remove .mm-diff-sign { color: #f43f5e; }
+
+/* ==========================================================================
+ * Theme Manager live preview
+ * --------------------------------------------------------------------------
+ * Every colour, font and metric comes from a custom property set by
+ * public/js/themes.js on the container, so a keystroke is one style write.
+ * ========================================================================== */
+.mm-swatch {
+    width: 2.5rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+    padding: 0;
+    border: 1px solid #cbd5e1;
+    border-radius: .5rem;
+    background: none;
+    cursor: pointer;
+}
+
+.mm-range {
+    accent-color: var(--color-brand-600, #0d4372);
+    height: 1.5rem;
+}
+
+.mm-theme-preview {
+    --tp-brand: #0f4c81;
+    --tp-brand-soft: #d8e6f4;
+    --tp-brand-dark: #0a355a;
+    --tp-accent: #c8a45c;
+    --tp-chrome: #061f35;
+    --tp-chrome-soft: #0a2b47;
+    --tp-font: system-ui, sans-serif;
+    --tp-font-display: Georgia, serif;
+    --tp-scale: 1;
+    --tp-space: 1;
+    --tp-radius: .75rem;
+    --tp-radius-sm: .5rem;
+    font-family: var(--tp-font);
+    background: #f8fafc;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.mm-tp-chrome {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: calc(.6rem * var(--tp-space)) calc(.85rem * var(--tp-space));
+    background: var(--tp-chrome);
+    color: #fff;
+    min-width: 0;
+}
+
+.mm-tp-mark {
+    font-family: var(--tp-font-display);
+    font-size: calc(.9rem * var(--tp-scale));
+    font-weight: 600;
+    color: var(--tp-accent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mm-tp-sub {
+    font-size: calc(.6rem * var(--tp-scale));
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .7;
+    white-space: nowrap;
+}
+
+.mm-tp-hero {
+    display: flex;
+    flex-direction: column;
+    gap: calc(.35rem * var(--tp-space));
+    padding: calc(1.1rem * var(--tp-space)) calc(.85rem * var(--tp-space));
+    background: linear-gradient(120deg, var(--tp-chrome) 0%, var(--tp-chrome-soft) 55%, var(--tp-brand) 100%);
+    color: #fff;
+}
+
+.mm-tp-eyebrow {
+    font-size: calc(.6rem * var(--tp-scale));
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--tp-accent);
+}
+
+.mm-tp-title {
+    font-family: var(--tp-font-display);
+    font-size: calc(1.1rem * var(--tp-scale));
+    line-height: 1.2;
+}
+
+.mm-tp-rule {
+    width: 2.5rem;
+    height: 3px;
+    border-radius: 9999px;
+    background: var(--tp-accent);
+}
+
+.mm-tp-body {
+    display: flex;
+    flex-direction: column;
+    gap: calc(.75rem * var(--tp-space));
+    padding: calc(.85rem * var(--tp-space));
+}
+
+.mm-tp-card {
+    display: flex;
+    flex-direction: column;
+    gap: calc(.4rem * var(--tp-space));
+    padding: calc(.75rem * var(--tp-space));
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--tp-radius);
+    min-width: 0;
+}
+
+.mm-tp-cardtitle {
+    font-size: calc(.8rem * var(--tp-scale));
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.mm-tp-text {
+    font-size: calc(.72rem * var(--tp-scale));
+    line-height: 1.55;
+    color: #475569;
+}
+
+.mm-tp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(.4rem * var(--tp-space));
+    margin-top: calc(.15rem * var(--tp-space));
+}
+
+.mm-tp-btn,
+.mm-tp-btn-ghost {
+    font-size: calc(.7rem * var(--tp-scale));
+    font-weight: 500;
+    padding: calc(.35rem * var(--tp-space)) calc(.7rem * var(--tp-space));
+    border-radius: var(--tp-radius-sm);
+    white-space: nowrap;
+}
+
+.mm-tp-btn {
+    background: var(--tp-brand);
+    color: #fff;
+}
+
+.mm-tp-btn-ghost {
+    background: var(--tp-brand-soft);
+    color: var(--tp-brand-dark);
+}
+
+.mm-tp-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    min-width: 0;
+}
+
+.mm-tp-chip {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: var(--tp-radius-sm);
+    border: 1px solid rgba(15, 23, 42, .08);
+    flex: 0 0 auto;
+}
+
+.mm-tp-footer {
+    padding: calc(.65rem * var(--tp-space)) calc(.85rem * var(--tp-space));
+    background: var(--tp-chrome);
+    color: rgba(255, 255, 255, .65);
+    font-size: calc(.65rem * var(--tp-scale));
 }

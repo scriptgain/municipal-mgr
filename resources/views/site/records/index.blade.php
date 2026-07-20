@@ -36,7 +36,7 @@
                 </div>
 
                 @if ($searchEnabled)
-                    <div class="space-y-1.5 lg:col-span-2">
+                    <div class="min-w-0 space-y-1.5 lg:col-span-2">
                         <label for="q" class="block text-sm font-medium text-slate-700">Search By Name, Case Number, Or Agency</label>
                         <x-input id="q" name="q" type="search" :value="$search" placeholder="Search Arrest Records…" />
                     </div>

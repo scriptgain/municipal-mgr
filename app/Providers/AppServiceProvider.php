@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use App\Services\Seo\Seo;
+use App\Services\Templates\TemplateOverrideStore;
+use App\Services\Themes\ThemeService;
 use App\View\Composers\AdminLayoutComposer;
 use App\View\Composers\PublicLayoutComposer;
 use Illuminate\Pagination\Paginator;
@@ -14,7 +17,15 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // One SEO context per request: controllers hand it the record they are
+        // rendering, the Meta view component reads the finished tags back out.
+        $this->app->singleton(Seo::class);
+
+        // One theme resolution per request. Every layout, the favicon route and
+        // the token block all ask the same question, and none of them should
+        // each cost a query.
+        $this->app->singleton(ThemeService::class);
+        $this->app->singleton(TemplateOverrideStore::class);
     }
 
     /**
@@ -30,6 +41,14 @@ class AppServiceProvider extends ServiceProvider
         // templates contain markup only (no @php blocks, no queries in views).
         View::composer('components.layouts.app', AdminLayoutComposer::class);
         View::composer(['components.layouts.public', 'site.*'], PublicLayoutComposer::class);
+
+        // Template Manager: put the DB-backed override layer in FRONT of
+        // resources/views, so a stored override shadows the shipped file
+        // without the shipped file ever being touched. Registered here, before
+        // anything renders, so the very first view resolved in the request
+        // already sees it. The settings map is cached, so this costs nothing.
+        $this->app->make(TemplateOverrideStore::class)
+            ->register(rescue(fn () => Setting::map(), [], false));
 
         try {
             if (! Schema::hasTable('settings')) {

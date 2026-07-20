@@ -4,6 +4,6 @@
     icon="warning"
     :action="route('notices.store')"
     :index="route('notices.index')"
-    :record="$record">
+    :record="$record" :multipart="true">
     @include('admin.notices._form')
 </x-admin.form-shell>

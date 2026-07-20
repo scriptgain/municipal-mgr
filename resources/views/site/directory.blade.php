@@ -28,7 +28,7 @@
 
         @if ($staff->count())
             <div class="overflow-x-auto mm-scroll rounded-2xl ring-1 ring-slate-200 bg-white">
-                <table class="w-full min-w-[56rem] text-left text-sm">
+                <table class="w-full text-left text-sm">
                     <caption class="sr-only">Municipal staff directory</caption>
                     <thead class="bg-slate-50">
                         <tr>

@@ -44,7 +44,7 @@
             <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" @if (! $user->exists) required @endif />
         </x-field>
 
-        <div class="sm:col-span-2">
+        <div class="min-w-0 sm:col-span-2">
             <x-toggle name="is_active" :checked="old('is_active', $user->is_active ?? true)"
                       label="Account Is Active"
                       description="Disabling blocks sign-in without deleting the account or its history." />

@@ -5,7 +5,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 {{ $page->template === 'standard' ? 'lg:grid-cols-3' : '' }}">
-            <div class="{{ $page->template === 'standard' ? 'lg:col-span-2' : '' }} space-y-10">
+            <div class="min-w-0 {{ $page->template === 'standard' ? 'lg:col-span-2' : '' }} space-y-10">
                 @forelse ($blocks as $block)
                     <div>
                         @if ($block['heading'])

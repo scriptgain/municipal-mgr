@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobPosting extends Model
 {
-    use Auditable, HasSlug;
+    use Auditable, HasSeo, HasSlug;
 
     protected $fillable = [
         'department_id', 'title', 'slug', 'employment_type', 'salary_range',
         'description', 'requirements', 'apply_url', 'apply_email',
         'application_document_id', 'posted_on', 'closes_at',
         'is_open_until_filled', 'status',
+        'meta_title', 'meta_description', 'og_image', 'canonical_url', 'noindex',
     ];
 
     protected function casts(): array
@@ -25,6 +27,7 @@ class JobPosting extends Model
             'posted_on' => 'date',
             'closes_at' => 'datetime',
             'is_open_until_filled' => 'bool',
+            'noindex' => 'bool',
         ];
     }
 
@@ -56,5 +59,24 @@ class JobPosting extends Model
         return $this->closes_at
             ? $this->closes_at->format(config('municipal.date_format', 'M j, Y'))
             : 'No Closing Date';
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SEO                                                                 */
+    /* ------------------------------------------------------------------ */
+
+    protected function seoRouteName(): ?string
+    {
+        return 'site.jobs.show';
+    }
+
+    public function seoSchemaType(): ?string
+    {
+        return 'JobPosting';
+    }
+
+    protected function seoDescriptionSources(): array
+    {
+        return ['description', 'requirements'];
     }
 }

@@ -69,10 +69,12 @@
             </x-select>
         </x-field>
 
-        <div class="sm:col-span-2">
+        <div class="min-w-0 sm:col-span-2">
             <x-toggle name="is_open_until_filled" :checked="old('is_open_until_filled', $record->is_open_until_filled)"
                       label="Open Until Filled"
                       description="Ignores the closing date and keeps the posting live." />
         </div>
     </div>
 </x-card>
+
+<x-admin.seo-panel :record="$record" kind="Job Posting" />

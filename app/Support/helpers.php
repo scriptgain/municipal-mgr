@@ -1,6 +1,21 @@
 <?php
 
+use App\Services\Seo\Seo;
 use Illuminate\Support\Facades\Storage;
+
+if (! function_exists('seo')) {
+    /**
+     * The request's SEO context.
+     *
+     * Controllers use it to declare what the page is about:
+     * seo()->for($post), or seo()->set(['title' => 'News']) on an index.
+     * Returns the singleton, so every call in a request is the same object.
+     */
+    function seo(): Seo
+    {
+        return app(Seo::class);
+    }
+}
 
 if (! function_exists('asset_v')) {
     /**

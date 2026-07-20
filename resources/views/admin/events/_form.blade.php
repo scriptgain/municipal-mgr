@@ -53,10 +53,12 @@
                    class="block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100">
         </x-field>
 
-        <div class="sm:col-span-2 space-y-4">
+        <div class="min-w-0 sm:col-span-2 space-y-4">
             <x-toggle name="all_day" :checked="old('all_day', $record->all_day)" label="All Day Event"
                       description="Hides the start and end times on the public calendar." />
             <x-toggle name="is_published" :checked="old('is_published', $record->is_published ?? true)" label="Publish On The Public Calendar" />
         </div>
     </div>
 </x-card>
+
+<x-admin.seo-panel :record="$record" kind="Event" />

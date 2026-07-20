@@ -8,9 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <title>{{ $title ? $title . ' – ' . config('brand.name') : config('brand.name') }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ route('favicon.svg') }}">
-    <link rel="icon" type="image/png" sizes="64x64" href="{{ route('favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ route('favicon.apple') }}">
+    @if ($themeFaviconUrl)
+        <link rel="icon" href="{{ $themeFaviconUrl }}">
+    @else
+        <link rel="icon" type="image/svg+xml" href="{{ route('favicon.svg') }}">
+        <link rel="icon" type="image/png" sizes="64x64" href="{{ route('favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ route('favicon.apple') }}">
+    @endif
     <x-tailwind-cdn />
     <x-accent-style />
 </head>

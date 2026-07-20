@@ -4,6 +4,6 @@
     icon="database"
     :action="route('bids.store')"
     :index="route('bids.index')"
-    :record="$record">
+    :record="$record" :multipart="true">
     @include('admin.bids._form')
 </x-admin.form-shell>

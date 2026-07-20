@@ -19,7 +19,7 @@
         @csrf @method('PUT')
 
         <div class="grid gap-6 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 {{-- Tabs rather than one long form: details, publishing, and the
                      file itself are three separate jobs. --}}
                 <x-tabs :tabs="[
@@ -101,6 +101,13 @@
                                           description="Turn Off To Make This A Staff Only File." />
                             </div>
                         </x-card>
+
+                        {{-- Search Appearance sits with Publishing rather than in a
+                             tab of its own: whether a document is findable is the
+                             same decision as whether it is published. --}}
+                        <div class="mt-6">
+                            <x-admin.seo-panel :record="$file" kind="File" />
+                        </div>
                     </x-tab-panel>
 
                     <x-tab-panel name="file">

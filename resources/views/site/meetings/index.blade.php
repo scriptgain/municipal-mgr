@@ -71,7 +71,7 @@
             <x-tab-panel name="past">
                 @if ($past->count())
                     <div class="overflow-x-auto mm-scroll rounded-2xl ring-1 ring-slate-200 bg-white">
-                        <table class="w-full min-w-[40rem] text-left text-sm">
+                        <table class="w-full text-left text-sm">
                             <caption class="sr-only">Past meetings with agendas and minutes</caption>
                             <thead class="bg-slate-50">
                                 <tr>

@@ -6,6 +6,6 @@
     method="PUT"
     :index="route('meetings.index')"
     :record="$record"
-    :deleteAction="route('meetings.destroy', $record)">
+    :deleteAction="route('meetings.destroy', $record)" :multipart="true">
     @include('admin.meetings._form')
 </x-admin.form-shell>

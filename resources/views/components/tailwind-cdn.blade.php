@@ -11,3 +11,6 @@
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3/dist/cdn.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
 <script defer src="{{ asset_v('js/municipal.js') }}"></script>
+{{-- Search Appearance counters and preview. Plain DOM, no Alpine.data(), so
+     its position relative to the Alpine bundle above does not matter. --}}
+<script defer src="{{ asset_v('js/seo.js') }}"></script>

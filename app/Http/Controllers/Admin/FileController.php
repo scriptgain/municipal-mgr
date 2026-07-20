@@ -169,11 +169,26 @@ class FileController extends Controller
             'alt_text' => ['nullable', 'string', 'max:255'],
             'document_date' => ['nullable', 'date'],
             'replacement' => ['nullable', 'file', 'max:' . self::MAX_UPLOAD_KB, 'mimes:' . self::ALLOWED_MIMES],
+
+            // Search Appearance panel. This controller is not an AdminController
+            // subclass, so it declares the SEO rules itself rather than getting
+            // them from rulesWithSeo().
+            'meta_title' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string', 'max:500'],
+            'canonical_url' => ['nullable', 'url', 'max:255'],
+            'og_image_file' => ['nullable', 'image', 'max:8192'],
         ]);
 
         // Both of these are toggle switches on the form, so they arrive as
         // booleans rather than as the values stored on the row.
         $data['is_published'] = $request->boolean('is_published');
+        $data['noindex'] = $request->boolean('noindex');
+        unset($data['og_image_file']);
+
+        if ($seoImage = $request->file('og_image_file')) {
+            $name = 'og-' . Str::lower(Str::random(8)) . '.' . $seoImage->getClientOriginalExtension();
+            $data['og_image'] = Storage::disk('public')->putFileAs('seo', $seoImage, $name);
+        }
         $data['visibility'] = $request->boolean('public_visibility')
             ? FileItem::VISIBILITY_PUBLIC
             : FileItem::VISIBILITY_STAFF;

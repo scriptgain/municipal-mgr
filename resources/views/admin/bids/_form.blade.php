@@ -72,8 +72,10 @@
             <x-input id="awarded_to" name="awarded_to" :value="old('awarded_to', $record->awarded_to)" />
         </x-field>
 
-        <div class="sm:col-span-2">
+        <div class="min-w-0 sm:col-span-2">
             <x-toggle name="is_published" :checked="old('is_published', $record->is_published ?? true)" label="Show On The Public Site" />
         </div>
     </div>
 </x-card>
+
+<x-admin.seo-panel :record="$record" kind="Bid" />

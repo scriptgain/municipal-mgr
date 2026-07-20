@@ -4,6 +4,6 @@
     icon="clock"
     :action="route('meetings.store')"
     :index="route('meetings.index')"
-    :record="$record">
+    :record="$record" :multipart="true">
     @include('admin.meetings._form')
 </x-admin.form-shell>

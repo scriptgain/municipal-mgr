@@ -152,7 +152,7 @@
                                         </dd>
                                     </div>
                                     @if ($connectStatus['synced_at'])
-                                        <div class="sm:col-span-2">
+                                        <div class="min-w-0 sm:col-span-2">
                                             <dt class="text-xs font-medium uppercase tracking-wide text-slate-400">Status Last Checked</dt>
                                             <dd class="mt-0.5 text-slate-700">{{ $connectStatus['synced_at'] }}</dd>
                                         </div>

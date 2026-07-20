@@ -95,6 +95,26 @@ Route::name('site.')->group(function () {
     Route::get('/pages/{page}', [Site\PageController::class, 'show'])->name('page');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Search engine surfaces
+|--------------------------------------------------------------------------
+| Outside the site.* name group and outside every gate, for the same reason
+| the public site is: a crawler must reach these while the panel is mid-setup.
+|
+| robots.txt is a ROUTE, not the static public/robots.txt that used to sit
+| beside it — the staging "discourage search engines" switch has to be able to
+| change its contents. The static file was removed when this shipped; if one is
+| ever restored to public/, the web server will serve it and silently shadow
+| this route.
+*/
+Route::get('/sitemap.xml', [Site\SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-{section}.xml', [Site\SitemapController::class, 'section'])
+    ->where('section', '[a-z]+')->name('sitemap.section');
+Route::get('/sitemap-{section}-{page}.xml', [Site\SitemapController::class, 'section'])
+    ->where(['section' => '[a-z]+', 'page' => '[0-9]+'])->name('sitemap.section.page');
+Route::get('/robots.txt', Site\RobotsController::class)->name('robots');
+
 // Brand favicon, accent-tinted from DB-driven branding (public; pre-login).
 Route::get('/brand/favicon', [FaviconController::class, 'svg'])->name('favicon.svg');
 Route::get('/brand/favicon-png', [FaviconController::class, 'faviconPng'])->name('favicon.png');
@@ -116,6 +136,9 @@ Route::prefix('admin')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'show'])->name('login');
         Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+        // Developer quick login. The action 404s unless the request IP matches
+        // the dev_login_ip setting, so this route is gated, not just hidden.
+        Route::post('/dev-login', [AuthController::class, 'devLogin'])->name('dev-login')->middleware('throttle:10,1');
     });
 
     Route::get('/magic/{user}', [AuthController::class, 'magic'])->name('magic-login')->middleware('signed');
@@ -203,6 +226,11 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
     Route::get('settings/site', [Admin\SiteSettingsController::class, 'edit'])->name('settings.site.edit');
     Route::put('settings/site', [Admin\SiteSettingsController::class, 'update'])->name('settings.site.update');
 
+    // Search engine defaults, the staging noindex switch, and the health check.
+    Route::get('settings/seo', [Admin\SeoSettingsController::class, 'edit'])->name('settings.seo.edit');
+    Route::put('settings/seo', [Admin\SeoSettingsController::class, 'update'])->name('settings.seo.update');
+    Route::get('settings/seo/health', Admin\SeoHealthController::class)->name('settings.seo.health');
+
     Route::get('settings/general', [GeneralSettingsController::class, 'edit'])->name('settings.general.edit');
     Route::put('settings/general', [GeneralSettingsController::class, 'update'])->name('settings.general.update');
     Route::get('settings/branding', [BrandingController::class, 'edit'])->name('settings.branding.edit');
@@ -256,6 +284,39 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
     Route::get('settings/users/{user}/edit', [UserController::class, 'edit'])->name('settings.users.edit');
     Route::put('settings/users/{user}', [UserController::class, 'update'])->name('settings.users.update');
     Route::delete('settings/users/{user}', [UserController::class, 'destroy'])->name('settings.users.destroy');
+    /*
+    | Appearance: Theme Manager and Template Manager.
+    |
+    | Both are administrator-only, enforced in the controllers rather than only
+    | here, because editing a template is equivalent to executing code on the
+    | server and that gate should not depend on one line of route configuration
+    | staying correct forever.
+    */
+    Route::get('settings/themes', [Admin\ThemeController::class, 'index'])->name('settings.themes.index');
+    Route::get('settings/themes/create', [Admin\ThemeController::class, 'create'])->name('settings.themes.create');
+    Route::post('settings/themes', [Admin\ThemeController::class, 'store'])->name('settings.themes.store');
+    Route::post('settings/themes/import', [Admin\ThemeController::class, 'import'])->name('settings.themes.import');
+    Route::delete('settings/themes/bulk', [Admin\ThemeController::class, 'bulkDestroy'])->name('settings.themes.bulk-destroy');
+    Route::get('settings/themes/{theme}/edit', [Admin\ThemeController::class, 'edit'])->name('settings.themes.edit');
+    Route::put('settings/themes/{theme}', [Admin\ThemeController::class, 'update'])->name('settings.themes.update');
+    Route::post('settings/themes/{theme}/activate', [Admin\ThemeController::class, 'activate'])->name('settings.themes.activate');
+    Route::post('settings/themes/{theme}/duplicate', [Admin\ThemeController::class, 'duplicate'])->name('settings.themes.duplicate');
+    Route::get('settings/themes/{theme}/export', [Admin\ThemeController::class, 'export'])->name('settings.themes.export');
+    Route::delete('settings/themes/{theme}', [Admin\ThemeController::class, 'destroy'])->name('settings.themes.destroy');
+
+    Route::get('settings/templates', [Admin\TemplateController::class, 'index'])->name('settings.templates.index');
+    Route::post('settings/templates/preview/stop', [Admin\TemplateController::class, 'stopPreview'])->name('settings.templates.preview.stop');
+    // {view} is a dot-notation Blade view name (site.home), so the default
+    // [^/]+ constraint is exactly right; the catalog allowlist does the rest.
+    Route::get('settings/templates/{view}/edit', [Admin\TemplateController::class, 'edit'])->name('settings.templates.edit');
+    Route::put('settings/templates/{view}', [Admin\TemplateController::class, 'update'])->name('settings.templates.update');
+    Route::post('settings/templates/{view}/preview', [Admin\TemplateController::class, 'preview'])->name('settings.templates.preview');
+    Route::post('settings/templates/{view}/check', [Admin\TemplateController::class, 'check'])->name('settings.templates.check');
+    Route::post('settings/templates/{view}/compiled', [Admin\TemplateController::class, 'compiled'])->name('settings.templates.compiled');
+    Route::delete('settings/templates/{view}', [Admin\TemplateController::class, 'reset'])->name('settings.templates.reset');
+    Route::get('settings/templates/{view}/versions/{version}/diff', [Admin\TemplateController::class, 'diff'])->name('settings.templates.diff');
+    Route::post('settings/templates/{view}/versions/{version}/revert', [Admin\TemplateController::class, 'revert'])->name('settings.templates.revert');
+
     Route::get('settings/audit', [AuditLogController::class, 'index'])->name('settings.audit.index');
     Route::delete('settings/audit/selected', [AuditLogController::class, 'destroySelected'])->name('settings.audit.destroy-selected');
     Route::delete('settings/audit/all', [AuditLogController::class, 'destroyAll'])->name('settings.audit.destroy-all');

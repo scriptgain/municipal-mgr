@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\Publishable;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,16 +13,17 @@ use Illuminate\Support\Str;
 
 class NewsPost extends Model
 {
-    use Auditable, HasSlug, Publishable;
+    use Auditable, HasSeo, HasSlug, Publishable;
 
     protected $fillable = [
         'department_id', 'title', 'slug', 'category', 'excerpt', 'body',
         'image_path', 'is_featured', 'status', 'published_at', 'author_id',
+        'meta_title', 'meta_description', 'og_image', 'canonical_url', 'noindex',
     ];
 
     protected function casts(): array
     {
-        return ['published_at' => 'datetime', 'is_featured' => 'bool'];
+        return ['published_at' => 'datetime', 'is_featured' => 'bool', 'noindex' => 'bool'];
     }
 
     public function scopeLatestFirst(Builder $q): Builder
@@ -43,5 +45,29 @@ class NewsPost extends Model
     public function teaser(int $chars = 180): string
     {
         return Str::limit(trim((string) ($this->excerpt ?: strip_tags((string) $this->body))), $chars);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SEO                                                                 */
+    /* ------------------------------------------------------------------ */
+
+    protected function seoRouteName(): ?string
+    {
+        return 'site.news.show';
+    }
+
+    public function seoSchemaType(): ?string
+    {
+        return 'NewsArticle';
+    }
+
+    protected function seoDescriptionSources(): array
+    {
+        return ['excerpt', 'body'];
+    }
+
+    protected function seoImageSources(): array
+    {
+        return ['og_image', 'image_path'];
     }
 }

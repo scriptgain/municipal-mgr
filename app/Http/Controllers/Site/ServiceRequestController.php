@@ -22,6 +22,28 @@ class ServiceRequestController extends Controller
 {
     public function create()
     {
+        /*
+        | Report An Issue is the single most-searched civic task on a municipal
+        | site ("report pothole <town>"), so it carries GovernmentService
+        | markup of its own rather than inheriting a plain WebPage.
+        */
+        seo()->set([
+            'description' => 'Report a pothole, streetlight outage, water problem, or other issue to '
+                . \App\Services\SiteSettings::formalName() . '. No account needed, and you get a tracking link.',
+        ])->schema([
+            '@type' => 'GovernmentService',
+            'name' => 'Report An Issue',
+            'serviceType' => 'Citizen Issue Reporting',
+            'description' => 'Non-emergency service requests from residents: road damage, streetlights, '
+                . 'water and sewer, missed collection, code concerns, and park maintenance.',
+            'provider' => ['@id' => route('site.home') . '#organization'],
+            'availableChannel' => [
+                '@type' => 'ServiceChannel',
+                'serviceUrl' => route('site.report'),
+                'name' => 'Online Reporting Form',
+            ],
+        ]);
+
         return view('site.report.create', [
             'categories' => config('municipal.request_categories'),
             'departments' => Department::published()->ordered()->get(['id', 'name']),

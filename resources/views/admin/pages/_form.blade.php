@@ -51,7 +51,7 @@
             <x-input id="meta_description" name="meta_description" :value="old('meta_description', $record->meta_description)" />
         </x-field>
 
-        <div class="sm:col-span-2">
+        <div class="min-w-0 sm:col-span-2">
             <x-toggle name="show_in_nav" :checked="old('show_in_nav', $record->show_in_nav)"
                       label="Show In Navigation"
                       description="Adds this page to the primary menu automatically." />
@@ -133,3 +133,5 @@
         </div>
     </div>
 </x-card>
+
+<x-admin.seo-panel :record="$record" kind="Page" />

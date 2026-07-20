@@ -5,7 +5,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 <form method="POST" action="{{ route('site.report.store') }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
 

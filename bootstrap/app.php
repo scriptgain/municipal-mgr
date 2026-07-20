@@ -12,9 +12,23 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Trust the local reverse proxy so $request->ip() is the real client IP
-        // (needed for firewall IP bans / auto-ban behind nginx).
-        $middleware->trustProxies(at: ['127.0.0.1', '::1']);
+        // Trust the local reverse proxy AND Cloudflare, so $request->ip() is the
+        // real visitor rather than a Cloudflare edge address. Without the CF
+        // ranges every recorded IP is Cloudflare's, which silently breaks the
+        // audit log, login-attempt records, auto-ban, and any IP allowlist.
+        //
+        // Deliberately NOT '*': the origin is reachable directly on 80/443, so
+        // trusting every proxy would let anyone spoof X-Forwarded-For by
+        // skipping Cloudflare entirely. Ranges from cloudflare.com/ips-v4|v6.
+        $middleware->trustProxies(at: [
+            '127.0.0.1', '::1',
+            '173.245.48.0/20', '103.21.244.0/22', '103.22.200.0/22', '103.31.4.0/22',
+            '141.101.64.0/18', '108.162.192.0/18', '190.93.240.0/20', '188.114.96.0/20',
+            '197.234.240.0/22', '198.41.128.0/17', '162.158.0.0/15', '104.16.0.0/13',
+            '104.24.0.0/14', '172.64.0.0/13', '131.0.72.0/22',
+            '2400:cb00::/32', '2606:4700::/32', '2803:f800::/32', '2405:b500::/32',
+            '2405:8100::/32', '2a06:98c0::/29', '2c0f:f248::/32',
+        ]);
         // Stripe posts payment confirmations with no session and no CSRF token.
         // The endpoint is protected by webhook SIGNATURE verification instead,
         // which is stronger: it proves the request came from Stripe, not merely
@@ -42,6 +56,13 @@ return Application::configure(basePath: dirname(__DIR__))
         // First-run guard: force a fresh install through /setup until complete.
         $middleware->web(append: [
             \App\Http\Middleware\EnsureSetup::class,
+        ]);
+
+        // Template Manager preview layer. Runs after the session and the auth
+        // guard have populated the request, and only ever affects the admin who
+        // started the preview.
+        $middleware->web(append: [
+            \App\Http\Middleware\TemplatePreview::class,
         ]);
         // Run the setup gate BEFORE auth so a brand-new install (no admin yet,
         // no session) lands on /setup instead of dead-ending at /login. Sits

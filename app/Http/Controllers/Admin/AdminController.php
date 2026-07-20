@@ -101,12 +101,14 @@ abstract class AdminController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->transform($request->validate($this->rules($request)), $request);
+        $data = $this->transform($request->validate($this->rulesWithSeo($request)), $request);
+        $data = $this->applySeo($data, $request);
         $record = new $this->model;
         $record->fill($data);
         $this->applyDepartmentDefault($record);
         $record->save();
         $this->afterSave($record, $request);
+        $this->storeSeoImage($record, $request);
 
         return redirect()->route("{$this->routes}.index")
             ->with('status', "{$this->label} \"{$this->title($record)}\" Created.");
@@ -132,10 +134,12 @@ abstract class AdminController extends Controller
         $record = $this->findOrFail($key);
         $this->authorizeRecord($record);
 
-        $data = $this->transform($request->validate($this->rules($request, $record)), $request, $record);
+        $data = $this->transform($request->validate($this->rulesWithSeo($request, $record)), $request, $record);
+        $data = $this->applySeo($data, $request);
         $record->fill($data);
         $record->save();
         $this->afterSave($record, $request);
+        $this->storeSeoImage($record, $request);
 
         return redirect()->route("{$this->routes}.index")
             ->with('status', "{$this->label} \"{$this->title($record)}\" Saved.");
@@ -175,6 +179,78 @@ abstract class AdminController extends Controller
         AuditLog::record('bulk-deleted', "{$n} {$this->label} record(s) deleted in bulk");
 
         return back()->with('status', "{$n} {$this->label} Record(s) Deleted.");
+    }
+
+    /* ---------------------------------------------------------------- */
+    /* SEO                                                               */
+    /* ---------------------------------------------------------------- */
+
+    /**
+     * Does this controller's model carry the shared SEO columns?
+     *
+     * Checked against the trait rather than the fillable list so a model that
+     * uses HasSeo is wired up automatically and one that does not is left
+     * completely alone.
+     */
+    protected function hasSeoFields(): bool
+    {
+        return in_array(
+            \App\Models\Concerns\HasSeo::class,
+            class_uses_recursive($this->model),
+            true
+        );
+    }
+
+    /**
+     * The resource's own rules plus the Search Appearance panel's.
+     *
+     * Added centrally so every content type validates these identically and a
+     * new resource controller gets the SEO panel for free.
+     */
+    protected function rulesWithSeo(Request $request, ?Model $record = null): array
+    {
+        $rules = $this->rules($request, $record);
+
+        if (! $this->hasSeoFields()) {
+            return $rules;
+        }
+
+        return $rules + [
+            'meta_title' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string', 'max:500'],
+            'canonical_url' => ['nullable', 'url', 'max:255'],
+            'og_image_file' => ['nullable', 'image', 'max:8192'],
+        ];
+    }
+
+    /** Fold the panel's toggle into the write, and keep the file out of it. */
+    protected function applySeo(array $data, Request $request): array
+    {
+        if (! $this->hasSeoFields()) {
+            return $data;
+        }
+
+        unset($data['og_image_file']);
+        $data['noindex'] = $request->boolean('noindex');
+
+        return $data;
+    }
+
+    /**
+     * Store an uploaded social share image.
+     *
+     * Runs after afterSave() rather than inside it: several resources override
+     * afterSave for their own uploads, and a subclass forgetting to call the
+     * parent would have silently dropped this.
+     */
+    protected function storeSeoImage(Model $record, Request $request): void
+    {
+        if (! $this->hasSeoFields()) {
+            return;
+        }
+        if ($path = $this->storeUpload($request, 'og_image_file', 'seo')) {
+            $record->update(['og_image' => $path]);
+        }
     }
 
     /* ---------------------------------------------------------------- */

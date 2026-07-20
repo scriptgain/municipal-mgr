@@ -6,6 +6,6 @@
     method="PUT"
     :index="route('bids.index')"
     :record="$record"
-    :deleteAction="route('bids.destroy', $record)">
+    :deleteAction="route('bids.destroy', $record)" :multipart="true">
     @include('admin.bids._form')
 </x-admin.form-shell>

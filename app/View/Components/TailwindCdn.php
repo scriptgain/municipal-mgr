@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Services\Themes\ThemeService;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -17,7 +18,7 @@ class TailwindCdn extends Component
 {
     public string $tokens;
 
-    public function __construct()
+    public function __construct(private ThemeService $themes)
     {
         $this->tokens = $this->buildTokens();
     }
@@ -48,6 +49,11 @@ class TailwindCdn extends Component
                 . "  --color-seal-700: color-mix(in srgb, {$this->safe($accentAlt)}, black 25%);\n"
                 . "}\n";
         }
+
+        // The active (or previewed) theme is appended LAST so its tokens win
+        // over both app.css and the Branding accent. It emits nothing at all
+        // while the install sits on the shipped default theme.
+        $css .= rescue(fn () => $this->themes->css(), '', false);
 
         return $css;
     }

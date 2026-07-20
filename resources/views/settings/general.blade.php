@@ -5,7 +5,7 @@
         @csrf @method('PUT')
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 space-y-6">
+            <div class="min-w-0 lg:col-span-2 space-y-6">
 
                 {{-- Regional & display --}}
                 <x-card title="Regional & Display" subtitle="How dates, times, and lists appear across the app.">

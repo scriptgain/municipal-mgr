@@ -1,7 +1,9 @@
-@php $accent = config('brand.accent'); @endphp
-@if ($accent && strtolower($accent) !== '#06b6d4')
-    {{-- Re-tint the entire brand ramp from the chosen accent (custom brands only;
-         the default cyan uses the hand-tuned scale in app.css). --}}
+{{-- Re-tint the brand ramp from a single accent, after the browser Tailwind
+     build has injected its own styles. Which accent wins (an active theme vs
+     the Branding settings screen) is decided in App\View\Components\AccentStyle
+     so this file stays markup only. Note there is deliberately no @php on line
+     one: Blade mis-parses a raw PHP block in the first line of a view. --}}
+@if ($needed)
     <style>
         :root {
             --accent: {{ $accent }};

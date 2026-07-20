@@ -5,7 +5,7 @@
 
     <x-site.section :divider="false">
         <div class="grid gap-10 lg:grid-cols-3">
-            <div class="lg:col-span-2">
+            <div class="min-w-0 lg:col-span-2">
                 @if ($meeting->status === 'cancelled')
                     <div class="mb-6 rounded-xl bg-rose-50 px-5 py-4 font-semibold text-rose-800 ring-1 ring-rose-200">
                         This Meeting Has Been Cancelled.
