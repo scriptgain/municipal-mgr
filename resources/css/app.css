@@ -1,0 +1,128 @@
+/*
+  MunicipalMGR design system — "Civic Navy".
+  Deep navy authority + a seal-gold ceremonial accent, on warm-neutral slate.
+  Tokens live here once; the browser Tailwind build reads this file directly
+  (see the x-tailwind-cdn component) so there is no Vite build step anywhere.
+
+  Accessibility is a product requirement here, not a nicety: navy-700 on white
+  clears WCAG AA for body text, gold is used only for non-text trim, and every
+  interactive element keeps a visible focus ring.
+*/
+@theme {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+        Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, ui-serif, serif;
+
+    /* Brand accent (civic navy). Change these to rebrand. */
+    --color-brand-50: #eff5fb;
+    --color-brand-100: #d8e6f4;
+    --color-brand-200: #b0cbe8;
+    --color-brand-300: #7ea9d6;
+    --color-brand-400: #4a80bd;
+    --color-brand-500: #0f4c81;
+    --color-brand-600: #0d4372;
+    --color-brand-700: #0a355a;
+    --color-brand-800: #082b49;
+    --color-brand-900: #061f35;
+    --color-brand-950: #041424;
+
+    /* Seal gold — ceremonial trim, rules, and eyebrows. Never body text. */
+    --color-seal-100: #f6eeda;
+    --color-seal-300: #e2c98f;
+    --color-seal-500: #c8a45c;
+    --color-seal-700: #a07f3d;
+
+    /* Dark chrome (top utility bar + public footer). */
+    --color-chrome: #061f35;
+    --color-chrome-soft: #0a2b47;
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+    }
+    body {
+        @apply bg-slate-50 text-slate-800 antialiased;
+    }
+    /* Kill the black focus flash on click; keep keyboard focus rings. A
+       government site must be fully operable from the keyboard. */
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
+    :focus-visible {
+        @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white;
+    }
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
+    [x-cloak] {
+        display: none !important;
+    }
+    /* Respect a visitor's reduced-motion preference. */
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+@layer components {
+    /* Skip link: visually hidden until focused, then pinned top-left. */
+    .skip-link {
+        @apply sr-only;
+    }
+    .skip-link:focus {
+        @apply not-sr-only fixed top-2 left-2 z-[100] rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-lg;
+    }
+    /* Visible divider between page sections (house style). */
+    .section-divider {
+        @apply border-t border-slate-200;
+    }
+    /* Ceremonial gold rule under a civic section heading. */
+    .seal-rule {
+        @apply block h-1 w-14 rounded-full bg-seal-500;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    /* Long-form CMS content: readable defaults without a typography plugin. */
+    .prose-civic {
+        @apply text-[17px] leading-relaxed text-slate-700;
+    }
+    .prose-civic h2 {
+        @apply mt-8 mb-3 text-2xl font-semibold tracking-tight text-slate-900;
+    }
+    .prose-civic h3 {
+        @apply mt-6 mb-2 text-lg font-semibold text-slate-900;
+    }
+    .prose-civic p {
+        @apply mb-4;
+    }
+    .prose-civic ul {
+        @apply mb-4 list-disc space-y-1 pl-6;
+    }
+    .prose-civic ol {
+        @apply mb-4 list-decimal space-y-1 pl-6;
+    }
+    .prose-civic a {
+        @apply font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800;
+    }
+    .prose-civic table {
+        @apply mb-4 w-full border-collapse text-sm;
+    }
+    .prose-civic th, .prose-civic td {
+        @apply border border-slate-200 px-3 py-2 text-left;
+    }
+    .prose-civic th {
+        @apply bg-slate-50 font-semibold text-slate-900;
+    }
+}
