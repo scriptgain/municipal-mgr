@@ -293,6 +293,11 @@
                     <h2 class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white">Resources</h2>
                     <span class="seal-rule mt-3 w-8"></span>
                     <ul class="mt-4 space-y-2.5 text-sm">
+                        <li>
+                            <a href="{{ route('site.changelog') }}" class="text-slate-400 transition hover:text-white">
+                                What's New
+                            </a>
+                        </li>
                         @foreach ($footerNav as $item)
                             <li>
                                 <a href="{{ $item['href'] }}" @if ($item['new_tab']) target="_blank" rel="noopener" @endif
