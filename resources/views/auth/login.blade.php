@@ -55,23 +55,35 @@
 
                 <x-button type="submit" class="w-full">Sign In</x-button>
             </form>
-            @isset($devLoginUser)
-                @if ($devLoginUser)
-                    {{-- Only rendered when the request IP matches the dev_login_ip
-                         setting. The endpoint enforces the same check, so this is
-                         a convenience, not the security boundary. --}}
-                    <div class="mt-6 section-divider pt-6">
-                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Developer Access</p>
-                        <form method="POST" action="{{ route('dev-login') }}" class="mt-3">
-                            @csrf
-                            <x-button type="submit" variant="secondary" class="w-full">
-                                Sign In As {{ $devLoginUser->name }}
-                            </x-button>
-                        </form>
-                        <p class="mt-2 text-xs text-slate-500">Visible only from your allowlisted IP address.</p>
+            @if (! empty($demoPersonas))
+                {{-- Only rendered when the request IP matches the dev_login_ip
+                     setting. The endpoint enforces the same check, so these
+                     buttons are a convenience, not the security boundary. Each
+                     signs straight in as a staff persona, bypassing the login
+                     captcha as the trusted shortcut it is. --}}
+                <div class="mt-6 section-divider pt-6">
+                    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Demo Logins</p>
+                    <p class="mt-1 text-xs text-slate-500">One click to preview each staff experience. Visible only from your allowlisted IP address.</p>
+                    <div class="mt-3 space-y-2">
+                        @foreach ($demoPersonas as $persona)
+                            <form method="POST" action="{{ route('dev-login', $persona['key']) }}">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full flex items-start gap-3 rounded-lg bg-white px-3 py-2.5 text-left ring-1 ring-inset ring-slate-300 transition hover:bg-slate-50 hover:ring-brand-300">
+                                    <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-200">
+                                        <x-icon :name="$persona['icon']" class="h-4 w-4" />
+                                    </span>
+                                    <span class="min-w-0">
+                                        <span class="block text-sm font-semibold text-slate-800">{{ $persona['label'] }}</span>
+                                        <span class="block text-xs text-slate-500">{{ $persona['description'] }}</span>
+                                        <span class="mt-0.5 block text-xs text-slate-400">As {{ $persona['name'] }}</span>
+                                    </span>
+                                </button>
+                            </form>
+                        @endforeach
                     </div>
-                @endif
-            @endisset
+                </div>
+            @endif
 
         </div>
     </div>

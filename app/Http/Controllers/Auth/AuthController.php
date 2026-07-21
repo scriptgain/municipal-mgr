@@ -10,52 +10,135 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    /**
+     * Staff demo personas offered as one-click logins from the allowlisted IP.
+     *
+     * Residents never log in to a municipal site, so every persona is a STAFF
+     * role. Each entry is presentation only; the account it resolves to is
+     * looked up in resolvePersona() so the picker degrades gracefully when a
+     * given demo user has not been seeded.
+     */
+    public const DEMO_PERSONAS = [
+        'admin' => [
+            'label' => 'Administrator',
+            'description' => 'Full Access To Every Panel And Setting.',
+            'icon' => 'shield',
+        ],
+        'editor' => [
+            'label' => 'Site Editor',
+            'description' => 'Edits Content Across Every Department.',
+            'icon' => 'edit',
+        ],
+        'department_editor' => [
+            'label' => 'Department Editor',
+            'description' => 'Scoped To Parks And Recreation Only.',
+            'icon' => 'building',
+        ],
+        'viewer' => [
+            'label' => 'Viewer (Read Only)',
+            'description' => 'Read Only. Denied The Resident PII Pages.',
+            'icon' => 'lock',
+        ],
+    ];
+
     public function show(Request $request)
     {
         return view('auth.login', [
-            'devLoginUser' => self::devLoginUser($request),
+            'demoPersonas' => self::demoPersonas($request),
         ]);
     }
 
     /**
-     * One-click developer sign-in, restricted to an allowlisted IP.
+     * One-click staff sign-in, restricted to an allowlisted IP.
      *
-     * Both the button and the endpoint use this same check, so the route is not
-     * merely hidden: a POST from any other address 404s. Inert unless BOTH
-     * dev_login_ip and dev_login_email are set in Settings, so it can be
-     * switched off from the admin without a deploy.
+     * Both the buttons and the endpoint use demoLoginAllowed(), so the route is
+     * not merely hidden: a POST from any other address 404s. Inert unless
+     * dev_login_ip is set in Settings, so the whole picker can be switched off
+     * from the admin without a deploy.
      *
      * This only resolves to a real client IP because trustProxies now includes
      * the Cloudflare ranges. Under the old loopback-only list every request
      * looked like a Cloudflare edge address and this would match nobody.
      */
-    public static function devLoginUser(Request $request): ?\App\Models\User
+    public static function demoLoginAllowed(Request $request): bool
     {
         $allowed = trim((string) \App\Models\Setting::get('dev_login_ip', ''));
-        $email = trim((string) \App\Models\Setting::get('dev_login_email', ''));
 
-        if ($allowed === '' || $email === '') {
-            return null;
+        if ($allowed === '') {
+            return false;
         }
 
         $ips = array_filter(array_map('trim', explode(',', $allowed)));
 
-        if (! in_array((string) $request->ip(), $ips, true)) {
+        return in_array((string) $request->ip(), $ips, true);
+    }
+
+    /** The demo persona each key maps to, resolved by email with role fallbacks. */
+    public static function resolvePersona(string $key): ?\App\Models\User
+    {
+        if (! array_key_exists($key, self::DEMO_PERSONAS)) {
             return null;
         }
 
-        return \App\Models\User::where('email', $email)->first();
+        $email = match ($key) {
+            'admin' => 'clerk@cottonwoodsprings.example.gov',
+            'editor' => 'demo-editor@cottonwoodsprings.example.gov',
+            'department_editor' => 'parks-editor@cottonwoodsprings.example.gov',
+            'viewer' => 'demo-viewer@cottonwoodsprings.example.gov',
+            default => '',
+        };
+
+        if ($email !== '' && $user = \App\Models\User::where('email', $email)->first()) {
+            return $user;
+        }
+
+        // The admin persona also honours the legacy dev_login_email setting, so
+        // an install that only ever configured that one account still works.
+        if ($key === 'admin') {
+            $devEmail = trim((string) \App\Models\Setting::get('dev_login_email', ''));
+            if ($devEmail !== '' && $user = \App\Models\User::where('email', $devEmail)->first()) {
+                return $user;
+            }
+        }
+
+        // Last resort: any account holding the role, so the picker is never
+        // silently missing a persona the install actually has.
+        $role = $key === 'admin' ? 'admin' : $key;
+
+        return \App\Models\User::where('role', $role)->orderByDesc('is_active')->first();
     }
 
-    public function devLogin(Request $request)
+    /**
+     * The personas to render on the login screen. Empty (nothing shown) unless
+     * the request comes from the allowlisted IP.
+     */
+    public static function demoPersonas(Request $request): array
     {
-        $user = self::devLoginUser($request);
+        if (! self::demoLoginAllowed($request)) {
+            return [];
+        }
+
+        $out = [];
+        foreach (self::DEMO_PERSONAS as $key => $meta) {
+            if ($user = self::resolvePersona($key)) {
+                $out[] = $meta + ['key' => $key, 'name' => $user->name];
+            }
+        }
+
+        return $out;
+    }
+
+    public function devLogin(Request $request, string $persona = 'admin')
+    {
+        abort_unless(self::demoLoginAllowed($request), 404);
+
+        $user = self::resolvePersona($persona);
 
         abort_if($user === null, 404);
 
         Auth::login($user);
         $request->session()->regenerate();
-        \App\Models\AuditLog::record('login', 'Signed in via developer quick login from '.$request->ip());
+        \App\Models\AuditLog::record('login', 'Signed in via demo persona ['.$persona.'] quick login from '.$request->ip());
 
         return redirect()->intended(route('dashboard'));
     }

@@ -7,35 +7,39 @@
         @if ($departments->count())
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($departments as $department)
-                    <article class="flex h-full flex-col rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm transition hover:shadow-md">
-                        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-200">
+                    {{-- Icon floats left, content beside it, matching the civic
+                         list rows elsewhere on the site. --}}
+                    <article class="flex h-full gap-4 rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm transition hover:shadow-md">
+                        <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                             <x-icon :name="$department->icon ?: 'building'" class="w-6 h-6" />
                         </span>
-                        <h2 class="mt-4 text-lg font-semibold text-slate-900">
-                            <a href="{{ route('site.departments.show', $department->slug) }}" class="hover:text-brand-700 hover:underline">{{ $department->name }}</a>
-                        </h2>
-                        @if ($department->summary)
-                            <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{{ $department->summary }}</p>
-                        @endif
-                        {{-- Only render the contact list when there is something in it,
-                             otherwise the mt-4 leaves an orphaned gap in the card. --}}
-                        @if ($department->phone || $department->email)
-                            <dl class="mt-4 space-y-1 text-sm">
-                                @if ($department->phone)
-                                    <div class="flex items-center gap-2 text-slate-600">
-                                        <x-icon name="phone" class="w-4 h-4 shrink-0 text-slate-400" />
-                                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $department->phone) }}" class="whitespace-nowrap hover:text-brand-700 hover:underline">{{ $department->phone }}</a>
-                                    </div>
-                                @endif
-                                @if ($department->email)
-                                    <div class="flex min-w-0 items-center gap-2 text-slate-600">
-                                        <x-icon name="envelope" class="w-4 h-4 shrink-0 text-slate-400" />
-                                        <a href="mailto:{{ $department->email }}" class="min-w-0 truncate hover:text-brand-700 hover:underline">{{ $department->email }}</a>
-                                    </div>
-                                @endif
-                            </dl>
-                        @endif
-                        <p class="mt-4 text-xs text-slate-400">{{ $department->staff_count }} Staff Listed</p>
+                        <div class="flex min-w-0 flex-1 flex-col">
+                            <h2 class="text-lg font-semibold text-slate-900">
+                                <a href="{{ route('site.departments.show', $department->slug) }}" class="hover:text-brand-700 hover:underline">{{ $department->name }}</a>
+                            </h2>
+                            @if ($department->summary)
+                                <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{{ $department->summary }}</p>
+                            @endif
+                            {{-- Only render the contact list when there is something in it,
+                                 otherwise the mt-4 leaves an orphaned gap in the card. --}}
+                            @if ($department->phone || $department->email)
+                                <dl class="mt-4 space-y-1 text-sm">
+                                    @if ($department->phone)
+                                        <div class="flex items-center gap-2 text-slate-600">
+                                            <x-icon name="phone" class="w-4 h-4 shrink-0 text-slate-400" />
+                                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $department->phone) }}" class="whitespace-nowrap hover:text-brand-700 hover:underline">{{ $department->phone }}</a>
+                                        </div>
+                                    @endif
+                                    @if ($department->email)
+                                        <div class="flex min-w-0 items-center gap-2 text-slate-600">
+                                            <x-icon name="envelope" class="w-4 h-4 shrink-0 text-slate-400" />
+                                            <a href="mailto:{{ $department->email }}" class="min-w-0 truncate hover:text-brand-700 hover:underline">{{ $department->email }}</a>
+                                        </div>
+                                    @endif
+                                </dl>
+                            @endif
+                            <p class="mt-4 text-xs text-slate-400">{{ $department->staff_count }} Staff Listed</p>
+                        </div>
                     </article>
                 @endforeach
             </div>

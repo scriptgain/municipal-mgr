@@ -137,9 +137,12 @@ Route::prefix('admin')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'show'])->name('login');
         Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:10,1', 'captcha:login']);
-        // Developer quick login. The action 404s unless the request IP matches
-        // the dev_login_ip setting, so this route is gated, not just hidden.
-        Route::post('/dev-login', [AuthController::class, 'devLogin'])->name('dev-login')->middleware('throttle:10,1');
+        // Demo persona quick login. The action 404s unless the request IP
+        // matches the dev_login_ip setting, so this route is gated, not just
+        // hidden. {persona} is constrained to the known staff roles.
+        Route::post('/dev-login/{persona}', [AuthController::class, 'devLogin'])
+            ->whereIn('persona', ['admin', 'editor', 'department_editor', 'viewer'])
+            ->name('dev-login')->middleware('throttle:20,1');
     });
 
     Route::get('/magic/{user}', [AuthController::class, 'magic'])->name('magic-login')->middleware('signed');

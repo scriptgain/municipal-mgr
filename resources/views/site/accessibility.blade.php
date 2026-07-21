@@ -4,7 +4,7 @@
                       :crumbs="[['label' => 'Accessibility']]" />
 
     <x-site.section :divider="false">
-        <div class="mx-auto max-w-3xl prose-civic">
+        <div class="prose-civic max-w-none">
             <h2>Our Commitment</h2>
             <p>
                 The {{ $siteFormalName }} is committed to ensuring that this website is accessible to
