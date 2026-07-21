@@ -73,10 +73,13 @@
  * Both layers sit behind the content via -z-10 on the elements themselves.
  */
 .site-hero-wash {
+    /* A cleaner, brighter civic navy: the brand blue leads instead of
+       near-black, with one soft lighter-blue glow top-right and a deeper pool
+       bottom-left for depth. Reads confident rather than muddy. */
     background:
-        radial-gradient(120% 90% at 12% 0%, #0d4372 0%, rgba(13, 67, 114, 0) 55%),
-        radial-gradient(90% 80% at 95% 20%, #0a355a 0%, rgba(10, 53, 90, 0) 60%),
-        linear-gradient(150deg, #061f35 0%, #082b49 45%, #0a355a 100%);
+        radial-gradient(115% 130% at 88% -12%, #2372b4 0%, rgba(35, 114, 180, 0) 46%),
+        radial-gradient(100% 120% at 0% 108%, #0a3a63 0%, rgba(10, 58, 99, 0) 52%),
+        linear-gradient(150deg, #0b3a66 0%, #0f4c81 58%, #0c4074 100%);
 }
 
 /*

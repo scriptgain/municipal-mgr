@@ -109,7 +109,7 @@
                 <nav class="hidden lg:flex items-center gap-1" aria-label="Primary">
                     <a href="{{ route('site.home') }}"
                        @if (request()->routeIs('site.home')) aria-current="page" @endif
-                       class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ request()->routeIs('site.home') ? 'bg-brand-50 text-brand-800' : 'text-slate-700 hover:bg-brand-50 hover:text-brand-800' }}">
+                       class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ request()->routeIs('site.home') ? 'bg-brand-50 text-brand-800 ring-1 ring-brand-200' : 'text-slate-700 ring-1 ring-transparent hover:bg-brand-50 hover:text-brand-800 hover:ring-brand-200' }}">
                         <x-icon name="home" class="w-4 h-4 {{ request()->routeIs('site.home') ? 'text-brand-700' : 'text-slate-400 group-hover:text-brand-600' }} transition-colors" />
                         Home
                     </a>
@@ -117,7 +117,7 @@
                         @if (count($item['children']))
                             <div x-data="{ open: false }" class="relative" @click.outside="open = false" @keydown.escape="open = false">
                                 <button type="button" @click="open = !open" :aria-expanded="open.toString()"
-                                        class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800' : 'text-slate-700 hover:bg-brand-50 hover:text-brand-800' }}">
+                                        class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800 ring-1 ring-brand-200' : 'text-slate-700 ring-1 ring-transparent hover:bg-brand-50 hover:text-brand-800 hover:ring-brand-200' }}">
                                     @if ($item['icon'])
                                         <x-icon :name="$item['icon']" class="w-4 h-4 {{ $item['is_active'] ? 'text-brand-700' : 'text-slate-400 group-hover:text-brand-600' }} transition-colors" />
                                     @endif
@@ -128,7 +128,7 @@
                                      class="absolute left-0 z-40 mt-1 w-72 rounded-xl bg-white p-2 shadow-xl ring-1 ring-slate-200">
                                     @foreach ($item['children'] as $child)
                                         <a href="{{ $child['href'] }}" @if ($child['new_tab']) target="_blank" rel="noopener" @endif
-                                           class="flex items-start gap-3 rounded-lg px-3 py-2.5 hover:bg-brand-50 transition">
+                                           class="flex items-start gap-3 rounded-lg px-3 py-2.5 ring-1 ring-transparent transition hover:bg-brand-50 hover:ring-brand-200">
                                             @if ($child['icon'])
                                                 <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                                                     <x-icon :name="$child['icon']" class="w-4 h-4" />
@@ -145,7 +145,7 @@
                         @else
                             <a href="{{ $item['href'] }}" @if ($item['new_tab']) target="_blank" rel="noopener" @endif
                                @if ($item['is_active']) aria-current="page" @endif
-                               class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800' : 'text-slate-700 hover:bg-brand-50 hover:text-brand-800' }}">
+                               class="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800 ring-1 ring-brand-200' : 'text-slate-700 ring-1 ring-transparent hover:bg-brand-50 hover:text-brand-800 hover:ring-brand-200' }}">
                                 @if ($item['icon'])
                                     <x-icon :name="$item['icon']" class="w-4 h-4 {{ $item['is_active'] ? 'text-brand-700' : 'text-slate-400 group-hover:text-brand-600' }} transition-colors" />
                                 @endif
@@ -171,7 +171,7 @@
             <nav class="{{ $maxWidth }} mx-auto px-4 sm:px-6 py-4 space-y-1" aria-label="Primary Mobile">
                 <a href="{{ route('site.home') }}"
                    @if (request()->routeIs('site.home')) aria-current="page" @endif
-                   class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition {{ request()->routeIs('site.home') ? 'bg-brand-50 text-brand-800' : 'text-slate-800 hover:bg-brand-50' }}">
+                   class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition {{ request()->routeIs('site.home') ? 'bg-brand-50 text-brand-800 ring-1 ring-brand-200' : 'text-slate-800 ring-1 ring-transparent hover:bg-brand-50 hover:ring-brand-200' }}">
                     <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                         <x-icon name="home" class="w-4 h-4" />
                     </span>
@@ -180,7 +180,7 @@
                 @foreach ($primaryNav as $item)
                     <a href="{{ $item['href'] }}"
                        @if ($item['is_active']) aria-current="page" @endif
-                       class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800' : 'text-slate-800 hover:bg-brand-50' }}">
+                       class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition {{ $item['is_active'] ? 'bg-brand-50 text-brand-800 ring-1 ring-brand-200' : 'text-slate-800 ring-1 ring-transparent hover:bg-brand-50 hover:ring-brand-200' }}">
                         @if ($item['icon'])
                             <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-200">
                                 <x-icon :name="$item['icon']" class="w-4 h-4" />
@@ -293,11 +293,6 @@
                     <h2 class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white">Resources</h2>
                     <span class="seal-rule mt-3 w-8"></span>
                     <ul class="mt-4 space-y-2.5 text-sm">
-                        <li>
-                            <a href="{{ route('site.changelog') }}" class="text-slate-400 transition hover:text-white">
-                                What's New
-                            </a>
-                        </li>
                         @foreach ($footerNav as $item)
                             <li>
                                 <a href="{{ $item['href'] }}" @if ($item['new_tab']) target="_blank" rel="noopener" @endif

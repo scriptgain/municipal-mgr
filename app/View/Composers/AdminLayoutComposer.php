@@ -112,13 +112,6 @@ class AdminLayoutComposer
                     ['Navigation Menus', route('menus.index'), 'globe', request()->routeIs('menus.*')],
                 ], $this->paymentItems()),
             ],
-            [
-                'type' => 'link',
-                'label' => 'Changelog',
-                'href' => route('changelog.index'),
-                'icon' => 'megaphone',
-                'active' => request()->routeIs('changelog.*'),
-            ],
         ];
     }
 
@@ -211,7 +204,6 @@ class AdminLayoutComposer
             'forms' => ['Forms Builder', 'forms.index'],
             'submissions' => ['Form Submissions', 'forms.index'],
             'menus' => ['Navigation Menus', 'menus.index'],
-            'changelog' => ['Changelog', 'changelog.index'],
             'settings' => ['Settings', 'settings.index'],
         ];
 

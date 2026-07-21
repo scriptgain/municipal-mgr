@@ -91,7 +91,6 @@ Route::name('site.')->group(function () {
     Route::get('/search', [Site\SearchController::class, 'index'])->name('search');
     Route::get('/contact', [Site\ContactController::class, 'index'])->name('contact');
     Route::get('/accessibility', [Site\ContactController::class, 'accessibility'])->name('accessibility');
-    Route::get('/changelog', [Site\ChangelogController::class, 'index'])->name('changelog');
 
     // CMS pages last: an explicit route above always wins over a page slug.
     Route::get('/pages/{page}', [Site\PageController::class, 'show'])->name('page');
@@ -174,7 +173,6 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
         'alerts' => Admin\AlertController::class,
         'forms' => Admin\FormController::class,
         'menus' => Admin\MenuItemController::class,
-        'changelog' => Admin\ChangelogController::class,
     ];
     foreach ($content as $uri => $controller) {
         Route::delete($uri . '/bulk', [$controller, 'bulkDestroy'])->name($uri . '.bulk-destroy');
