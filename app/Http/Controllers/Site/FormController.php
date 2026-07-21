@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Models\FormDefinition;
 use App\Models\FormSubmission;
+use App\Services\Captcha\CaptchaManager;
 use App\Services\ConstituentIntake;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -18,6 +19,9 @@ class FormController extends Controller
         return view('site.forms.show', [
             'form' => $formDefinition,
             'fields' => $formDefinition->fieldList(),
+            // "Contact Us" carries its own toggle; every other form uses the
+            // global forms toggle. The verify middleware resolves the same way.
+            'captchaContext' => app(CaptchaManager::class)->contextForForm($formDefinition),
         ]);
     }
 

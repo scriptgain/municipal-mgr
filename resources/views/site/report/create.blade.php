@@ -9,12 +9,6 @@
                 <form method="POST" action="{{ route('site.report.store') }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
 
-                    {{-- Honeypot: hidden from people, irresistible to bots. --}}
-                    <div class="hidden" aria-hidden="true">
-                        <label for="website">Leave This Field Empty</label>
-                        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
-                    </div>
-
                     <fieldset class="rounded-2xl bg-white p-6 ring-1 ring-slate-200">
                         <legend class="px-2 font-display text-xl font-semibold text-slate-900">What Is The Problem?</legend>
 
@@ -86,6 +80,8 @@
                                       description="We will not store your name, email, or phone number. You will still get a tracking link." />
                         </div>
                     </fieldset>
+
+                    <x-captcha context="report" />
 
                     <div class="flex flex-wrap items-center gap-3">
                         <button type="submit"

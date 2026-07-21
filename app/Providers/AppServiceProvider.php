@@ -26,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
         // each cost a query.
         $this->app->singleton(ThemeService::class);
         $this->app->singleton(TemplateOverrideStore::class);
+
+        // One spam-protection registry per request: the settings screen, the
+        // <x-captcha> component and the verify middleware all resolve the same
+        // instance, so the provider list stays a single source of truth.
+        $this->app->singleton(\App\Services\Captcha\CaptchaManager::class);
     }
 
     /**

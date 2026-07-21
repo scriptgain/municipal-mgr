@@ -19,6 +19,7 @@
             ['Payments', 'database', 'settings.payments.edit', 'settings.payments.*'],
         ]],
         ['Security', [
+            ['Spam Protection', 'shield', 'settings.captcha.edit', 'settings.captcha.*'],
             ['Password', 'lock', 'settings.password.edit', 'settings.password.*'],
             ['Two Factor', 'shield', 'settings.2fa.show', 'settings.2fa.*'],
             ['API Tokens', 'key', 'settings.tokens.index', 'settings.tokens.*'],

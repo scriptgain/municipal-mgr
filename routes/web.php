@@ -6,6 +6,7 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\BrandingController;
+use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\FaviconController;
 use App\Http\Controllers\FirewallController;
 use App\Http\Controllers\GeneralSettingsController;
@@ -70,7 +71,7 @@ Route::name('site.')->group(function () {
     // the credential — residents must be able to follow up without signing up.
     Route::get('/report-an-issue', [Site\ServiceRequestController::class, 'create'])->name('report');
     Route::post('/report-an-issue', [Site\ServiceRequestController::class, 'store'])
-        ->middleware('throttle:10,60')->name('report.store');
+        ->middleware(['throttle:10,60', 'captcha:report'])->name('report.store');
     Route::get('/report-an-issue/submitted/{token}', [Site\ServiceRequestController::class, 'submitted'])->name('report.submitted');
     Route::get('/track', [Site\ServiceRequestController::class, 'trackForm'])->name('track');
     Route::post('/track', [Site\ServiceRequestController::class, 'track'])
@@ -85,7 +86,7 @@ Route::name('site.')->group(function () {
 
     Route::get('/forms/{formDefinition}', [Site\FormController::class, 'show'])->name('forms.show');
     Route::post('/forms/{formDefinition}', [Site\FormController::class, 'submit'])
-        ->middleware('throttle:10,60')->name('forms.submit');
+        ->middleware(['throttle:10,60', 'captcha:forms'])->name('forms.submit');
 
     Route::get('/search', [Site\SearchController::class, 'index'])->name('search');
     Route::get('/contact', [Site\ContactController::class, 'index'])->name('contact');
@@ -135,7 +136,7 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'show'])->name('login');
-        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+        Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:10,1', 'captcha:login']);
         // Developer quick login. The action 404s unless the request IP matches
         // the dev_login_ip setting, so this route is gated, not just hidden.
         Route::post('/dev-login', [AuthController::class, 'devLogin'])->name('dev-login')->middleware('throttle:10,1');
@@ -241,6 +242,11 @@ Route::prefix('admin')->middleware(['auth', 'security.policy'])->group(function 
     Route::get('settings/integrations', [IntegrationController::class, 'edit'])->name('settings.integrations.edit');
     Route::put('settings/integrations', [IntegrationController::class, 'update'])->name('settings.integrations.update');
     Route::post('settings/integrations/test', [IntegrationController::class, 'test'])->name('settings.integrations.test');
+
+    // Spam Protection: pluggable captcha provider, keys, fail policy, toggles.
+    Route::get('settings/captcha', [CaptchaController::class, 'edit'])->name('settings.captcha.edit');
+    Route::put('settings/captcha', [CaptchaController::class, 'update'])->name('settings.captcha.update');
+    Route::post('settings/captcha/test', [CaptchaController::class, 'test'])->name('settings.captcha.test');
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('settings.password.edit');
     Route::put('settings/password', [PasswordController::class, 'update'])->name('settings.password.update');

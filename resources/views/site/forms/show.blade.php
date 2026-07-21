@@ -17,11 +17,6 @@
             <form method="POST" action="{{ route('site.forms.submit', $form) }}" class="rounded-2xl bg-white p-8 ring-1 ring-slate-200 shadow-sm">
                 @csrf
 
-                <div class="hidden" aria-hidden="true">
-                    <label for="website">Leave This Field Empty</label>
-                    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
-                </div>
-
                 <div class="space-y-6">
                     @foreach ($fields as $field)
                         @php($inputId = 'field-' . $field['key'])
@@ -72,6 +67,8 @@
                         </div>
                     @endforeach
                 </div>
+
+                <x-captcha :context="$captchaContext" />
 
                 <button type="submit" class="mt-8 w-full rounded-lg bg-brand-700 px-5 py-3.5 text-base font-semibold text-white transition hover:bg-brand-800">
                     Submit This Form
