@@ -16,8 +16,11 @@
             </a>
         </div>
 
+        {{-- A month grid genuinely cannot fit seven readable day cells on a
+             phone, so unlike a data table it keeps a min width and scrolls
+             inside this container. The page itself never scrolls sideways. --}}
         <div class="overflow-x-auto mm-scroll">
-            <table class="w-full border-collapse overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200">
+            <table class="w-full min-w-[44rem] border-collapse overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200">
                 <caption class="sr-only">Community events for {{ $month->format('F Y') }}</caption>
                 <thead>
                     <tr class="bg-slate-50">

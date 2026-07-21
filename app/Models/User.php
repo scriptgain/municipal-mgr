@@ -56,6 +56,18 @@ class User extends Authenticatable
     }
 
     /**
+     * May view the constituent roll, which is resident PII on a government
+     * system. Admins and site editors see everyone; department editors see
+     * their own department's residents (scoped in Constituent::visibleTo).
+     * The read-only "viewer" role is deliberately excluded: view access to
+     * PII is not the same as view access to public content.
+     */
+    public function canAccessConstituents(): bool
+    {
+        return $this->isEditor() || $this->isDepartmentEditor();
+    }
+
+    /**
      * Whether this user may edit a record belonging to a given department.
      * Admins and site editors: always. Department editors: only their own.
      */

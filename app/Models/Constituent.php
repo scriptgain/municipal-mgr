@@ -225,9 +225,10 @@ class Constituent extends Model
             });
         }
 
-        // Viewers and unscoped roles: read the roll, but no department filter
-        // applies because they have no department to scope to.
-        return $q;
+        // Anyone else (notably the read-only "viewer" role): no access to
+        // resident PII. Returns an empty set as defense in depth, on top of the
+        // controller's canAccessConstituents() gate.
+        return $q->whereRaw('1 = 0');
     }
 
     /** Candidate duplicates: same phone, or a very similar name. */

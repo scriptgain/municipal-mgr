@@ -9,6 +9,7 @@ use App\Models\ConstituentInteraction;
 use App\Models\Department;
 use App\Services\ConstituentTimeline;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -20,8 +21,24 @@ use Illuminate\Validation\Rule;
  * and every write is written to the audit log. Nothing in this controller has
  * a public counterpart, by design.
  */
-class ConstituentController extends Controller
+class ConstituentController extends Controller implements HasMiddleware
 {
+    /**
+     * Gate the entire controller on constituent access, so the read-only
+     * "viewer" role cannot reach resident PII on any action. Writes keep their
+     * stricter per-action isEditor() checks on top of this.
+     */
+    public static function middleware(): array
+    {
+        return [
+            function (Request $request, \Closure $next) {
+                abort_unless($request->user()?->canAccessConstituents(), 403);
+
+                return $next($request);
+            },
+        ];
+    }
+
     public function index(Request $request)
     {
         $user = auth()->user();

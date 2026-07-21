@@ -92,13 +92,15 @@ class AdminLayoutComposer
                     ['Job Postings', route('jobs.index'), 'users', request()->routeIs('jobs.*')],
                 ], $this->arrestRecordItems()),
             ],
-            [
+            // Residents is resident PII, so it only appears for roles that may
+            // actually open it; the read-only "viewer" never sees the link.
+            ...(auth()->user()?->canAccessConstituents() ? [[
                 'type' => 'link',
                 'label' => 'Residents',
                 'href' => route('constituents.index'),
                 'icon' => 'users',
                 'active' => request()->routeIs('constituents.*'),
-            ],
+            ]] : []),
             [
                 'type' => 'group',
                 'label' => 'Services',
