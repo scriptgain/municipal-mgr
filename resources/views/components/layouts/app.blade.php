@@ -16,6 +16,18 @@
         <link rel="apple-touch-icon" href="{{ route('favicon.apple') }}">
     @endif
     <x-tailwind-cdn />
+    <style>
+        /* Dialog bodies must NEVER scroll sideways. Long paths, ids and shell
+           one-liners wrap; anything genuinely un-wrappable scrolls inside its
+           own .vx-x-scroll box. Setting overflow-y alone would silently make
+           overflow-x scroll too. */
+        .vx-wrap{overflow-wrap:anywhere}
+        .vx-wrap pre,.vx-wrap code{white-space:pre-wrap;overflow-wrap:anywhere}
+        .vx-wrap table{width:100%;table-layout:fixed}
+        .vx-wrap .vx-x-scroll{overflow-x:auto;max-width:100%}
+        .vx-wrap input,.vx-wrap select,.vx-wrap textarea{min-width:0;max-width:100%}
+        .vx-wrap .grid{min-width:0}
+    </style>
     <x-accent-style />
 </head>
 <body class="h-full min-h-full bg-slate-50">
